@@ -15,18 +15,26 @@ import type { NextConfig } from "next";
  * static render -- not a trade worth making for a brochure page. Revisit when
  * the cart and accounts arrive, since by then the page is dynamic anyway.
  */
+const isDev = process.env.NODE_ENV === "development";
+
 const csp = [
   "default-src 'self'",
   "base-uri 'self'",
   "object-src 'none'",
   "frame-ancestors 'none'",
   "form-action 'self'",
-  "script-src 'self' 'unsafe-inline'",
+  /*
+   * 'unsafe-eval' in development only. React's dev build uses eval() to
+   * rebuild stack traces across environments, and Turbopack's HMR runtime
+   * needs it too; without it `next dev` throws on boot. It is never emitted
+   * in a production build, which is what the CSP is actually protecting.
+   */
+  `script-src 'self' 'unsafe-inline'${isDev ? " 'unsafe-eval'" : ""}`,
   "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
   "font-src 'self' https://fonts.gstatic.com data:",
   "img-src 'self' data: blob:",
   "media-src 'self'",
-  "connect-src 'self'",
+  `connect-src 'self'${isDev ? " ws: wss:" : ""}`,
   "manifest-src 'self'",
   /*
    * Deliberately NOT upgrade-insecure-requests. Every subresource here is
