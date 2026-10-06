@@ -1,0 +1,389 @@
+@import "tailwindcss";
+
+/*
+  Colour is taken verbatim from trenchlessdistro.com, which declares its
+  palette as CSS variables (Astra theme). Nothing here is invented.
+  See docs/THEME.md for the mapping and the contrast audit.
+*/
+@theme {
+  --color-cyan: #0da6d0; /* --ast-global-color-0  their primary */
+  /*
+   * Their darker teal, corrected. #1e809d (the value on their live site)
+   * measures 4.54:1 on white but only 4.16:1 on the #f5f5f5 section
+   * background, so every eyebrow and link in an alternating section failed
+   * AA. #1b7489 is the same hue a shade down: 5.38:1 on white, 4.93:1 on
+   * #f5f5f5, 4.91:1 on #f2f5f7 -- headroom on every surface it lands on.
+   */
+  --color-cyan-dark: #1b7489;
+  --color-purple: #b356c0; /* --ast-global-color-1  their secondary */
+  --color-ink: #161616; /* --ast-global-color-2  headings, dark bands */
+  --color-body: #4b4f58; /* --ast-global-color-3  body copy */
+  --color-gray: #424242; /* --ast-global-color-7 */
+  --color-light: #f5f5f5; /* --ast-global-color-4  section background */
+  --color-light-alt: #f2f5f7; /* --ast-global-color-6 */
+  --color-line: #dddddd; /* --ast-border-color */
+
+  --font-head: var(--font-franklin), ui-sans-serif, system-ui, sans-serif;
+  --font-sans: var(--font-source), ui-sans-serif, system-ui, sans-serif;
+
+  /*
+   * One set of curves for the whole page. Nothing uses a bare `ease` or
+   * `linear`: a premium interface is mostly a consistent deceleration.
+   *   glide  - the default. Fast out of the gate, long settle.
+   *   swift  - short distances (colour, border, opacity) that should feel instant.
+   *   drawer - symmetric, for things that open and close.
+   *   press  - the snap back off a button.
+   */
+  --ease-glide: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-swift: cubic-bezier(0.33, 1, 0.68, 1);
+  --ease-drawer: cubic-bezier(0.65, 0, 0.35, 1);
+  --ease-press: cubic-bezier(0.34, 1.4, 0.64, 1);
+
+  --text-h1: clamp(2rem, 3.5vw, 3rem);
+  --text-h2: clamp(1.5rem, 2.2vw, 2.05rem);
+  --text-h3: clamp(1.15rem, 1.3vw, 1.3rem);
+}
+
+@layer base {
+  html {
+    /*
+     * Deliberately not `scroll-behavior: smooth`. The browser's curve is a
+     * fixed, short ramp that reads as a yank on a long page, and it would
+     * also smooth each frame of the eased scroller in Interactions.tsx,
+     * which compounds into lag. Without JavaScript this falls back to an
+     * instant jump, which is the ordinary anchor behaviour.
+     */
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    background-color: #ffffff;
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    /* 17px base. Readers over 40 should not have to zoom. */
+    font-size: 1.0625rem;
+    line-height: 1.65;
+    overflow-x: hidden;
+    -webkit-tap-highlight-color: transparent;
+    text-rendering: optimizeLegibility;
+  }
+
+  @supports (padding: max(0px)) {
+    body {
+      padding-left: env(safe-area-inset-left);
+      padding-right: env(safe-area-inset-right);
+    }
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-family: var(--font-head);
+    font-weight: 700;
+    letter-spacing: -0.015em;
+    line-height: 1.18;
+    text-wrap: balance;
+  }
+
+  /* Every control clears the 44px touch target older hands need. */
+  a[href],
+  button,
+  summary,
+  [role="button"] {
+    min-height: 44px;
+  }
+  /* Links and buttons centre their own icon + label. A link that declares a
+     column layout (a whole card) is excluded: forcing align-items:center on
+     it collapses any fill-image child to zero width, and therefore zero
+     height. Opting out on .flex-col keeps that fix at the source. */
+  a[href]:not(.inline-link):not(.flex-col),
+  button:not(.flex-col) {
+    display: inline-flex;
+    align-items: center;
+  }
+
+  input,
+  select,
+  textarea {
+    font-size: max(16px, 1rem);
+    min-height: 48px;
+  }
+  textarea {
+    min-height: 7rem;
+  }
+
+  button,
+  input,
+  select,
+  textarea {
+    font-family: inherit;
+    color: inherit;
+  }
+
+  /*
+   * The house transition. Named properties only: `all` would animate layout
+   * and width, which is where hover jank comes from. Components may override
+   * the duration, and most do not need to.
+   */
+  a[href],
+  button,
+  summary,
+  [role="button"],
+  input,
+  select,
+  textarea,
+  figure img {
+    transition-property: color, background-color, border-color, outline-color,
+      box-shadow, opacity, transform, filter;
+    transition-duration: 260ms;
+    transition-timing-function: var(--ease-glide);
+  }
+
+  /*
+   * Press feedback. Fast in, eased out, and tiny -- 1.5% is felt more than it
+   * is seen. Cards that already lift on hover carry their own transform
+   * utility, which wins over this, and that is the intended outcome.
+   */
+  button:not(:disabled):active,
+  [role="button"]:active,
+  a[href]:active {
+    transform: scale(0.985);
+    transition-duration: 70ms;
+    transition-timing-function: var(--ease-press);
+  }
+
+  img,
+  svg,
+  video {
+    display: block;
+    max-width: 100%;
+  }
+
+  p,
+  h1,
+  h2,
+  h3,
+  li,
+  a {
+    overflow-wrap: break-word;
+  }
+
+  :target,
+  section[id] {
+    scroll-margin-top: 6.5rem;
+  }
+
+  ::selection {
+    background-color: var(--color-cyan);
+    color: #ffffff;
+  }
+
+  :focus-visible {
+    outline: 3px solid var(--color-cyan-dark);
+    outline-offset: 2px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.001ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.001ms !important;
+    }
+  }
+}
+
+@utility eyebrow {
+  font-family: var(--font-head);
+  font-size: 0.8125rem;
+  font-weight: 700;
+  line-height: 1.35;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+@utility datum {
+  font-variant-numeric: tabular-nums;
+}
+
+/* Their logo gradient: their purple to their cyan. Used as a rule, not on text. */
+@utility brand-rule {
+  background-image: linear-gradient(
+    90deg,
+    var(--color-purple) 0%,
+    var(--color-cyan) 100%
+  );
+}
+
+@keyframes chat-dot {
+  0%, 60%, 100% { opacity: 0.25; transform: translateY(0); }
+  30% { opacity: 1; transform: translateY(-3px); }
+}
+
+@keyframes ticker {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+/* ===========================================================================
+ * Accessibility preferences
+ *
+ * The floating accessibility button writes these as data-attributes on <html>
+ * (and an inline script in layout.tsx replays them from localStorage before
+ * first paint, so a returning visitor never sees the page in the wrong state).
+ *
+ * Everything here is CSS-only. No layout is recalculated in JavaScript, and
+ * every preference degrades to the default if the script never runs.
+ * ======================================================================== */
+
+:root {
+  --a11y-scale: 1;
+}
+
+html {
+  /* 100% = the browser's own base. Scaling here scales every rem on the page,
+     so the whole layout grows together instead of text overflowing its box. */
+  font-size: calc(100% * var(--a11y-scale));
+}
+
+html[data-a11y-text="large"] {
+  --a11y-scale: 1.125;
+}
+html[data-a11y-text="larger"] {
+  --a11y-scale: 1.25;
+}
+html[data-a11y-text="largest"] {
+  --a11y-scale: 1.45;
+}
+
+/* Readable font: Atkinson Hyperlegible, drawn by the Braille Institute for
+   low-vision readers, with letter and word spacing opened up. */
+html[data-a11y-font="readable"] body,
+html[data-a11y-font="readable"] h1,
+html[data-a11y-font="readable"] h2,
+html[data-a11y-font="readable"] h3,
+html[data-a11y-font="readable"] h4,
+html[data-a11y-font="readable"] button,
+html[data-a11y-font="readable"] input,
+html[data-a11y-font="readable"] select,
+html[data-a11y-font="readable"] textarea {
+  font-family: var(--font-atkinson), ui-sans-serif, system-ui, sans-serif !important;
+  letter-spacing: 0.012em;
+  word-spacing: 0.08em;
+}
+
+/* Underline every link, for people who cannot pick a link out by colour. */
+html[data-a11y-links="underline"] a[href] {
+  text-decoration: underline;
+  text-underline-offset: 0.2em;
+  text-decoration-thickness: 1px;
+}
+
+/* High contrast: push every text pair to near-maximum and make the borders
+   that carry this layout's structure visible rather than hairline. */
+html[data-a11y-contrast="high"] {
+  --color-body: #1a1a1a;
+  --color-gray: #1a1a1a;
+  --color-cyan-dark: #0b5a6e;
+  --color-line: #767676;
+  --color-light: #ffffff;
+  --color-light-alt: #ffffff;
+}
+html[data-a11y-contrast="high"] body {
+  color: #000000;
+}
+html[data-a11y-contrast="high"] .text-white\/70,
+html[data-a11y-contrast="high"] .text-white\/75,
+html[data-a11y-contrast="high"] .text-white\/80,
+html[data-a11y-contrast="high"] .text-white\/55 {
+  color: #ffffff;
+}
+html[data-a11y-contrast="high"] :focus-visible {
+  outline: 4px solid #000000;
+  outline-offset: 3px;
+  box-shadow: 0 0 0 7px #ffffff;
+}
+
+/* Stop motion: the same rules prefers-reduced-motion applies, on request.
+   Video elements are paused in JavaScript as well, since a paused <video>
+   cannot be expressed in CSS. */
+html[data-a11y-motion="off"] *,
+html[data-a11y-motion="off"] *::before,
+html[data-a11y-motion="off"] *::after {
+  animation-duration: 0.001ms !important;
+  animation-iteration-count: 1 !important;
+  transition-duration: 0.001ms !important;
+  scroll-behavior: auto !important;
+}
+
+/* ===========================================================================
+ * Motion used by the new homepage
+ * ======================================================================== */
+
+/* The manufacturer ticker. Duplicated content scrolls exactly half its width,
+   so the seam never shows. */
+@keyframes marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+/* The hero's scroll cue: one slow fall, repeated. */
+@keyframes scroll-cue {
+  0%,
+  100% {
+    transform: translateY(0);
+    opacity: 0.45;
+  }
+  50% {
+    transform: translateY(6px);
+    opacity: 1;
+  }
+}
+
+/* A slow drift applied to still hero art when video is not loaded, so the
+   poster frame is not completely inert. */
+@keyframes slow-pan {
+  from {
+    transform: scale(1.06) translate3d(0, 0, 0);
+  }
+  to {
+    transform: scale(1.14) translate3d(-1.5%, -1%, 0);
+  }
+}
+
+/* Dark hero overlay. Two stops: a floor of ink so white text always clears
+   AA over any frame, and a stronger wash on the left where the copy sits. */
+@utility hero-scrim {
+  background-image:
+    linear-gradient(
+      100deg,
+      rgba(22, 22, 22, 0.94) 0%,
+      rgba(22, 22, 22, 0.86) 34%,
+      rgba(22, 22, 22, 0.62) 62%,
+      rgba(22, 22, 22, 0.55) 100%
+    ),
+    linear-gradient(to top, rgba(22, 22, 22, 0.85) 0%, transparent 38%);
+}
+
+/* The same idea at lower strength, for bands that sit over video mid-page. */
+@utility band-scrim {
+  background-image: linear-gradient(
+    90deg,
+    rgba(22, 22, 22, 0.93) 0%,
+    rgba(22, 22, 22, 0.8) 45%,
+    rgba(22, 22, 22, 0.55) 100%
+  );
+}
