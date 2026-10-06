@@ -50,7 +50,7 @@ export default function Categories() {
                   href="#quote"
                   className="group flex h-full flex-col border border-line bg-white p-5 transition-all duration-300 hover:-translate-y-1 hover:border-cyan-dark hover:shadow-[0_14px_34px_-18px_rgba(14,26,34,0.4)]"
                 >
-                  <Glyph className="size-9 text-cyan-dark" aria-hidden />
+                  <Glyph className="glyph size-9" aria-hidden />
                   <h3 className="mt-5 text-[length:var(--text-h3)] text-ink">{cat.name}</h3>
                   <p className="mt-2 text-[0.9375rem] leading-snug text-body">{cat.blurb}</p>
                   <p className="datum mt-4 flex items-center gap-2 border-t border-line pt-3 text-[0.8125rem] text-body">

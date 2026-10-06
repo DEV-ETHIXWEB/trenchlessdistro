@@ -46,8 +46,8 @@ export default function Support() {
               const Glyph = GLYPH[i];
               return (
                 <Reveal key={pillar.title} delay={i * 0.06} className="bg-white">
-                  <div className="h-full p-6">
-                    <Glyph className="size-9 text-cyan-dark" aria-hidden />
+                  <div className="group h-full p-6">
+                    <Glyph className="glyph size-9" aria-hidden />
                     <p className="eyebrow mt-5 text-body">{pillar.meta}</p>
                     <h3 className="mt-2 text-[length:var(--text-h3)] text-ink">{pillar.title}</h3>
                     <p className="mt-2.5 text-[0.9375rem] leading-relaxed text-body">{pillar.body}</p>

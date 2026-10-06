@@ -295,6 +295,46 @@ html[data-a11y-links="underline"] a[href] {
   text-decoration-thickness: 1px;
 }
 
+/*
+ * The card glyphs. They rest in the teal that carries the rest of the page
+ * and take the logo's purple when the card they sit in is hovered or
+ * keyboard-focused, with a small lift so the colour change has something to
+ * travel with. Both halves run on the shared curves, so this reads as the
+ * same hand as the card lift underneath it rather than a separate effect.
+ *
+ * Purple is the second colour in their logo, so this is the mark's own pair
+ * rather than an accent invented for the hover. At 4.16:1 on white it clears
+ * the 3:1 that non-text graphics need, with room to spare.
+ */
+.glyph {
+  color: var(--color-cyan-dark);
+  transition:
+    color 0.4s var(--ease-swift),
+    transform 0.4s var(--ease-glide);
+}
+.group:hover .glyph,
+.group:focus-visible .glyph,
+.group:has(:focus-visible) .glyph {
+  color: var(--color-purple);
+  transform: translateY(-3px) scale(1.07);
+}
+
+/* Collapsing the duration is not enough here: the lift would still arrive,
+   just instantly. Anyone who asked for less motion keeps the colour and
+   loses the movement. */
+@media (prefers-reduced-motion: reduce) {
+  .group:hover .glyph,
+  .group:focus-visible .glyph,
+  .group:has(:focus-visible) .glyph {
+    transform: none;
+  }
+}
+html[data-a11y-motion="off"] .group:hover .glyph,
+html[data-a11y-motion="off"] .group:focus-visible .glyph,
+html[data-a11y-motion="off"] .group:has(:focus-visible) .glyph {
+  transform: none;
+}
+
 /* High contrast: push every text pair to near-maximum and make the borders
    that carry this layout's structure visible rather than hairline. */
 html[data-a11y-contrast="high"] {
@@ -302,6 +342,7 @@ html[data-a11y-contrast="high"] {
   --color-gray: #1a1a1a;
   --color-cyan-dark: #0b5a6e;
   --color-cyan-deep: #063c4b;
+  --color-purple: #7a2d86;
   --color-line: #767676;
   --color-light: #ffffff;
   --color-light-alt: #ffffff;
