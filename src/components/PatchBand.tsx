@@ -16,7 +16,7 @@ export default function PatchBand() {
             <p className="mt-4 text-lg leading-relaxed text-body">{PATCH.body}</p>
             <a
               href="#quote"
-              className="group mt-7 inline-flex items-center gap-2 bg-ink px-6 py-3.5 font-semibold text-white transition-colors hover:bg-cyan-dark"
+              className="group mt-7 inline-flex items-center gap-2 bg-cyan-dark px-6 py-3.5 font-semibold text-white transition-colors hover:bg-cyan-deep"
             >
               {PATCH.cta}
               <ArrowRight className="size-4 transition-transform group-hover:translate-x-1" aria-hidden />

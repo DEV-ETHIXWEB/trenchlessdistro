@@ -73,7 +73,7 @@ export default function Quote() {
               <button
                 type="button"
                 onClick={() => setSent(false)}
-                className="mt-7 border border-ink px-5 py-3 font-semibold text-ink hover:bg-ink hover:text-white"
+                className="mt-7 border border-cyan-dark px-5 py-3 font-semibold text-cyan-dark hover:bg-cyan-dark hover:text-white"
               >
                 Send another request
               </button>
@@ -121,7 +121,7 @@ export default function Quote() {
                         onClick={() => toggle(n)}
                         className={`border px-3.5 py-2.5 text-[0.9375rem] font-semibold transition-colors ${
                           on
-                            ? "border-ink bg-ink text-white"
+                            ? "border-cyan-dark bg-cyan-dark text-white"
                             : "border-line bg-white text-ink hover:border-cyan-dark"
                         }`}
                       >
@@ -147,7 +147,7 @@ export default function Quote() {
 
               <button
                 type="submit"
-                className="group mt-7 inline-flex w-full items-center justify-center gap-2 bg-cyan-dark px-7 py-4 font-semibold text-white transition-colors hover:bg-ink sm:w-auto"
+                className="group mt-7 inline-flex w-full items-center justify-center gap-2 bg-cyan-dark px-7 py-4 font-semibold text-white transition-colors hover:bg-cyan-deep sm:w-auto"
               >
                 Send request
                 <ArrowRight className="size-4 transition-transform group-hover:translate-x-1" aria-hidden />

@@ -131,7 +131,7 @@ export default function ChatWidget() {
         onClick={() => setOpen((v) => !v)}
         aria-expanded={open}
         aria-controls="chat-panel"
-        className="fixed right-4 bottom-4 z-70 gap-2.5 bg-cyan-dark px-5 py-3.5 font-semibold text-white shadow-lg transition-colors hover:bg-ink sm:right-6 sm:bottom-6"
+        className="fixed right-4 bottom-4 z-70 gap-2.5 bg-cyan-dark px-5 py-3.5 font-semibold text-white shadow-lg transition-colors hover:bg-cyan-deep sm:right-6 sm:bottom-6"
       >
         {open ? <Cross className="size-6" aria-hidden /> : <Chat className="size-6" aria-hidden />}
         {open ? "Close" : "Ask a question"}
@@ -151,10 +151,10 @@ export default function ChatWidget() {
           transition={{ duration: 0.34, ease: [0.16, 1, 0.3, 1] }}
           className="fixed inset-x-0 bottom-0 z-70 flex h-[min(80svh,40rem)] flex-col border border-line bg-white shadow-2xl sm:inset-x-auto sm:right-6 sm:bottom-24 sm:w-[25rem]"
         >
-          <div className="flex items-center justify-between gap-3 bg-ink px-4 py-3 text-white">
+          <div className="flex items-center justify-between gap-3 bg-cyan-dark px-4 py-3 text-white">
             <div>
               <p className="font-head font-bold">Ask us a question</p>
-              <p className="text-[0.8125rem] text-white/70">
+              <p className="text-[0.8125rem] text-white/90">
                 Answers about products, training and delivery
               </p>
             </div>
@@ -162,7 +162,7 @@ export default function ChatWidget() {
               type="button"
               onClick={() => setOpen(false)}
               aria-label="Close chat"
-              className="shrink-0 text-white/80 hover:text-white"
+              className="shrink-0 text-white hover:text-white/80"
             >
               <Cross className="size-6" aria-hidden />
             </button>
@@ -265,7 +265,7 @@ export default function ChatWidget() {
             <button
               type="submit"
               aria-label="Send question"
-              className="shrink-0 justify-center bg-cyan-dark px-4 text-white hover:bg-ink"
+              className="shrink-0 justify-center bg-cyan-dark px-4 text-white hover:bg-cyan-deep"
               style={{ minHeight: "48px" }}
             >
               <Send className="size-5" aria-hidden />

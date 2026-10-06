@@ -76,7 +76,7 @@ export default function HeroPipePicker() {
 
         <a
           href="#spec-finder"
-          className="group mt-4 w-full justify-center gap-2 bg-ink px-5 py-3.5 font-semibold text-white transition-colors hover:bg-cyan-dark"
+          className="group mt-4 w-full justify-center gap-2 bg-cyan-dark px-5 py-3.5 font-semibold text-white transition-colors hover:bg-cyan-deep"
         >
           Narrow by job
           <ArrowRight

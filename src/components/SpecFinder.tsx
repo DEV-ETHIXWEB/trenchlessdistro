@@ -88,7 +88,7 @@ export default function SpecFinder() {
                       onClick={() => setApp(a.id)}
                       className={`border px-3.5 py-3 text-[0.9375rem] font-semibold transition-colors ${
                         on
-                          ? "border-ink bg-ink text-white"
+                          ? "border-cyan-dark bg-cyan-dark text-white"
                           : "border-line bg-white text-ink hover:border-cyan-dark"
                       }`}
                     >

@@ -147,7 +147,7 @@ export default function AccessibilityWidget() {
         onClick={() => setOpen((v) => !v)}
         aria-expanded={open}
         aria-controls="a11y-panel"
-        className="group fixed bottom-4 left-4 z-70 gap-2.5 border-2 border-white bg-ink px-4 py-3 font-semibold text-white shadow-lg transition-colors hover:bg-cyan-dark sm:bottom-6 sm:left-6"
+        className="group fixed bottom-4 left-4 z-70 gap-2.5 border-2 border-white bg-cyan-dark px-4 py-3 font-semibold text-white shadow-lg transition-colors hover:bg-cyan-deep sm:bottom-6 sm:left-6"
       >
         <Accessibility className="size-6 shrink-0" aria-hidden />
         <span className="sr-only sm:not-sr-only">
@@ -176,10 +176,10 @@ export default function AccessibilityWidget() {
           transition={{ duration: 0.34, ease: [0.16, 1, 0.3, 1] }}
           className="fixed inset-x-0 bottom-0 z-70 max-h-[min(85svh,42rem)] overflow-y-auto overscroll-contain border border-line bg-white shadow-2xl sm:inset-x-auto sm:bottom-24 sm:left-6 sm:w-[24rem]"
         >
-          <div className="flex items-start justify-between gap-3 bg-ink px-4 py-3 text-white">
+          <div className="flex items-start justify-between gap-3 bg-cyan-dark px-4 py-3 text-white">
             <div>
               <p className="font-head font-bold">Accessibility</p>
-              <p className="text-[0.8125rem] text-white/70">
+              <p className="text-[0.8125rem] text-white/90">
                 Saved in this browser
               </p>
             </div>
@@ -190,7 +190,7 @@ export default function AccessibilityWidget() {
                 buttonRef.current?.focus();
               }}
               aria-label="Close accessibility settings"
-              className="shrink-0 text-white/80 hover:text-white"
+              className="shrink-0 text-white hover:text-white/80"
             >
               <Cross className="size-6" aria-hidden />
             </button>
@@ -274,7 +274,7 @@ export default function AccessibilityWidget() {
               type="button"
               onClick={() => update(DEFAULTS, "All settings reset")}
               disabled={!anyChanged}
-              className="mt-4 w-full justify-center border border-line py-3 font-semibold text-ink transition-colors hover:border-ink disabled:cursor-not-allowed disabled:text-body/50 disabled:hover:border-line"
+              className="mt-4 w-full justify-center border border-line py-3 font-semibold text-cyan-dark transition-colors hover:border-cyan-dark disabled:cursor-not-allowed disabled:text-body/50 disabled:hover:border-line"
             >
               Reset all
             </button>

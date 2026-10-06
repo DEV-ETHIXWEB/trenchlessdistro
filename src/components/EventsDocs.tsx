@@ -61,11 +61,11 @@ export default function EventsDocs() {
                   <li key={res.label}>
                     <a
                       href="#quote"
-                      className="group flex h-full flex-col justify-between gap-4 bg-white p-4 transition-colors hover:bg-ink"
+                      className="group flex h-full flex-col justify-between gap-4 bg-white p-4 transition-colors hover:bg-cyan-dark"
                     >
-                      <Download className="size-5 text-body transition-colors group-hover:text-cyan" aria-hidden />
+                      <Download className="size-5 text-body transition-colors group-hover:text-white" aria-hidden />
                       <span>
-                        <span className="datum block font-head text-xl font-bold text-ink transition-colors group-hover:text-cyan">
+                        <span className="datum block font-head text-xl font-bold text-ink transition-colors group-hover:text-white">
                           {res.count}
                         </span>
                         <span className="mt-0.5 block text-[0.9375rem] font-semibold text-ink transition-colors group-hover:text-white">

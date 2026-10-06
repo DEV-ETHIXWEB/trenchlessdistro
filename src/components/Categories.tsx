@@ -66,16 +66,16 @@ export default function Categories() {
           <Reveal as="li" delay={0.28}>
             <a
               href="tel:+12533685614"
-              className="group flex h-full flex-col justify-between bg-ink p-5 text-white transition-colors hover:bg-gray"
+              className="group flex h-full flex-col justify-between bg-cyan-dark p-5 text-white transition-colors hover:bg-cyan-deep"
             >
               <h3 className="text-[length:var(--text-h3)] text-white">
                 Need something not listed?
               </h3>
               <div>
-                <p className="mt-3 text-[0.9375rem] leading-snug text-white/75">
+                <p className="mt-3 text-[0.9375rem] leading-snug text-white/90">
                   We source across the trenchless supply chain. Send us the spec.
                 </p>
-                <span className="mt-4 inline-flex items-center gap-2 border-t border-white/20 pt-3 font-semibold text-cyan">
+                <span className="mt-4 inline-flex items-center gap-2 border-t border-white/30 pt-3 font-semibold text-white">
                   Call 253-368-5614
                   <ArrowRight className="size-4 transition-transform group-hover:translate-x-1" aria-hidden />
                 </span>

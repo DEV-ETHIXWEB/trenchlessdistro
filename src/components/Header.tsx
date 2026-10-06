@@ -162,7 +162,7 @@ export default function Header() {
 
             <a
               href="#quote"
-              className="bg-cyan-dark px-5 py-2.5 text-[0.9375rem] font-semibold text-white transition-colors hover:bg-ink"
+              className="bg-cyan-dark px-5 py-2.5 text-[0.9375rem] font-semibold text-white transition-colors hover:bg-cyan-deep"
             >
               Request a quote
             </a>
