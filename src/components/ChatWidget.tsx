@@ -52,6 +52,21 @@ export default function ChatWidget() {
   const inputRef = useRef<HTMLInputElement>(null);
   const panelRef = useRef<HTMLDivElement>(null);
   const still = useReducedMotion();
+  /*
+   * The panel is a full sheet on a phone and an anchored card on a desktop,
+   * and the two want different entrances: a card can scale up out of the
+   * launcher it came from, a full sheet reads as rising from the bottom
+   * edge. Starts false so the first paint matches the server; the panel only
+   * ever renders after a click, so there is nothing to mismatch.
+   */
+  const [sheet, setSheet] = useState(false);
+  useEffect(() => {
+    const mq = window.matchMedia("(max-width: 639px)");
+    const sync = () => setSheet(mq.matches);
+    sync();
+    mq.addEventListener("change", sync);
+    return () => mq.removeEventListener("change", sync);
+  }, []);
 
   useEffect(() => {
     logRef.current?.scrollTo({ top: logRef.current.scrollHeight, behavior: "smooth" });
@@ -69,6 +84,39 @@ export default function ChatWidget() {
     document.addEventListener("keydown", onKey);
     return () => document.removeEventListener("keydown", onKey);
   }, [open]);
+
+  /*
+   * A full sheet covers the page, so the page behind it must stop scrolling.
+   * Only while it is actually a sheet: the desktop card leaves the page
+   * visible and scrollable on purpose.
+   *
+   * overflow:hidden rather than the usual position:fixed on the body. Taking
+   * the body out of flow discards the scroll offset, and putting it back
+   * afterwards does not land where it started: Chromium drifts 20px,
+   * WebKit 18px and Firefox a varying amount, measured on this page at
+   * several scroll depths. Nothing in our code does that scrolling, the
+   * browser does it as the document re-expands, so there is no call of ours
+   * to correct. Clipping the scrollport instead leaves the offset untouched,
+   * which means there is nothing to restore and nothing to drift.
+   */
+  useEffect(() => {
+    if (!open || !sheet) return;
+    const de = document.documentElement;
+    const { body } = document;
+    const prev = {
+      html: de.style.overflow,
+      body: body.style.overflow,
+      overscroll: body.style.overscrollBehavior,
+    };
+    de.style.overflow = "hidden";
+    body.style.overflow = "hidden";
+    body.style.overscrollBehavior = "none";
+    return () => {
+      de.style.overflow = prev.html;
+      body.style.overflow = prev.body;
+      body.style.overscrollBehavior = prev.overscroll;
+    };
+  }, [open, sheet]);
 
   function reply(question: string) {
     const m = match(question);
@@ -131,10 +179,21 @@ export default function ChatWidget() {
         onClick={() => setOpen((v) => !v)}
         aria-expanded={open}
         aria-controls="chat-panel"
-        className="fixed right-4 bottom-4 z-70 gap-2.5 bg-cyan-dark px-5 py-3.5 font-semibold text-white shadow-lg transition-colors hover:bg-cyan-deep sm:right-6 sm:bottom-6"
+        /*
+         * Icon only on a phone, with the white border its sibling carries, so
+         * the two launchers read as a pair and neither one covers the card
+         * behind it. The label comes back from sm up, where there is room.
+         */
+        className={`fixed right-4 bottom-4 z-70 gap-2.5 border-2 border-white bg-cyan-dark px-3 py-3 font-semibold text-white shadow-lg transition-colors hover:bg-cyan-deep sm:right-6 sm:bottom-6 sm:px-5 sm:py-3.5 ${
+          open ? "max-sm:hidden" : ""
+        }`}
       >
-        {open ? <Cross className="size-6" aria-hidden /> : <Chat className="size-6" aria-hidden />}
-        {open ? "Close" : "Ask a question"}
+        {open ? (
+          <Cross className="size-6 shrink-0" aria-hidden />
+        ) : (
+          <Chat className="size-6 shrink-0" aria-hidden />
+        )}
+        <span className="sr-only sm:not-sr-only">{open ? "Close" : "Ask a question"}</span>
       </button>
 
       <AnimatePresence>
@@ -145,13 +204,23 @@ export default function ChatWidget() {
           role="dialog"
           aria-label="Ask Trenchless Distribution a question"
           style={{ transformOrigin: "bottom right" }}
-          initial={still ? false : { opacity: 0, y: 14, scale: 0.97 }}
+          initial={
+            still ? false : sheet ? { opacity: 0, y: 24 } : { opacity: 0, y: 14, scale: 0.97 }
+          }
           animate={{ opacity: 1, y: 0, scale: 1 }}
-          exit={still ? { opacity: 0 } : { opacity: 0, y: 10, scale: 0.98 }}
-          transition={{ duration: 0.34, ease: [0.16, 1, 0.3, 1] }}
-          className="fixed inset-x-0 bottom-0 z-70 flex h-[min(80svh,40rem)] flex-col border border-line bg-white shadow-2xl sm:inset-x-auto sm:right-6 sm:bottom-24 sm:w-[25rem]"
+          exit={
+            still ? { opacity: 0 } : sheet ? { opacity: 0, y: 24 } : { opacity: 0, y: 10, scale: 0.98 }
+          }
+          transition={{ duration: sheet ? 0.4 : 0.34, ease: [0.16, 1, 0.3, 1] }}
+          /*
+           * inset-0 rather than a height: it tracks the visual viewport as a
+           * mobile browser grows and shrinks its URL bar, which a fixed svh
+           * value does not. From sm up it goes back to a card parked above
+           * the launcher.
+           */
+          className="fixed inset-0 z-70 flex flex-col bg-white shadow-2xl sm:inset-auto sm:right-6 sm:bottom-24 sm:h-[min(80svh,40rem)] sm:w-[25rem] sm:border sm:border-line"
         >
-          <div className="flex items-center justify-between gap-3 bg-cyan-dark px-4 py-3 text-white">
+          <div className="flex items-center justify-between gap-3 bg-cyan-dark px-4 py-3 pt-[max(0.75rem,env(safe-area-inset-top))] text-white sm:pt-3">
             <div>
               <p className="font-head font-bold">Ask us a question</p>
               <p className="text-[0.8125rem] text-white/90">
@@ -272,7 +341,7 @@ export default function ChatWidget() {
             </button>
           </form>
 
-          <div className="flex justify-center border-t border-line bg-light py-2">
+          <div className="flex justify-center border-t border-line bg-light py-2 pb-[max(0.5rem,env(safe-area-inset-bottom))] sm:pb-2">
             <EthixwebCredit />
           </div>
         </motion.div>
