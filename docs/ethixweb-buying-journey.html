@@ -1,321 +1,218 @@
-<!doctype html>
-<html lang="en"><head><meta charset="utf-8">
-<title>The contractor buying journey</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<!doctype html><html lang="en"><head><meta charset="utf-8">
+<title>How a contractor buys from Trenchless Distribution</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Kumbh+Sans:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
-:root{
-  --paper:#fdfbfa; --ink:#16100f; --muted:#7a716b; --soft:#ede9e5;
-  --red:#c0272d; --red-deep:#8a181c; --warm:#f0ebe7;
-}
+:root{--paper:#fdfbfa;--ink:#16100f;--muted:#7a716b;--soft:#ede9e5;--red:#c0272d;--warm:#f0ebe7}
 *{box-sizing:border-box;margin:0;padding:0}
-@page{ size:letter; margin:0; }
+@page{size:letter;margin:0}
 html,body{-webkit-print-color-adjust:exact;print-color-adjust:exact}
-body{font-family:"Kumbh Sans",system-ui,sans-serif;color:var(--ink);background:var(--paper);
-     font-size:10.2pt;line-height:1.52;-webkit-font-smoothing:antialiased}
-
-.page{width:8.5in;height:11in;background:var(--paper);position:relative;
-      padding:.70in .78in .88in;display:flex;flex-direction:column;page-break-after:always;overflow:hidden}
+body{font-family:"Kumbh Sans",system-ui,sans-serif;color:var(--ink);background:var(--paper);font-size:10pt;line-height:1.5}
+.page{width:8.5in;height:11in;padding:.48in .62in .68in;display:flex;flex-direction:column;
+      page-break-after:always;position:relative;overflow:hidden;background:var(--paper)}
 .page:last-child{page-break-after:auto}
-
-/* running furniture */
-.rhead{position:absolute;top:.42in;left:.78in;right:.78in;display:flex;justify-content:space-between;
-       align-items:baseline;font-family:"IBM Plex Mono",monospace;font-size:6.8pt;letter-spacing:.14em;
-       text-transform:uppercase;color:var(--muted)}
-.rfoot{position:absolute;bottom:.42in;left:.78in;right:.78in;display:flex;justify-content:space-between;
-       align-items:center;font-family:"IBM Plex Mono",monospace;font-size:6.8pt;letter-spacing:.14em;
+.rfoot{position:absolute;bottom:.38in;left:.62in;right:.62in;display:flex;justify-content:space-between;
+       align-items:center;font-family:"IBM Plex Mono",monospace;font-size:6.6pt;letter-spacing:.14em;
        text-transform:uppercase;color:var(--muted)}
 .rfoot b{color:var(--ink);font-weight:500}
 
-.mono{font-family:"IBM Plex Mono",monospace;font-size:7pt;letter-spacing:.16em;text-transform:uppercase;color:var(--red)}
-.sec{display:flex;align-items:baseline;gap:14px;border-bottom:1px solid var(--ink);padding-bottom:8px}
-.sec .no{font-family:"IBM Plex Mono",monospace;font-size:8pt;letter-spacing:.1em;color:var(--red)}
-.sec h2{font-size:19pt;font-weight:700;letter-spacing:-.02em;line-height:1.1}
-.lede{font-size:10.6pt;color:var(--muted);margin-top:9px;max-width:5.5in;line-height:1.56}
+.mast{display:flex;justify-content:space-between;align-items:flex-start;gap:24px}
+.mast img{width:104px;height:auto}
+.mast .meta{text-align:right;font-family:"IBM Plex Mono",monospace;font-size:6.4pt;letter-spacing:.13em;
+            text-transform:uppercase;color:var(--muted);line-height:1.95}
+h1{font-size:20pt;font-weight:800;letter-spacing:-.028em;line-height:1.1;margin-top:12px;max-width:6in}
+.deck{font-size:9.7pt;color:var(--muted);margin-top:6px;max-width:5.5in;line-height:1.5}
+.keyline{height:2px;background:var(--ink);margin-top:10px}
 
-/* ---------- cover ---------- */
-.cover{justify-content:space-between;padding:.78in}
-.cover .top{display:flex;justify-content:space-between;align-items:flex-start}
-.cover .exlogo{width:142px;height:auto}
-.cover .meta{text-align:right;font-family:"IBM Plex Mono",monospace;font-size:7pt;letter-spacing:.14em;
-             text-transform:uppercase;color:var(--muted);line-height:2}
-.cover h1{font-size:46pt;font-weight:800;line-height:1.02;letter-spacing:-.035em;max-width:6.3in}
-.cover h1 em{font-style:normal;color:var(--red)}
-.cover .kicker{font-family:"IBM Plex Mono",monospace;font-size:7.6pt;letter-spacing:.2em;
-               text-transform:uppercase;color:var(--red);margin-bottom:20px;display:block}
-.cover .deck{font-size:12.5pt;color:var(--muted);max-width:4.9in;margin-top:22px;line-height:1.55}
-.hair{height:2px;background:var(--ink);margin:30px 0 0;width:2.1in}
-.cover .foot{display:flex;justify-content:space-between;align-items:flex-end;gap:30px;
-             border-top:1px solid var(--soft);padding-top:18px}
-.cover .foot .lbl{font-family:"IBM Plex Mono",monospace;font-size:6.8pt;letter-spacing:.16em;
-                  text-transform:uppercase;color:var(--muted);display:block;margin-bottom:7px}
-.cover .foot strong{font-size:11pt;font-weight:600}
-.cover .tdlogo{height:30px;width:auto}
+.who{display:grid;grid-template-columns:1fr 1fr;gap:0;border-bottom:1px solid var(--soft)}
+.who div{padding:8px 0}
+.who div+div{padding-left:22px;border-left:1px solid var(--soft)}
+.who .n{font-family:"IBM Plex Mono",monospace;font-size:6.4pt;letter-spacing:.14em;text-transform:uppercase;color:var(--red)}
+.who h4{font-size:11.5pt;font-weight:700;margin-top:2px}
+.who p{font-size:9.4pt;color:var(--muted);margin-top:1px}
 
-/* ---------- phase strip ---------- */
-.phases{display:grid;grid-template-columns:repeat(4,1fr);gap:0;margin-top:14px;border:1px solid var(--soft)}
-.ph{padding:10px 15px;border-right:1px solid var(--soft);position:relative}
-.ph:last-child{border-right:none}
-.ph .n{font-family:"IBM Plex Mono",monospace;font-size:7pt;letter-spacing:.14em;color:var(--muted)}
-.ph h3{font-size:13pt;font-weight:700;margin-top:5px;letter-spacing:-.015em}
-.ph p{font-size:9pt;color:var(--muted);margin-top:4px;line-height:1.42}
-.ph .bar{position:absolute;top:0;left:0;right:0;height:3px;background:var(--soft)}
-.ph.live .bar{background:var(--red)}
-.ph.live h3{color:var(--red)}
+.phases{display:grid;grid-template-columns:2fr 2fr 2fr 1fr;gap:7px;margin-top:10px}
+.ph{padding-top:7px;border-top:2.5px solid var(--soft)}
+.ph.live{border-top-color:var(--red)}
+.ph b{font-family:"IBM Plex Mono",monospace;font-size:6.6pt;letter-spacing:.15em;text-transform:uppercase;display:block}
+.ph.live b{color:var(--red)}
+.ph span{font-size:8.4pt;color:var(--muted);display:block;margin-top:1px}
 
-/* ---------- vertical journey ---------- */
-.journey{margin-top:13px}
-.step{display:grid;grid-template-columns:.42in 1fr;gap:0;position:relative}
+.steps{margin-top:8px}
+.st{display:grid;grid-template-columns:.36in 1fr;position:relative}
 .rail{position:relative}
-.rail::before{content:"";position:absolute;left:12px;top:0;bottom:0;width:1px;background:var(--soft)}
-.step:last-child .rail::before{bottom:auto;height:20px}
-.dot{position:absolute;left:4px;top:13px;width:17px;height:17px;border-radius:50%;
-     background:var(--paper);border:1.5px solid var(--ink);display:flex;align-items:center;
-     justify-content:center;font-family:"IBM Plex Mono",monospace;font-size:7pt;font-weight:500;z-index:2}
-.step.key .dot{background:var(--red);border-color:var(--red);color:#fff}
-.body{padding:7px 0 9px 14px;border-bottom:1px solid var(--soft)}
-.step:last-child .body{border-bottom:none}
-.body .hd{display:flex;align-items:baseline;gap:11px}
-.body h4{font-size:12.5pt;font-weight:700;letter-spacing:-.015em}
-.body .tag{font-family:"IBM Plex Mono",monospace;font-size:6.6pt;letter-spacing:.14em;
-           text-transform:uppercase;color:var(--muted)}
-.step.key .tag{color:var(--red)}
-.cols{display:grid;grid-template-columns:1.72in 1fr;gap:20px;margin-top:8px}
-.says{font-size:9.6pt;color:var(--ink);line-height:1.46;border-left:2px solid var(--soft);padding-left:11px}
-.step.key .says{border-left-color:var(--red)}
-.gives{font-size:9.6pt;color:var(--muted);line-height:1.46}
-.gives b{color:var(--ink);font-weight:600;display:block;font-size:6.6pt;letter-spacing:.14em;
-         text-transform:uppercase;font-family:"IBM Plex Mono",monospace;margin-bottom:3px}
+.rail::before{content:"";position:absolute;left:10px;top:0;bottom:0;width:1px;background:var(--soft)}
+.st:last-child .rail::before{bottom:auto;height:18px}
+.dot{position:absolute;left:3px;top:9px;width:15px;height:15px;border-radius:50%;background:var(--paper);
+     border:1.4px solid var(--ink);display:flex;align-items:center;justify-content:center;
+     font-family:"IBM Plex Mono",monospace;font-size:6.2pt;z-index:2}
+.st.key .dot{background:var(--red);border-color:var(--red);color:#fff}
+.bd{padding:6px 0 7px 12px;border-bottom:1px solid var(--soft)}
+.st:last-child .bd{border-bottom:none}
+.hd{display:flex;align-items:baseline;gap:9px}
+.hd h4{font-size:11pt;font-weight:700;letter-spacing:-.012em}
+.hd .tag{font-family:"IBM Plex Mono",monospace;font-size:6.2pt;letter-spacing:.13em;text-transform:uppercase;color:var(--muted)}
+.st.key .tag{color:var(--red)}
+.two{display:grid;grid-template-columns:1.78in 1fr;gap:16px;margin-top:4px}
+.lbl{font-family:"IBM Plex Mono",monospace;font-size:6.2pt;letter-spacing:.13em;text-transform:uppercase;
+     color:var(--ink);display:block;margin-bottom:3px}
+.q{font-size:8.9pt;line-height:1.36;border-left:2px solid var(--soft);padding-left:10px}
+.st.key .q{border-left-color:var(--red)}
+.d{font-size:8.9pt;line-height:1.36;color:var(--muted)}
 
-/* ---------- buyers ---------- */
-.buyers{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:20px}
-.buyer{border-top:2px solid var(--ink);padding-top:12px}
-.buyer .n{font-family:"IBM Plex Mono",monospace;font-size:6.8pt;letter-spacing:.16em;
-          text-transform:uppercase;color:var(--muted)}
-.buyer h4{font-size:14pt;font-weight:700;margin-top:4px}
-.buyer p{font-size:9.6pt;color:var(--muted);margin-top:5px;line-height:1.48}
-
-/* ---------- callout ---------- */
-.call{margin-top:auto;background:var(--ink);color:var(--paper);padding:20px 25px}
-.call .k{font-family:"IBM Plex Mono",monospace;font-size:6.8pt;letter-spacing:.18em;
-         text-transform:uppercase;color:#e0555a;display:block;margin-bottom:9px}
-.call h3{font-size:16pt;font-weight:700;letter-spacing:-.02em;line-height:1.22}
-.call p{font-size:10pt;color:#b0a39f;margin-top:9px;line-height:1.54;max-width:5.8in}
-
-/* ---------- next steps ---------- */
-.asks{margin-top:22px;border-top:1px solid var(--ink)}
-.ask{display:grid;grid-template-columns:.34in 1fr;gap:16px;padding:14px 0;border-bottom:1px solid var(--soft);align-items:start}
-.ask .i{font-family:"IBM Plex Mono",monospace;font-size:9pt;color:var(--red);padding-top:1px}
-.ask h4{font-size:11.5pt;font-weight:600}
-.ask p{font-size:9.6pt;color:var(--muted);margin-top:3px;line-height:1.48}
-.sign{margin-top:26px;border-top:1px solid var(--soft);padding-top:16px;display:flex;
-      justify-content:space-between;align-items:flex-end;gap:26px}
-.sign .lbl{font-family:"IBM Plex Mono",monospace;font-size:6.8pt;letter-spacing:.16em;
-           text-transform:uppercase;color:var(--muted);display:block;margin-bottom:6px}
-.sign p{font-size:10pt;line-height:1.55}
-.sign img{width:112px;height:auto;opacity:.9}
+.call{margin-top:auto;background:var(--ink);color:var(--paper);padding:17px 21px}
+.call .k{font-family:"IBM Plex Mono",monospace;font-size:6.4pt;letter-spacing:.17em;text-transform:uppercase;
+         color:#e0555a;display:block;margin-bottom:7px}
+.call h3{font-size:14pt;font-weight:700;letter-spacing:-.02em;line-height:1.24}
+.call p{font-size:9.4pt;color:#b0a39f;margin-top:7px;line-height:1.5;max-width:6in}
+.sign{display:flex;justify-content:space-between;align-items:flex-end;gap:24px;margin-top:14px}
+.sign .l{font-family:"IBM Plex Mono",monospace;font-size:6.4pt;letter-spacing:.14em;text-transform:uppercase;
+         color:var(--muted);display:block;margin-bottom:4px}
+.sign p{font-size:9.6pt;line-height:1.5}
+.sign img{width:96px;height:auto;opacity:.9}
 </style></head><body>
 
-<!-- ================= COVER ================= -->
-<section class="page cover">
-  <div class="top">
-    <img class="exlogo" src="EX_LOGO" alt="Ethixweb">
+<!-- ===================== PAGE 1 ===================== -->
+<section class="page">
+  <div class="mast">
+    <img src="EX_LOGO" alt="Ethixweb">
     <div class="meta">Prepared for Trenchless Distribution<br>Attn. Charlene Lundgren<br>October 2026</div>
   </div>
 
-  <div>
-    <span class="kicker">Website strategy &nbsp;/&nbsp; 01</span>
-    <h1>How a contractor<br>buys from you, and<br>where you <em>lose him</em>.</h1>
-    <div class="hair"></div>
-    <p class="deck">Seven steps, from the moment a crew runs out of liner to the moment
-       they order again. One page to read it, one page to see what the new site changes.</p>
+  <h1>How a contractor buys from<br>Trenchless Distribution</h1>
+  <p class="deck">Seven steps from needing a liner to reordering one. Built around the two
+     contractors we expect most: Mike and Dave.</p>
+  <div class="keyline"></div>
+
+  <div class="who">
+    <div><span class="n">Buyer one</span><h4>Mike</h4><p>Runs a lining crew. Needs supply and support, fast.</p></div>
+    <div><span class="n">Buyer two</span><h4>Dave</h4><p>Plumber adding CIPP. Needs a clear way to start.</p></div>
   </div>
-
-  <div class="foot">
-    <div>
-      <span class="lbl">Client</span>
-      <img class="tdlogo" src="TD_LOGO" alt="Trenchless Distribution">
-    </div>
-    <div>
-      <span class="lbl">Prepared by</span>
-      <strong>Ethixweb</strong>
-    </div>
-    <div>
-      <span class="lbl">Contact</span>
-      <strong>amar@ethixweb.com</strong>
-    </div>
-  </div>
-</section>
-
-<!-- ================= THE JOURNEY ================= -->
-<section class="page">
-  <div class="rhead"><span>The contractor buying journey</span><span>Trenchless Distribution</span></div>
-
-  <div class="sec"><span class="no">01</span><h2>The seven steps</h2></div>
-  <p class="lede">This is the path a lining contractor already walks, whether or not
-     your website helps him. The red step is the one that decides the sale.</p>
 
   <div class="phases">
-    <div class="ph"><div class="bar"></div><span class="n">Steps 1 to 2</span><h3>Discover</h3>
-      <p>He realises he needs something.</p></div>
-    <div class="ph"><div class="bar"></div><span class="n">Steps 3 to 4</span><h3>Evaluate</h3>
-      <p>He checks whether you have it.</p></div>
-    <div class="ph live"><div class="bar"></div><span class="n">Steps 5 to 6</span><h3>Buy</h3>
-      <p>He asks the price and orders.</p></div>
-    <div class="ph"><div class="bar"></div><span class="n">Step 7</span><h3>Keep</h3>
-      <p>He comes back.</p></div>
+    <div class="ph"><b>Discover</b><span>Steps 1 and 2</span></div>
+    <div class="ph"><b>Evaluate</b><span>Steps 3 and 4</span></div>
+    <div class="ph live"><b>Buy</b><span>Steps 5 and 6</span></div>
+    <div class="ph"><b>Keep</b><span>Step 7</span></div>
   </div>
 
-  <div class="journey">
-    <div class="step"><div class="rail"><div class="dot">01</div></div><div class="body">
+  <div class="steps">
+    <div class="st"><div class="rail"><div class="dot">01</div></div><div class="bd">
       <div class="hd"><h4>Need arises</h4><span class="tag">Discover</span></div>
-      <div class="cols">
-        <p class="says">"I have a job booked and I am short on liner."</p>
-        <p class="gives"><b>What he does</b>Checks what is left on the truck and starts looking for a supplier.</p>
+      <div class="two">
+        <div><span class="lbl">He is thinking</span><p class="q">A job is booked, or lining keeps winning my laterals.</p></div>
+        <div><span class="lbl">He does</span><p class="d">Checks his shop stock, or starts researching CIPP for the first time.</p></div>
       </div></div></div>
 
-    <div class="step"><div class="rail"><div class="dot">02</div></div><div class="body">
+    <div class="st"><div class="rail"><div class="dot">02</div></div><div class="bd">
       <div class="hd"><h4>Search</h4><span class="tag">Discover</span></div>
-      <div class="cols">
-        <p class="says">"Who sells this, and who actually has it in stock?"</p>
-        <p class="gives"><b>What he does</b>Types the product name into Google, or asks another contractor who they use.</p>
+      <div class="two">
+        <div><span class="lbl">He is thinking</span><p class="q">Who sells what I need, and who has it in stock?</p></div>
+        <div><span class="lbl">He does</span><p class="d">Searches a product or brand, asks an AI assistant, or checks Google Maps.</p></div>
       </div></div></div>
 
-    <div class="step"><div class="rail"><div class="dot">03</div></div><div class="body">
-      <div class="hd"><h4>Lands on your site</h4><span class="tag">Evaluate</span></div>
-      <div class="cols">
-        <p class="says">"Do they carry my size? And do they install pipe themselves?"</p>
-        <p class="gives"><b>What he does</b>Scans the home page for roughly five seconds and decides whether to stay.</p>
+    <div class="st"><div class="rail"><div class="dot">03</div></div><div class="bd">
+      <div class="hd"><h4>Land</h4><span class="tag">Evaluate</span></div>
+      <div class="two">
+        <div><span class="lbl">He is thinking</span><p class="q">Do they carry my brand? Will they compete with me?</p></div>
+        <div><span class="lbl">He does</span><p class="d">Scans the homepage on his phone for about five seconds.</p></div>
       </div></div></div>
 
-    <div class="step"><div class="rail"><div class="dot">04</div></div><div class="body">
-      <div class="hd"><h4>Checks the details</h4><span class="tag">Evaluate</span></div>
-      <div class="cols">
-        <p class="says">"Will this fit my equipment, and where are the specs?"</p>
-        <p class="gives"><b>What he does</b>Opens product pages, looks for spec sheets and safety data, compares options.</p>
+    <div class="st"><div class="rail"><div class="dot">04</div></div><div class="bd">
+      <div class="hd"><h4>Evaluate</h4><span class="tag">Evaluate</span></div>
+      <div class="two">
+        <div><span class="lbl">He is thinking</span><p class="q">Will this fit my equipment? Where are the specs?</p></div>
+        <div><span class="lbl">He does</span><p class="d">Opens product pages, downloads spec and SDS sheets, compares options.</p></div>
       </div></div></div>
 
-    <div class="step key"><div class="rail"><div class="dot">05</div></div><div class="body">
-      <div class="hd"><h4>Asks the price</h4><span class="tag">The step that decides it</span></div>
-      <div class="cols">
-        <p class="says">"What does it cost, and can I have it this week?"</p>
-        <p class="gives"><b>What he does</b>Calls you, or sends a quote request with sizes, quantities and the job.</p>
+    <div class="st key"><div class="rail"><div class="dot">05</div></div><div class="bd">
+      <div class="hd"><h4>Quote and decide</h4><span class="tag">The moment he asks for a quote</span></div>
+      <div class="two">
+        <div><span class="lbl">He is thinking</span><p class="q">Is the price fair, and will anyone call me back?</p></div>
+        <div><span class="lbl">He does</span><p class="d">Fills in a short quote form or calls. Weighs price, ship time and support.</p></div>
       </div></div></div>
 
-    <div class="step"><div class="rail"><div class="dot">06</div></div><div class="body">
-      <div class="hd"><h4>Orders and collects</h4><span class="tag">Buy</span></div>
-      <div class="cols">
-        <p class="says">"When will it get here?"</p>
-        <p class="gives"><b>What he does</b>Places the order, then picks it up at will call or waits on the freight.</p>
+    <div class="st"><div class="rail"><div class="dot">06</div></div><div class="bd">
+      <div class="hd"><h4>Order and receive</h4><span class="tag">Buy</span></div>
+      <div class="two">
+        <div><span class="lbl">He is thinking</span><p class="q">Will it arrive before the crew rolls?</p></div>
+        <div><span class="lbl">He does</span><p class="d">Places the order, pays or sends a PO, tracks the shipment.</p></div>
       </div></div></div>
 
-    <div class="step"><div class="rail"><div class="dot">07</div></div><div class="body">
-      <div class="hd"><h4>Comes back</h4><span class="tag">Keep</span></div>
-      <div class="cols">
-        <p class="says">"Who do I call when something goes wrong?"</p>
-        <p class="gives"><b>What he does</b>Rings for support, books a demo or training, reorders from what he bought last time.</p>
+    <div class="st"><div class="rail"><div class="dot">07</div></div><div class="bd">
+      <div class="hd"><h4>Support and reorder</h4><span class="tag">Keep</span></div>
+      <div class="two">
+        <div><span class="lbl">He is thinking</span><p class="q">Who do I call when a cure fails?</p></div>
+        <div><span class="lbl">He does</span><p class="d">Calls tech support, books a demo or training, reorders from his saved list.</p></div>
       </div></div></div>
   </div>
 
-  <div class="rfoot"><span>Ethixweb</span><span><b>02</b> / 04</span></div>
+  <div class="rfoot"><span>Ethixweb</span><span><b>01</b> / 02</span></div>
 </section>
 
-<!-- ================= WHAT THE SITE CHANGES ================= -->
+<!-- ===================== PAGE 2 ===================== -->
 <section class="page">
-  <div class="rhead"><span>What the new site changes</span><span>Trenchless Distribution</span></div>
+  <div class="mast">
+    <img src="EX_LOGO" alt="Ethixweb">
+    <div class="meta">How a contractor buys<br>Page two of two</div>
+  </div>
 
-  <div class="sec"><span class="no">02</span><h2>What the new site does at each step</h2></div>
-  <p class="lede">The same seven steps, with the job the website is doing at each one.</p>
+  <h1>What the site and team<br>give him at each step</h1>
+  <p class="deck">The same seven steps, with the job the new website and your people
+     are doing at each one.</p>
+  <div class="keyline"></div>
 
-  <div class="journey">
-    <div class="step"><div class="rail"><div class="dot">01</div></div><div class="body">
-      <div class="cols"><p class="says"><strong>Need arises</strong></p>
-      <p class="gives"><b>The site</b>Looks like the established company you are, so yours is the name he remembers when the liner runs out.</p></div></div></div>
+  <div class="steps" style="margin-top:14px">
+    <div class="st"><div class="rail"><div class="dot">01</div></div><div class="bd">
+      <div class="hd"><h4>Need arises</h4></div>
+      <p class="d" style="margin-top:5px">Useful guides and posts that make Trenchless Distribution a name he already knows.</p>
+    </div></div>
 
-    <div class="step"><div class="rail"><div class="dot">02</div></div><div class="body">
-      <div class="cols"><p class="says"><strong>Search</strong></p>
-      <p class="gives"><b>The site</b>Every product sits on its own page with its real name, so when he searches that name Google shows you and not a competitor.</p></div></div></div>
+    <div class="st"><div class="rail"><div class="dot">02</div></div><div class="bd">
+      <div class="hd"><h4>Search</h4></div>
+      <p class="d" style="margin-top:5px">Search and AI search pages by product, brand and job. A Google profile that says distributor.</p>
+    </div></div>
 
-    <div class="step key"><div class="rail"><div class="dot">03</div></div><div class="body">
-      <div class="cols"><p class="says"><strong>Lands on your site</strong></p>
-      <p class="gives"><b>The site</b>Says "we supply contractors, we do not perform installations" three times before he scrolls. A pipe size picker answers "do you carry my size" in a single tap.</p></div></div></div>
+    <div class="st"><div class="rail"><div class="dot">03</div></div><div class="bd">
+      <div class="hd"><h4>Land</h4></div>
+      <p class="d" style="margin-top:5px">A hero that says we supply contractors. Shop by job. Phone number at the top.</p>
+    </div></div>
 
-    <div class="step"><div class="rail"><div class="dot">04</div></div><div class="body">
-      <div class="cols"><p class="says"><strong>Checks the details</strong></p>
-      <p class="gives"><b>The site</b>Spec sheets, safety data and manuals attached to the product they belong to, so a crew in a crawlspace can find the cure schedule on a phone.</p></div></div></div>
+    <div class="st"><div class="rail"><div class="dot">04</div></div><div class="bd">
+      <div class="hd"><h4>Evaluate</h4></div>
+      <p class="d" style="margin-top:5px">Product pages with specs, downloads, stock status and a Get Quote button.</p>
+    </div></div>
 
-    <div class="step"><div class="rail"><div class="dot">05</div></div><div class="body">
-      <div class="cols"><p class="says"><strong>Asks the price</strong></p>
-      <p class="gives"><b>The site</b>A short request asking only name, company and phone number, with your phone number on every single screen so he can skip the form entirely.</p></div></div></div>
+    <div class="st key"><div class="rail"><div class="dot">05</div></div><div class="bd">
+      <div class="hd"><h4>Quote and decide</h4><span class="tag">The moment he asks for a quote</span></div>
+      <p class="d" style="margin-top:5px">A four field quote form, click to call, a named specialist and a same day reply.</p>
+    </div></div>
 
-    <div class="step"><div class="rail"><div class="dot">06</div></div><div class="body">
-      <div class="cols"><p class="says"><strong>Orders and collects</strong></p>
-      <p class="gives"><b>The site</b>Clear pickup and freight information, and the structure to switch on online ordering later without paying to rebuild the site.</p></div></div></div>
+    <div class="st"><div class="rail"><div class="dot">06</div></div><div class="bd">
+      <div class="hd"><h4>Order and receive</h4></div>
+      <p class="d" style="margin-top:5px">Clear ship times, order tracking, will call pickup, financing for qualified buyers.</p>
+    </div></div>
 
-    <div class="step"><div class="rail"><div class="dot">07</div></div><div class="body">
-      <div class="cols"><p class="says"><strong>Comes back</strong></p>
-      <p class="gives"><b>The site</b>Training and demo dates, named support contacts, and a question box that answers the common ones outside office hours.</p></div></div></div>
+    <div class="st"><div class="rail"><div class="dot">07</div></div><div class="bd">
+      <div class="hd"><h4>Support and reorder</h4></div>
+      <p class="d" style="margin-top:5px">Tech support, repair help, a demo and training calendar, dealer login with a reorder list.</p>
+    </div></div>
   </div>
 
   <div class="call">
-    <span class="k">The one thing to take from this</span>
-    <h3>You are losing contractors at step three.</h3>
-    <p>Your current site reads as though you install pipe yourselves. A contractor who believes
-       you compete with him leaves before he ever reaches step four, and you never hear from him,
-       so it never shows up as a lost sale. Correcting that single impression is the largest
-       change in the new design, and it costs nothing to make.</p>
-  </div>
-
-  <div class="rfoot"><span>Ethixweb</span><span><b>03</b> / 04</span></div>
-</section>
-
-<!-- ================= WHAT WE NEED ================= -->
-<section class="page">
-  <div class="rhead"><span>Next steps</span><span>Trenchless Distribution</span></div>
-
-  <div class="sec"><span class="no">03</span><h2>Who we built this around</h2></div>
-
-  <div class="buyers">
-    <div class="buyer"><span class="n">Buyer one</span><h4>Mike</h4>
-      <p>Runs a small lining crew. Buys the same consumables most weeks.
-         Wants supply and support quickly, and will phone before he fills in anything.</p></div>
-    <div class="buyer"><span class="n">Buyer two</span><h4>Dave</h4>
-      <p>New to CIPP and building the division. Wants a clear place to start,
-         someone to spec the first system, and training he can send a crew to.</p></div>
-  </div>
-
-  <div class="sec" style="margin-top:34px"><span class="no">04</span><h2>What we need from you</h2></div>
-  <p class="lede">Four things, and we can move the homepage from concept to build.</p>
-
-  <div class="asks">
-    <div class="ask"><span class="i">01</span><div>
-      <h4>Tell us what you like, and what you do not</h4>
-      <p>Blunt is genuinely more useful than polite. Nothing on the page is final.</p></div></div>
-    <div class="ask"><span class="i">02</span><div>
-      <h4>Confirm your address and opening hours</h4>
-      <p>We have assumed Puyallup, Washington, Monday to Friday, 7:00 to 4:30 Pacific.</p></div></div>
-    <div class="ask"><span class="i">03</span><div>
-      <h4>Send your product list and spec sheets</h4>
-      <p>In whatever format you already keep them. The part numbers, stock levels and
-         prices on the page today are stand-ins.</p></div></div>
-    <div class="ask"><span class="i">04</span><div>
-      <h4>Confirm we can use the manufacturer logos</h4>
-      <p>Without written permission we will keep MaxLiner, Apex and the rest as plain text.</p></div></div>
+    <span class="k">Where we could lose him</span>
+    <h3>Step three, in about five seconds.</h3>
+    <p>He lands on the homepage and asks one question before any other: do these people
+       compete with me? The current site reads as though you install pipe yourselves.
+       The new homepage answers it three times before he scrolls, which is the single
+       largest change in the design and costs nothing to make.</p>
   </div>
 
   <div class="sign">
-    <div>
-      <span class="lbl">Any questions</span>
-      <p><strong>Amar Singh</strong><br>amar@ethixweb.com</p>
-    </div>
-    <div style="text-align:right">
-      <span class="lbl">Prepared by</span>
-      <img src="EX_LOGO" alt="Ethixweb">
-    </div>
+    <div><span class="l">Any questions</span><p><strong>Amar Singh</strong><br>amar@ethixweb.com</p></div>
+    <div style="text-align:right"><span class="l">Prepared by</span><img src="EX_LOGO" alt="Ethixweb"></div>
   </div>
 
-  <div class="rfoot"><span>Ethixweb</span><span><b>04</b> / 04</span></div>
+  <div class="rfoot"><span>Ethixweb</span><span><b>02</b> / 02</span></div>
 </section>
-
 </body></html>
