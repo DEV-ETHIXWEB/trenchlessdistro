@@ -110,6 +110,25 @@
     align-items: center;
   }
 
+  /*
+   * A legend is not an ordinary box. Browsers lift it out of the fieldset's
+   * padding box and sit it across the top border edge, which is why these
+   * labels printed straight through the 1px grid line between the spec
+   * finder's two panels instead of starting 24px below it. Floating the
+   * legend opts it out of that special placement and returns it to normal
+   * flow, inside the padding where every other label on the page sits.
+   * Width 100% so nothing can wrap up alongside it, and the next element
+   * clears the float it leaves behind.
+   */
+  legend {
+    float: left;
+    width: 100%;
+    padding: 0;
+  }
+  legend + * {
+    clear: both;
+  }
+
   input,
   select,
   textarea {
