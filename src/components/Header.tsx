@@ -1,28 +1,40 @@
 "use client";
 
+/*
+ * Hashes here are root relative ("/#quote", not "#quote"). The header, the
+ * footer and the search box render on every route, and a bare hash on
+ * /new-to-cipp pointed at an element that only exists on the homepage, so
+ * those links did nothing at all.
+ *
+ * It costs the homepage nothing: Interactions.tsx compares pathname before
+ * it takes over a click, so "/#quote" still gets the eased scroll there and
+ * becomes a real navigation back to the homepage anywhere else.
+ */
+
 import { useEffect, useState } from "react";
 import Image from "next/image";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import { Cross, Menu, Phone } from "./icons";
 import HeaderSearch from "./HeaderSearch";
+import Link from "next/link";
 
 const SHOP = [
-  { href: "#categories", label: "CIPP lining systems" },
-  { href: "#categories", label: "CIPP UV lining systems" },
-  { href: "#categories", label: "Robotics & milling" },
-  { href: "#categories", label: "CIPP materials" },
-  { href: "#categories", label: "CIPP patch repair" },
-  { href: "#categories", label: "Inspection cameras" },
-  { href: "#categories", label: "Accessories & parts" },
+  { href: "/#categories", label: "CIPP lining systems" },
+  { href: "/#categories", label: "CIPP UV lining systems" },
+  { href: "/#categories", label: "Robotics & milling" },
+  { href: "/#categories", label: "CIPP materials" },
+  { href: "/#categories", label: "CIPP patch repair" },
+  { href: "/#categories", label: "Inspection cameras" },
+  { href: "/#categories", label: "Accessories & parts" },
 ];
 
 const NAV = [
-  { href: "#most-searched", label: "Products" },
+  { href: "/#most-searched", label: "Products" },
   { href: "/new-to-cipp", label: "New to CIPP" },
-  { href: "#collections", label: "Collections" },
-  { href: "#support", label: "Training" },
-  { href: "#why-us", label: "About" },
-  { href: "#quote", label: "Contact" },
+  { href: "/#collections", label: "Collections" },
+  { href: "/#support", label: "Training" },
+  { href: "/#why-us", label: "About" },
+  { href: "/#quote", label: "Contact" },
 ];
 
 export default function Header() {
@@ -97,7 +109,7 @@ export default function Header() {
             stuck ? "py-1.5" : "py-3"
           }`}
         >
-          <a href="#main" aria-label="Trenchless Distribution home" className="shrink-0">
+          <Link href="/#main" aria-label="Trenchless Distribution home" className="shrink-0">
             <Image
               src="/brand/td-logo.webp"
               alt="Trenchless Distribution"
@@ -108,7 +120,7 @@ export default function Header() {
                 stuck ? "h-11 lg:h-12" : "h-13 lg:h-15"
               }`}
             />
-          </a>
+          </Link>
 
           <nav aria-label="Main" className="ml-auto hidden min-w-0 items-center gap-3 lg:flex xl:gap-6">
             {/* Search first in the bar: the fastest route for anyone who
@@ -171,12 +183,12 @@ export default function Header() {
               </a>
             ))}
 
-            <a
-              href="#quote"
+            <Link
+              href="/#quote"
               className="bg-cyan-dark px-4 py-2.5 text-[0.9375rem] font-semibold whitespace-nowrap text-white transition-colors hover:bg-cyan-deep xl:px-5"
             >
               Request a quote
-            </a>
+            </Link>
           </nav>
 
           <button
@@ -237,13 +249,13 @@ export default function Header() {
               </a>
             ))}
           </nav>
-          <a
-            href="#quote"
+          <Link
+            href="/#quote"
             onClick={() => setOpen(false)}
             className="mt-6 bg-cyan-dark px-5 py-4 text-center font-semibold text-white"
           >
             Request a quote
-          </a>
+          </Link>
         </motion.div>
         )}
       </AnimatePresence>

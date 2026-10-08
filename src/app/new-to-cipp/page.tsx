@@ -10,9 +10,14 @@ import Reveal from "@/components/Reveal";
 import { ArrowRight, Phone } from "@/components/icons";
 
 export const metadata: Metadata = {
-  title: "New to CIPP? Start Here | Trenchless Distribution",
+  /*
+   * No site name here. The layout declares a title template that appends
+   * "| Trenchless Distribution", so spelling it out produced it twice and
+   * pushed the tag to 75 characters.
+   */
+  title: "New to CIPP? Start Here",
   description:
-    "What cured-in-place pipe lining is, what it costs to start, and what a first job needs. A plain explainer for plumbing and drain companies considering trenchless work.",
+    "What cured-in-place pipe lining is, what it costs to start, and what a first job needs. A plain explainer for plumbing and drain companies.",
   alternates: { canonical: "/new-to-cipp" },
 };
 

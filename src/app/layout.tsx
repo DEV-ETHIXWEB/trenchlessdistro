@@ -50,8 +50,14 @@ export const metadata: Metadata = {
     default: "Trenchless Distribution | CIPP & No-Dig Pipe Lining Supplier",
     template: "%s | Trenchless Distribution",
   },
+  /*
+   * Kept to roughly 155 characters. Google cuts a description near 160 and
+   * the old one ran to 275, so the sentence that mattered most, that we
+   * supply contractors rather than compete with them, was the part being
+   * truncated away.
+   */
   description:
-    "Distributor of CIPP and no-dig pipe lining materials, equipment and training. Liners, resins, UV curing systems, robotic cutters and inspection cameras, backed by training, demos, technical support and equipment repair. We supply contractors. We do not perform installations.",
+    "CIPP and no-dig pipe lining supplies: liners, resin, UV curing, robotics and cameras, with training and repair. We supply contractors, we do not install.",
   applicationName: "Trenchless Distribution",
   authors: [{ name: "Trenchless Distribution", url: SITE }],
   creator: "Trenchless Distribution",

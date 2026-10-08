@@ -1,21 +1,22 @@
 import Image from "next/image";
 import { CATEGORIES, MANUFACTURERS } from "@/data/catalog";
 import EthixwebCredit from "./EthixwebCredit";
+import Link from "next/link";
 
 const COMPANY = [
-  { href: "#why-us", label: "About us" },
-  { href: "#support", label: "Training & demos" },
-  { href: "#support", label: "Technical support" },
-  { href: "#support", label: "Equipment repair" },
-  { href: "#events", label: "Events" },
-  { href: "#quote", label: "Contact" },
+  { href: "/#why-us", label: "About us" },
+  { href: "/#support", label: "Training & demos" },
+  { href: "/#support", label: "Technical support" },
+  { href: "/#support", label: "Equipment repair" },
+  { href: "/#events", label: "Events" },
+  { href: "/#quote", label: "Contact" },
 ];
 
 const ACCOUNT = [
-  { href: "#quote", label: "Request a quote" },
-  { href: "#quote", label: "Become a dealer" },
-  { href: "#quote", label: "Financing" },
-  { href: "#events", label: "Spec sheets & SDS" },
+  { href: "/#quote", label: "Request a quote" },
+  { href: "/#quote", label: "Become a dealer" },
+  { href: "/#quote", label: "Financing" },
+  { href: "/#events", label: "Spec sheets & SDS" },
 ];
 
 export default function Footer() {
@@ -67,9 +68,9 @@ export default function Footer() {
               <ul className="mt-4 space-y-2.5">
                 {CATEGORIES.map((c) => (
                   <li key={c.slug}>
-                    <a href="#categories" className="text-[0.9375rem] text-white/70 hover:text-white">
+                    <Link href="/#categories" className="text-[0.9375rem] text-white/70 hover:text-white">
                       {c.name}
-                    </a>
+                    </Link>
                   </li>
                 ))}
               </ul>

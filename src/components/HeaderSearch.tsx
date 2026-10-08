@@ -1,10 +1,22 @@
 "use client";
 
+/*
+ * Hashes here are root relative ("/#quote", not "#quote"). The header, the
+ * footer and the search box render on every route, and a bare hash on
+ * /new-to-cipp pointed at an element that only exists on the homepage, so
+ * those links did nothing at all.
+ *
+ * It costs the homepage nothing: Interactions.tsx compares pathname before
+ * it takes over a click, so "/#quote" still gets the eased scroll there and
+ * becomes a real navigation back to the homepage anywhere else.
+ */
+
 import { useEffect, useId, useRef, useState } from "react";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import { ITEMS } from "@/data/catalog";
 import { Search, StockDot } from "./icons";
 import { usePipeSize } from "./PipeSize";
+import Link from "next/link";
 
 /*
  * Catalog search at the top of the page.
@@ -87,9 +99,9 @@ export default function HeaderSearch({ onPick }: { onPick?: () => void }) {
 
   return (
     <div ref={wrapRef} className="relative">
-      <a ref={jumpRef} href="#spec-finder" className="sr-only" tabIndex={-1} aria-hidden>
+      <Link ref={jumpRef} href="/#spec-finder" className="sr-only" tabIndex={-1} aria-hidden>
         Go to the catalog
-      </a>
+      </Link>
       <form
         role="search"
         onSubmit={(e) => {
