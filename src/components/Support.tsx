@@ -13,7 +13,7 @@ export default function Support() {
           <Reveal>
             <p className="eyebrow text-cyan-dark">Training &amp; support</p>
             <h2 id="support-title" className="mt-3 text-[length:var(--text-h2)] text-ink">
-              Service reps that help you expand your business beyond just a purchase.
+              When a cutter dies at 6am, you call someone who has pulled liner.
             </h2>
             <p className="mt-4 text-lg text-body">
               Materials are the easy half. The training, the demo before the

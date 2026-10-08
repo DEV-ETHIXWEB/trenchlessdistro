@@ -37,6 +37,14 @@ export type Item = {
   uom: string;
   apps: Application[];
   stock: "In stock" | "Low stock" | "Built to order";
+  /*
+   * Indicative list price in USD, per the item's unit of measure. Schematic
+   * like every other number in this file, and the table says so in plain
+   * words underneath. Contractors sort by price before they sort by
+   * anything else, so the column has to exist for the layout to be
+   * reviewable at all.
+   */
+  price: string;
 };
 
 export const ITEMS: Item[] = [
@@ -49,6 +57,7 @@ export const ITEMS: Item[] = [
     maxD: 8,
     uom: "per ft",
     apps: ["lateral", "vertical"],
+    price: "12.40",
     stock: "In stock",
   },
   {
@@ -60,6 +69,7 @@ export const ITEMS: Item[] = [
     maxD: 6,
     uom: "per ft",
     apps: ["lateral", "vertical"],
+    price: "14.90",
     stock: "In stock",
   },
   {
@@ -71,6 +81,7 @@ export const ITEMS: Item[] = [
     maxD: 12,
     uom: "per ft",
     apps: ["mainline", "lateral"],
+    price: "18.60",
     stock: "In stock",
   },
   {
@@ -82,6 +93,7 @@ export const ITEMS: Item[] = [
     maxD: 8,
     uom: "each",
     apps: ["lateral", "mainline"],
+    price: "9,850",
     stock: "Low stock",
   },
   {
@@ -93,6 +105,7 @@ export const ITEMS: Item[] = [
     maxD: 12,
     uom: "each",
     apps: ["lateral", "mainline", "point-repair"],
+    price: "4,320",
     stock: "In stock",
   },
   {
@@ -104,6 +117,7 @@ export const ITEMS: Item[] = [
     maxD: 6,
     uom: "system",
     apps: ["lateral", "vertical"],
+    price: "38,500",
     stock: "Built to order",
   },
   {
@@ -115,6 +129,7 @@ export const ITEMS: Item[] = [
     maxD: 12,
     uom: "system",
     apps: ["mainline", "lateral"],
+    price: "44,900",
     stock: "Built to order",
   },
   {
@@ -126,6 +141,7 @@ export const ITEMS: Item[] = [
     maxD: 12,
     uom: "per pail",
     apps: ["lateral", "mainline", "vertical"],
+    price: "418",
     stock: "In stock",
   },
   {
@@ -137,6 +153,7 @@ export const ITEMS: Item[] = [
     maxD: 12,
     uom: "per pail",
     apps: ["lateral", "mainline", "point-repair", "vertical"],
+    price: "286",
     stock: "In stock",
   },
   {
@@ -148,6 +165,7 @@ export const ITEMS: Item[] = [
     maxD: 8,
     uom: "kit",
     apps: ["point-repair"],
+    price: "1,290",
     stock: "In stock",
   },
   {
@@ -159,6 +177,7 @@ export const ITEMS: Item[] = [
     maxD: 12,
     uom: "each",
     apps: ["point-repair"],
+    price: "2,140",
     stock: "In stock",
   },
   {
@@ -170,6 +189,7 @@ export const ITEMS: Item[] = [
     maxD: 4,
     uom: "each",
     apps: ["prep"],
+    price: "7,640",
     stock: "Low stock",
   },
   {
@@ -181,6 +201,7 @@ export const ITEMS: Item[] = [
     maxD: 8,
     uom: "each",
     apps: ["prep"],
+    price: "5,980",
     stock: "In stock",
   },
   {
@@ -192,6 +213,7 @@ export const ITEMS: Item[] = [
     maxD: 12,
     uom: "each",
     apps: ["prep"],
+    price: "11,400",
     stock: "Built to order",
   },
   {
@@ -203,6 +225,7 @@ export const ITEMS: Item[] = [
     maxD: 12,
     uom: "each",
     apps: ["prep"],
+    price: "268",
     stock: "In stock",
   },
   {
@@ -214,6 +237,7 @@ export const ITEMS: Item[] = [
     maxD: 12,
     uom: "per ft",
     apps: ["lateral", "mainline", "vertical"],
+    price: "3.10",
     stock: "In stock",
   },
   {
@@ -225,6 +249,7 @@ export const ITEMS: Item[] = [
     maxD: 8,
     uom: "each",
     apps: ["inspection"],
+    price: "6,450",
     stock: "In stock",
   },
   {
@@ -236,6 +261,7 @@ export const ITEMS: Item[] = [
     maxD: 12,
     uom: "each",
     apps: ["inspection"],
+    price: "9,120",
     stock: "Low stock",
   },
 ];
@@ -366,64 +392,86 @@ export const RESOURCES = [
  * Featured products, using Trenchless Distribution's own product photography.
  * Names and manufacturers are taken from their current site.
  */
-export const FEATURED = [
+/*
+ * The shelf, in display order. `code` joins each photograph to its catalog
+ * item so price and stock have exactly one home. Typed rather than inferred:
+ * a missing code should be a build error, not a card that quietly renders
+ * without a price.
+ */
+export const FEATURED: {
+  img: string;
+  name: string;
+  code: string;
+  maker: string;
+  spec: string;
+}[] = [
   {
     img: "/img/flexliner.webp",
     name: "Max FlexLiner™",
+    code: "ML-FLX",
     maker: "MaxLiner",
     spec: "2″–8″ · per ft · ambient cure",
   },
   {
     img: "/img/superflex.webp",
     name: "Max SuperFlex™",
+    code: "ML-SFX",
     maker: "MaxLiner",
     spec: "2″–6″ · per ft · multi-bend",
   },
   {
     img: "/img/scrim.webp",
     name: "LinerTube Reinforced™ (SCRIM)",
+    code: "ML-SCR",
     maker: "MaxLiner",
     spec: "4″–12″ · per ft · steam cure",
   },
   {
     img: "/img/linerdrum.webp",
     name: "MAX LinerDrum™ inversion system",
+    code: "ML-DRM",
     maker: "MaxLiner",
     spec: "2″–8″ · each · cart mounted",
   },
   {
     img: "/img/maxpox.webp",
     name: "MaxPox™ resin A + B",
+    code: "RS-EPX",
     maker: "MaxLiner",
     spec: "All sizes · per pail · two-part epoxy",
   },
   {
     img: "/img/maxlight-plus.webp",
     name: "MaxLight™ Plus resin",
+    code: "RS-UVP",
     maker: "MaxLiner",
     spec: "All sizes · per pail · UV cure",
   },
   {
     img: "/img/maxlight-uv.webp",
     name: "MaxLight UV resin systems",
+    code: "RS-UVP",
     maker: "MaxLiner",
     spec: "2″–12″ · system · UV LED",
   },
   {
     img: "/img/maxicure.webp",
     name: "IMS MAXICure LED package",
+    code: "IMS-MXC",
     maker: "IMS",
     spec: "4″–12″ · system · LED cure train",
   },
   {
     img: "/img/brawo-pico.webp",
     name: "BRAWO® Pico SX",
+    code: "BR-PCO",
     maker: "Brawo Systems",
     spec: "2″–6″ · system · UV lateral",
   },
   {
     img: "/img/point-repair-kit.webp",
     name: "Point repair & pipe patch kit",
+    code: "PR-KIT",
     maker: "Apex CIPP",
     spec: "2″–8″ · kit · ambient & UV",
   },
@@ -467,27 +515,38 @@ export const COLLECTIONS = [
   },
 ];
 
-/** Their "Why Choose Trenchless Distribution" block. */
+/*
+ * Their "Why Choose Trenchless Distribution" block, cut to the bone. The
+ * first pass was five paragraphs of prose, which read as a template nobody
+ * finishes. Each one is now a claim and a single line of evidence, carried
+ * by an icon, so the row can be scanned in the time someone actually gives
+ * it. `icon` names an export from components/icons.
+ */
 export const WHY_US = [
   {
-    title: "Proven technology",
-    body: "Tested and vetted to work as hard as you do. These principles have driven us to gain long-standing trust among industry veterans.",
+    icon: "Badge",
+    title: "Proven on real pipe",
+    body: "Every line we carry is run on real pipe before it reaches your truck.",
   },
   {
-    title: "Premium installers",
-    body: "Service reps that will help you expand your business beyond just a purchase.",
+    icon: "HardHat",
+    title: "Installers, not order takers",
+    body: "Your rep has pulled liner. Ask them a cure question and get an answer.",
   },
   {
-    title: "Quality and value",
-    body: "Equipment and materials specced to run together, priced for contractors who buy them every month, not once.",
+    icon: "Tag",
+    title: "Priced for monthly buyers",
+    body: "Specced to run together and priced for crews who reorder, not once.",
   },
   {
-    title: "Next generation industry",
-    body: "UV curing, LED trains and robotics, brought in and supported as the work moves on from ambient cure alone.",
+    icon: "UvCure",
+    title: "UV and robotics, supported",
+    body: "The new gear, with the training and the bench that keep it running.",
   },
   {
-    title: "Customer service",
-    body: "Our staff has years of experience. We can help you build your CIPP division and help you create the most profitable position for your company.",
+    icon: "Handshake",
+    title: "We never bid your work",
+    body: "We sell to contractors only, so we are never across the table.",
   },
 ];
 

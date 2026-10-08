@@ -1,7 +1,10 @@
 import Image from "next/image";
 import { WHY_US } from "@/data/catalog";
-import { Check, Cross } from "./icons";
+import { Badge, Check, Cross, HardHat, Handshake, Tag, UvCure } from "./icons";
 import Reveal from "./Reveal";
+
+/* WHY_US names its icon as a string so the data file stays free of JSX. */
+const GLYPH = { Badge, HardHat, Tag, UvCure, Handshake } as const;
 
 const DOES = [
   "Stock and ship materials, equipment and consumables",
@@ -24,22 +27,23 @@ export default function WhyUs() {
         <Reveal>
           <p className="eyebrow text-cyan-dark">Why choose us</p>
           <h2 id="why-us-title" className="mt-3 max-w-2xl text-[length:var(--text-h2)] text-ink">
-            Why contractors buy from Trenchless Distribution.
+            Five reasons crews reorder instead of shopping around.
           </h2>
         </Reveal>
 
         <ul className="mt-10 grid gap-px border border-line bg-line sm:grid-cols-2 lg:grid-cols-5">
-          {WHY_US.map((item, i) => (
-            <Reveal as="li" key={item.title} delay={i * 0.05} className="bg-white">
-              <div className="h-full p-5">
-                <p className="datum font-head text-2xl font-bold text-cyan-dark">
-                  {String(i + 1).padStart(2, "0")}
-                </p>
-                <h3 className="mt-3 text-[length:var(--text-h3)] text-ink">{item.title}</h3>
-                <p className="mt-2 text-[0.9375rem] leading-relaxed text-body">{item.body}</p>
-              </div>
-            </Reveal>
-          ))}
+          {WHY_US.map((item, i) => {
+            const Glyph = GLYPH[item.icon as keyof typeof GLYPH];
+            return (
+              <Reveal as="li" key={item.title} delay={i * 0.05} className="bg-white">
+                <div className="group h-full p-5">
+                  <Glyph className="glyph size-8" aria-hidden />
+                  <h3 className="mt-4 text-[length:var(--text-h3)] text-ink">{item.title}</h3>
+                  <p className="mt-2 text-[0.9375rem] leading-relaxed text-body">{item.body}</p>
+                </div>
+              </Reveal>
+            );
+          })}
         </ul>
 
         {/* The positioning correction, stated plainly. */}

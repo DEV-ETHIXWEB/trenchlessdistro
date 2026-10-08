@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import Image from "next/image";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import { Cross, Menu, Phone } from "./icons";
+import HeaderSearch from "./HeaderSearch";
 
 const SHOP = [
   { href: "#categories", label: "CIPP lining systems" },
@@ -17,9 +18,10 @@ const SHOP = [
 
 const NAV = [
   { href: "#most-searched", label: "Products" },
+  { href: "/new-to-cipp", label: "New to CIPP" },
   { href: "#collections", label: "Collections" },
-  { href: "#support", label: "Training & support" },
-  { href: "#why-us", label: "About us" },
+  { href: "#support", label: "Training" },
+  { href: "#why-us", label: "About" },
   { href: "#quote", label: "Contact" },
 ];
 
@@ -108,7 +110,16 @@ export default function Header() {
             />
           </a>
 
-          <nav aria-label="Main" className="ml-auto hidden items-center gap-6 lg:flex">
+          <nav aria-label="Main" className="ml-auto hidden min-w-0 items-center gap-3 lg:flex xl:gap-6">
+            {/* Search first in the bar: the fastest route for anyone who
+                already knows the part they came for. It is the one item here
+                that can afford to give up width, so it shrinks between lg and
+                xl where the nav, the CTA and the logo together leave least
+                room. */}
+            <div className="w-32 shrink xl:w-60">
+              <HeaderSearch />
+            </div>
+
             <div
               className="relative"
               onMouseEnter={() => setShopOpen(true)}
@@ -118,7 +129,7 @@ export default function Header() {
                 type="button"
                 aria-expanded={shopOpen}
                 onClick={() => setShopOpen((v) => !v)}
-                className="flex items-center gap-1.5 py-2 text-[0.9375rem] font-semibold text-ink hover:text-cyan-dark"
+                className="flex items-center gap-1.5 py-2 text-[0.9375rem] font-semibold whitespace-nowrap text-ink hover:text-cyan-dark"
               >
                 Shop
                 <svg viewBox="0 0 10 6" className="size-2.5" aria-hidden>
@@ -154,7 +165,7 @@ export default function Header() {
               <a
                 key={item.label}
                 href={item.href}
-                className="py-2 text-[0.9375rem] font-semibold text-ink hover:text-cyan-dark"
+                className="py-2 text-[0.9375rem] font-semibold whitespace-nowrap text-ink hover:text-cyan-dark"
               >
                 {item.label}
               </a>
@@ -162,7 +173,7 @@ export default function Header() {
 
             <a
               href="#quote"
-              className="bg-cyan-dark px-5 py-2.5 text-[0.9375rem] font-semibold text-white transition-colors hover:bg-cyan-deep"
+              className="bg-cyan-dark px-4 py-2.5 text-[0.9375rem] font-semibold whitespace-nowrap text-white transition-colors hover:bg-cyan-deep xl:px-5"
             >
               Request a quote
             </a>
@@ -199,6 +210,9 @@ export default function Header() {
             <button type="button" onClick={() => setOpen(false)} aria-label="Close menu">
               <Cross className="size-7 text-ink" />
             </button>
+          </div>
+          <div className="mt-5">
+            <HeaderSearch onPick={() => setOpen(false)} />
           </div>
           <nav aria-label="Main" className="mt-6 flex flex-col">
             <p className="eyebrow border-b border-line py-3 text-body">Shop</p>

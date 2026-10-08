@@ -43,7 +43,7 @@ export default function VideoBand() {
             id="stocked-title"
             className="mt-4 text-[length:var(--text-h2)] text-white"
           >
-            A catalog is only worth the shelf behind it.
+            Your crew is booked Monday. The liner leaves here today.
           </h2>
           <p className="mt-5 text-lg leading-relaxed text-white/80">
             Lining work does not wait for a back-order. We hold the liner,

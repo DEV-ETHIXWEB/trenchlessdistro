@@ -29,7 +29,7 @@ export default function Categories() {
           <div>
             <p className="eyebrow text-cyan-dark">Shop by category</p>
             <h2 id="categories-title" className="mt-3 text-[length:var(--text-h2)] text-ink">
-              Seven lines, organized the way you order.
+              Find your line the way you order it, not the way we file it.
             </h2>
           </div>
           <a

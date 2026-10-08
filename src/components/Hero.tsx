@@ -40,14 +40,14 @@ export default function Hero() {
             id="hero-title"
             className="mt-5 text-[clamp(2.25rem,5vw,3.9rem)] leading-[1.06] text-white"
           >
-            No-dig pipe lining technology,{" "}
-            <span className="text-cyan">stocked</span> and{" "}
-            <span className="text-cyan">supported</span>.
+            Fix the pipe without{" "}
+            <span className="text-cyan">digging up</span> the job.
           </h1>
 
           <p className="mt-6 max-w-xl text-[1.0625rem] leading-relaxed text-white/80 lg:text-lg">
-            Liners, resins, UV curing, robotics and cameras, plus the training,
-            demos and equipment service that keep them running.
+            Liners, resin, UV curing, robotics and cameras, on the shelf in
+            Puyallup with the training and the repair bench behind them. Quote
+            the same day, shipped nationwide.
           </p>
 
           {/* The correction, in the place a visitor cannot scroll past. */}

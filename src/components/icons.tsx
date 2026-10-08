@@ -247,3 +247,36 @@ export const Pause = (p: IconProps) => (
     <path d="M9 5.5v13M15 5.5v13" strokeWidth="2.4" />
   </Icon>
 );
+
+/** Catalog search. */
+export const Search = (p: IconProps) => (
+  <Icon {...p}>
+    <circle cx="10.5" cy="10.5" r="6.75" />
+    <path d="m15.4 15.4 4.85 4.85" />
+  </Icon>
+);
+
+/** A price tag: what a thing costs, per foot or per pail. */
+export const Tag = (p: IconProps) => (
+  <Icon {...p}>
+    <path d="M3.8 12.6V4.4a.6.6 0 0 1 .6-.6h8.2a.6.6 0 0 1 .42.17l7 7a.6.6 0 0 1 0 .85l-8.2 8.2a.6.6 0 0 1-.85 0l-7-7a.6.6 0 0 1-.17-.42Z" />
+    <circle cx="8.1" cy="8.1" r="1.5" />
+  </Icon>
+);
+
+/** A badge: tested, vetted, proven. */
+export const Badge = (p: IconProps) => (
+  <Icon {...p}>
+    <path d="M12 2.8l2.6 1.9 3.2-.2.9 3.1 2.5 2-1.5 2.9 1.5 2.9-2.5 2-.9 3.1-3.2-.2L12 21.2l-2.6-1.9-3.2.2-.9-3.1-2.5-2L4.3 11.5 2.8 8.6l2.5-2 .9-3.1 3.2.2z" />
+    <path d="m8.9 12 2.1 2.1 4.1-4.2" />
+  </Icon>
+);
+
+/** A hand offering a box: service that comes with the purchase. */
+export const Handshake = (p: IconProps) => (
+  <Icon {...p}>
+    <path d="M2.8 9.3h3.4v7.3H2.8zM17.8 9.3h3.4v7.3h-3.4z" />
+    <path d="M6.2 10.4h2.3l2.1-1.5a1.6 1.6 0 0 1 1.9 0l2 1.5h3.3" />
+    <path d="M17.8 15.2h-2.3l-2.1 1.6a1.6 1.6 0 0 1-1.9 0L9.4 15.2H6.2" />
+  </Icon>
+);

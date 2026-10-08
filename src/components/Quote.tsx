@@ -3,7 +3,8 @@
 import { useState } from "react";
 import Image from "next/image";
 import { ArrowRight, Check, Mail, Phone } from "./icons";
-import { DIAMETERS } from "@/data/catalog";
+import { APPLICATIONS, DIAMETERS } from "@/data/catalog";
+import { usePipeSize } from "./PipeSize";
 
 const NEEDS = [
   "Liners & resin",
@@ -15,12 +16,59 @@ const NEEDS = [
   "Equipment repair",
 ];
 
+/*
+ * Which need each application in the finder implies. Someone who filtered to
+ * point repair upstairs has already said what they are after; ticking it for
+ * them is the difference between a form that remembers and a form that makes
+ * you repeat yourself.
+ */
+const NEED_FOR_APP: Record<string, string> = {
+  lateral: "Liners & resin",
+  mainline: "Liners & resin",
+  "point-repair": "Point repair",
+  vertical: "Liners & resin",
+  prep: "Robotics & milling",
+  inspection: "Inspection cameras",
+};
+
 export default function Quote() {
-  const [needs, setNeeds] = useState<string[]>([]);
+  /*
+   * The hero asked for the pipe size and the finder asked for the job. This
+   * form starts with both answers already filled in, and says so, so nobody
+   * wonders whether it took. `touched` keeps that promise honest: if the
+   * visitor never picked anything, there is nothing to carry and we do not
+   * claim otherwise.
+   */
+  const { diameter, application, touched } = usePipeSize();
+  const carried = NEED_FOR_APP[application];
+  const [needs, setNeeds] = useState<string[]>(touched ? [carried] : []);
+  const [sizes, setSizes] = useState<number[]>(touched ? [diameter] : []);
   const [sent, setSent] = useState(false);
+  const job = APPLICATIONS.find((a) => a.id === application)!;
+
+  /*
+   * This form is mounted from the first paint, long before the visitor
+   * touches the picker upstairs, so seeding the two selections at mount is
+   * the one thing that cannot work: by the time they choose 8" point repair
+   * this component has been holding an empty array for a minute.
+   *
+   * React's documented way to follow a value that changes during the life of
+   * a component is to compare it against the last one during render and
+   * adjust. It costs one extra render pass and no effect, and it keeps the
+   * chips honest: whatever the banner says it carried over is what is ticked.
+   */
+  const [lastJob, setLastJob] = useState({ diameter, application });
+  if (lastJob.diameter !== diameter || lastJob.application !== application) {
+    setLastJob({ diameter, application });
+    setSizes(touched ? [diameter] : []);
+    setNeeds(touched ? [carried] : []);
+  }
 
   const toggle = (n: string) =>
     setNeeds((p) => (p.includes(n) ? p.filter((x) => x !== n) : [...p, n]));
+
+  const toggleSize = (d: number) =>
+    setSizes((p) => (p.includes(d) ? p.filter((x) => x !== d) : [...p, d]));
 
   return (
     <section id="quote" aria-labelledby="quote-title" className="relative isolate bg-ink">
@@ -38,7 +86,7 @@ export default function Quote() {
           <div>
             <p className="eyebrow text-cyan">Request a quote</p>
             <h2 id="quote-title" className="mt-3 text-[length:var(--text-h2)] text-white">
-              Tell us the pipe. We will tell you the price.
+              Tell us the pipe. We quote it the same business day.
             </h2>
             <p className="mt-4 text-lg text-white/75">
               Quotes go out the same business day. If you would rather talk it
@@ -93,6 +141,19 @@ export default function Quote() {
                 <Field label="Email" name="email" type="email" autoComplete="email" />
               </div>
 
+              {touched && (
+                <p className="mt-6 flex flex-wrap items-center gap-x-2 gap-y-1 border-l-2 border-cyan-dark bg-light px-4 py-3 text-[0.9375rem] text-ink">
+                  <Check className="size-4 shrink-0 text-cyan-dark" aria-hidden />
+                  <span>
+                    Carried over from your search:{" "}
+                    <strong className="font-semibold">
+                      {diameter}&#8243; {job.label.toLowerCase()}
+                    </strong>
+                    . Change anything below if it is wrong.
+                  </span>
+                </p>
+              )}
+
               <fieldset className="mt-7">
                 <legend className="eyebrow text-body">Host pipe diameter</legend>
                 <div className="mt-3 flex flex-wrap gap-2">
@@ -101,7 +162,14 @@ export default function Quote() {
                       key={d}
                       className="datum cursor-pointer border border-line px-3.5 py-2.5 text-[0.9375rem] font-semibold text-ink transition-colors has-checked:border-cyan-dark has-checked:bg-cyan-dark has-checked:text-white hover:border-cyan-dark"
                     >
-                      <input type="checkbox" name="diameter" value={d} className="sr-only" />
+                      <input
+                        type="checkbox"
+                        name="diameter"
+                        value={d}
+                        checked={sizes.includes(d)}
+                        onChange={() => toggleSize(d)}
+                        className="sr-only"
+                      />
                       {d}&#8243;
                     </label>
                   ))}

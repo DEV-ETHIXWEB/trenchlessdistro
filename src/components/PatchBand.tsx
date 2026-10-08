@@ -5,7 +5,7 @@ import Reveal from "./Reveal";
 
 export default function PatchBand() {
   return (
-    <section aria-labelledby="patch-title" className="border-b border-line bg-white">
+    <section id="patch" aria-labelledby="patch-title" className="border-b border-line bg-white">
       <div className="mx-auto grid max-w-[80rem] items-stretch gap-0 lg:grid-cols-2">
         <Reveal className="order-2 flex items-center px-4 py-12 lg:order-1 lg:px-6 lg:py-20">
           <div className="max-w-lg">

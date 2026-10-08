@@ -12,7 +12,7 @@ export default function EventsDocs() {
             <Reveal>
               <p className="eyebrow text-cyan-dark">Demos, training &amp; events</p>
               <h2 id="events-title" className="mt-3 text-[length:var(--text-h2)] text-ink">
-                Coming up at Trenchless Distribution.
+                Get your crew certified before the next job lands.
               </h2>
             </Reveal>
 
@@ -49,7 +49,7 @@ export default function EventsDocs() {
             <Reveal className="mt-10">
               <p className="eyebrow text-cyan-dark">Technical library</p>
               <h3 className="mt-3 text-[length:var(--text-h3)] text-ink">
-                Every document, attached to its product.
+                Find the cure schedule from a crawlspace, on a phone.
               </h3>
               <p className="mt-2 max-w-xl text-[0.9375rem] text-body">
                 Spec sheets, SDS and TDS, manuals and install videos sit on the

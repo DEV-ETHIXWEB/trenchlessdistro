@@ -14,7 +14,7 @@ export default function Collections() {
         <Reveal>
           <p className="eyebrow text-cyan-dark">Collections</p>
           <h2 id="collections-title" className="mt-3 max-w-2xl text-[length:var(--text-h2)] text-ink">
-            We are a full service supplier.
+            Everything one job needs, from one order.
           </h2>
           <p className="mt-4 max-w-2xl text-lg text-body">
             Our staff has years of experience. We can help you build your CIPP

@@ -57,7 +57,7 @@ export default function Gallery() {
             id="gallery-title"
             className="mt-3 text-[length:var(--text-h2)] text-ink"
           >
-            Ambient, steam and UV, all off one shelf.
+            Whichever cure the job calls for, it ships off one shelf.
           </h2>
           <p className="mt-4 text-lg text-body">
             Three cure methods, seven product lines and the consumables that go
