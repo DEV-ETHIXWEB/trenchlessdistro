@@ -90,8 +90,10 @@ export default function Hero() {
       </p>
 
       {/* The chips are positioned against this box, not the section, so the
-          stats band below can change height without moving them. */}
-      <div className="relative">
+          stats band below can change height without moving them. It lets
+          clicks through, so the video's pause button underneath still
+          works; the copy opts back in with pointer-events-auto. */}
+      <div className="pointer-events-none relative">
       <div className="pointer-events-none mx-auto grid max-w-[88rem] px-4 pt-[4.25rem] pb-20 sm:px-6 lg:min-h-[34rem] lg:grid-cols-[minmax(0,34rem)_1fr] lg:items-center lg:px-8 lg:pt-16 lg:pb-16 xl:min-h-[38rem]">
         <div className="hero-copy pointer-events-auto">
           {/* The house mark, not a badge: the pipe in cross section that
