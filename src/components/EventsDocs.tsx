@@ -1,128 +1,92 @@
-import Image from "next/image";
 import { EVENTS, RESOURCES } from "@/data/catalog";
 import { ArrowRight, Download, Pin } from "./icons";
 import Reveal from "./Reveal";
 
+/*
+ * Training dates and the document library, in one short band. Three dated
+ * cards a crew lead can act on, and four counts that prove the paperwork
+ * exists, with nothing in between to scroll past.
+ */
 export default function EventsDocs() {
   return (
-    <section id="events" aria-labelledby="events-title" className="border-b border-line bg-light">
-      <div className="mx-auto max-w-[80rem] px-4 py-14 lg:px-6 lg:py-20">
-        <div className="grid gap-10 lg:grid-cols-[minmax(0,1fr)_minmax(0,21rem)] lg:gap-14">
-          <div>
-            <Reveal>
-              <p className="eyebrow text-cyan-dark">Demos, training &amp; events</p>
-              <h2 id="events-title" className="mt-3 text-[length:var(--text-h2)] text-ink">
-                Get your crew certified before the next job lands.
-              </h2>
-            </Reveal>
-
-            <ul className="mt-8 border-t border-line">
-              {EVENTS.map((event, i) => (
-                <Reveal as="li" key={event.date} delay={i * 0.06}>
-                  <a
-                    href="#quote"
-                    className="group grid grid-cols-[4rem_minmax(0,1fr)] items-start gap-x-5 gap-y-2 border-b border-line py-5 transition-colors hover:bg-white sm:grid-cols-[4.5rem_minmax(0,1fr)_11rem] sm:items-center"
-                  >
-                    <time
-                      dateTime={event.date}
-                      className="flex flex-col items-center border border-line bg-white py-2 transition-colors group-hover:border-cyan-dark group-hover:bg-cyan-dark group-hover:text-white"
-                    >
-                      <span className="datum font-head text-xl leading-none font-bold">{event.day}</span>
-                      <span className="eyebrow mt-1 text-[0.625rem]">{event.month}</span>
-                    </time>
-                    <div>
-                      <p className="eyebrow text-cyan-dark">{event.kind}</p>
-                      <h3 className="mt-1.5 text-[length:var(--text-h3)] text-ink">{event.title}</h3>
-                      <p className="mt-1.5 flex items-center gap-1.5 text-[0.9375rem] text-body">
-                        <Pin className="size-4 shrink-0" aria-hidden />
-                        {event.where}
-                      </p>
-                    </div>
-                    <p className="col-start-2 text-[0.9375rem] font-semibold text-body sm:col-start-auto sm:text-right">
-                      {event.seats}
-                    </p>
-                  </a>
-                </Reveal>
-              ))}
-            </ul>
-
-            <Reveal className="mt-10">
-              <p className="eyebrow text-cyan-dark">Technical library</p>
-              <h3 className="mt-3 text-[length:var(--text-h3)] text-ink">
-                Find the cure schedule from a crawlspace, on a phone.
-              </h3>
-              <p className="mt-2 max-w-xl text-[0.9375rem] text-body">
-                Spec sheets, SDS and TDS, manuals and install videos sit on the
-                product page they belong to, so a crew in a crawlspace can find
-                the cure schedule on a phone.
-              </p>
-              <ul className="mt-5 grid grid-cols-2 gap-px border border-line bg-line sm:grid-cols-4">
-                {RESOURCES.map((res) => (
-                  <li key={res.label}>
-                    <a
-                      href="#quote"
-                      className="group flex h-full flex-col justify-between gap-4 bg-white p-4 transition-colors hover:bg-cyan-dark"
-                    >
-                      <Download className="size-5 text-body transition-colors group-hover:text-white" aria-hidden />
-                      <span>
-                        <span className="datum block font-head text-xl font-bold text-ink transition-colors group-hover:text-white">
-                          {res.count}
-                        </span>
-                        <span className="mt-0.5 block text-[0.9375rem] font-semibold text-ink transition-colors group-hover:text-white">
-                          {res.label}
-                        </span>
-                      </span>
-                    </a>
-                  </li>
-                ))}
-              </ul>
-            </Reveal>
+    <section id="events" aria-labelledby="events-title" className="bg-mist">
+      <div className="mx-auto max-w-[88rem] px-4 py-12 sm:px-6 lg:px-8 lg:py-20">
+        <Reveal className="flex flex-wrap items-end justify-between gap-x-8 gap-y-3">
+          <div className="max-w-2xl">
+            <p className="eyebrow text-cyan-dark">Demos, training &amp; events</p>
+            <h2 id="events-title" className="mt-2.5 text-[length:var(--text-h2)] text-ink">
+              Get your crew certified before the next job lands.
+            </h2>
           </div>
+          <a href="#quote" className="group gap-2 font-semibold text-cyan-dark hover:text-cyan-deep">
+            Reserve seats
+            <ArrowRight className="size-4 transition-transform group-hover:translate-x-1" aria-hidden />
+          </a>
+        </Reveal>
 
-          <Reveal delay={0.1}>
-            <div className="border border-line bg-white">
-              <div className="relative aspect-16/9 w-full overflow-hidden">
-                <Image
-                  src="/img/video-cover.webp"
-                  alt="Trenchless Distribution brand plate set against a wall of pipe fittings"
-                  fill
-                  sizes="(min-width: 1024px) 21rem, 100vw"
-                  className="object-cover"
-                />
-              </div>
-              <div className="p-5">
-                <h3 className="text-[length:var(--text-h3)] text-ink">
-                  Bringing a crew? Tell us first.
-                </h3>
-                <p className="mt-2.5 text-[0.9375rem] leading-relaxed text-body">
-                  Training runs on real pipe and seats are limited. Tell us your
-                  headcount and what you run, and we will set the bench up for it.
-                </p>
+        <ul className="mt-8 grid gap-3 sm:gap-4 md:grid-cols-3 lg:gap-5">
+          {EVENTS.map((event, i) => (
+            <Reveal as="li" key={event.date} delay={i * 0.06}>
+              <a
+                href="#quote"
+                className="group flex h-full flex-col rounded-2xl border border-line bg-white p-5 transition-[box-shadow,transform,border-color] duration-500 ease-glide hover:-translate-y-1 hover:border-transparent hover:shadow-[var(--shadow-lift)] lg:p-6"
+              >
+                <span className="flex items-start justify-between gap-4">
+                  <time
+                    dateTime={event.date}
+                    className="flex size-16 shrink-0 flex-col items-center justify-center rounded-2xl bg-mist transition-colors duration-300 group-hover:bg-cyan-dark group-hover:text-white"
+                  >
+                    <span className="datum font-head text-2xl leading-none font-extrabold">{event.day}</span>
+                    <span className="eyebrow mt-1 text-[0.625rem]">{event.month}</span>
+                  </time>
+                  <span className="rounded-full bg-cyan-dark/10 px-2.5 py-1 text-[0.75rem] font-semibold text-cyan-dark">
+                    {event.seats}
+                  </span>
+                </span>
+                <span className="mt-5 block text-[0.8125rem] font-semibold tracking-wide text-body uppercase">
+                  {event.kind}
+                </span>
+                <span className="mt-1.5 block font-head text-[1.0625rem] leading-snug font-bold text-ink">
+                  {event.title}
+                </span>
+                <span className="mt-auto flex items-center gap-1.5 pt-4 text-[0.8125rem] text-body">
+                  <Pin className="size-4 shrink-0" aria-hidden />
+                  {event.where}
+                </span>
+              </a>
+            </Reveal>
+          ))}
+        </ul>
+
+        <Reveal className="mt-4 grid gap-4 rounded-2xl border border-line bg-white p-4 sm:mt-5 lg:grid-cols-[minmax(0,20rem)_minmax(0,1fr)] lg:items-center lg:gap-8 lg:p-6">
+          <div>
+            <h3 className="text-[length:var(--text-h3)] text-ink">Technical library</h3>
+            <p className="mt-1.5 text-[0.9375rem] text-body">
+              Spec sheets, SDS, manuals and install videos, on the product page
+              they belong to.
+            </p>
+          </div>
+          <ul className="grid grid-cols-2 gap-2 sm:grid-cols-4">
+            {RESOURCES.map((res) => (
+              <li key={res.label}>
                 <a
                   href="#quote"
-                  className="group mt-4 inline-flex items-center gap-2 font-semibold text-cyan-dark hover:text-ink"
+                  className="group h-full w-full justify-between gap-3 rounded-xl bg-mist px-4 py-3 transition-colors hover:bg-cyan-dark"
                 >
-                  Reserve seats
-                  <ArrowRight className="size-4 transition-transform group-hover:translate-x-1" aria-hidden />
+                  <span className="flex flex-col">
+                    <span className="datum font-head text-xl font-extrabold text-ink transition-colors group-hover:text-white">
+                      {res.count}
+                    </span>
+                    <span className="text-[0.8125rem] font-semibold text-body transition-colors group-hover:text-white">
+                      {res.label}
+                    </span>
+                  </span>
+                  <Download className="size-5 shrink-0 text-body transition-colors group-hover:text-white" aria-hidden />
                 </a>
-              </div>
-            </div>
-            <figure className="mt-6 border border-line bg-white">
-              <div className="relative aspect-4/3 w-full overflow-hidden">
-                <Image
-                  src="/img/liner-detail.webp"
-                  alt="A point repair packer with a stainless nose cone, wrapped and strapped ready to run"
-                  fill
-                  sizes="(min-width: 1024px) 21rem, 100vw"
-                  className="object-cover"
-                />
-              </div>
-              <figcaption className="p-4 text-[0.8125rem] text-body">
-                Point repair packer, made up and ready for the truck.
-              </figcaption>
-            </figure>
-          </Reveal>
-        </div>
+              </li>
+            ))}
+          </ul>
+        </Reveal>
       </div>
     </section>
   );

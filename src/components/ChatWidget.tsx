@@ -193,7 +193,7 @@ export default function ChatWidget() {
          * the two launchers read as a pair and neither one covers the card
          * behind it. The label comes back from sm up, where there is room.
          */
-        className={`hidden lg:inline-flex fixed right-4 bottom-4 z-70 gap-2.5 border-2 border-white bg-cyan-dark px-3 py-3 font-semibold text-white shadow-lg transition-colors hover:bg-cyan-deep sm:right-6 sm:bottom-6 sm:px-5 sm:py-3.5 ${
+        className={`hidden lg:inline-flex fixed right-4 bottom-4 z-70 gap-2.5 rounded-full bg-cyan-dark py-2.5 pr-5 pl-4 text-[0.9375rem] font-semibold text-white shadow-[0_14px_30px_-12px_rgba(27,116,137,0.8)] ring-1 ring-white/20 transition-colors hover:bg-cyan-deep sm:right-6 sm:bottom-6 ${
           open ? "max-sm:hidden" : ""
         }`}
       >
@@ -227,7 +227,7 @@ export default function ChatWidget() {
            * value does not. From sm up it goes back to a card parked above
            * the launcher.
            */
-          className="fixed inset-0 z-70 flex flex-col bg-white shadow-2xl sm:inset-auto sm:right-6 sm:bottom-24 sm:h-[min(80svh,40rem)] sm:w-[25rem] sm:border sm:border-line"
+          className="fixed inset-0 z-70 flex flex-col overflow-hidden bg-white shadow-2xl sm:inset-auto sm:right-6 sm:bottom-24 sm:h-[min(80svh,40rem)] sm:w-[25rem] sm:rounded-3xl sm:border sm:border-line"
         >
           <div className="flex items-center justify-between gap-3 bg-cyan-dark px-4 py-3 pt-[max(0.75rem,env(safe-area-inset-top))] text-white sm:pt-3">
             <div>
@@ -257,8 +257,8 @@ export default function ChatWidget() {
                   <div
                     className={
                       m.from === "you"
-                        ? "ml-auto w-fit max-w-[85%] bg-cyan-dark px-3.5 py-2.5 text-white"
-                        : "w-fit max-w-[92%] border border-line bg-white px-3.5 py-2.5 text-ink"
+                        ? "ml-auto w-fit max-w-[85%] rounded-2xl rounded-br-md bg-cyan-dark px-3.5 py-2.5 text-white"
+                        : "w-fit max-w-[92%] rounded-2xl rounded-bl-md border border-line bg-white px-3.5 py-2.5 text-ink"
                     }
                   >
                     <p className="text-[1rem] leading-relaxed">{m.text}</p>
@@ -289,7 +289,7 @@ export default function ChatWidget() {
                           key={c}
                           type="button"
                           onClick={() => send(c)}
-                          className="border border-line bg-white px-3 py-2 text-[0.9375rem] text-ink hover:border-cyan-dark hover:text-cyan-dark"
+                          className="rounded-full border border-line-strong bg-white px-3.5 py-2 text-[0.9375rem] text-ink hover:border-cyan-dark hover:text-cyan-dark"
                         >
                           {c}
                         </button>
@@ -338,12 +338,12 @@ export default function ChatWidget() {
               onChange={(e) => setDraft(e.target.value)}
               placeholder="Type your question"
               autoComplete="off"
-              className="min-w-0 flex-1 border border-line px-3.5 py-3 text-ink placeholder:text-body/60 focus:border-cyan-dark focus:outline-none"
+              className="min-w-0 flex-1 rounded-xl border border-line-strong px-3.5 py-3 text-ink placeholder:text-body/60 focus:border-cyan-dark focus:outline-none"
             />
             <button
               type="submit"
               aria-label="Send question"
-              className="shrink-0 justify-center bg-cyan-dark px-4 text-white hover:bg-cyan-deep"
+              className="shrink-0 justify-center rounded-xl bg-cyan-dark px-4 text-white hover:bg-cyan-deep"
               style={{ minHeight: "48px" }}
             >
               <Send className="size-5" aria-hidden />

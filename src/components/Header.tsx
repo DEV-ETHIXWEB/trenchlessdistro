@@ -13,35 +13,60 @@
 
 import { useEffect, useState } from "react";
 import Image from "next/image";
-import { AnimatePresence, motion, useReducedMotion } from "motion/react";
-import { Cross, Menu, Phone } from "./icons";
-import HeaderSearch from "./HeaderSearch";
 import Link from "next/link";
-
-const SHOP = [
-  { href: "/#categories", label: "CIPP lining systems" },
-  { href: "/#categories", label: "CIPP UV lining systems" },
-  { href: "/#categories", label: "Robotics & milling" },
-  { href: "/#categories", label: "CIPP materials" },
-  { href: "/#categories", label: "CIPP patch repair" },
-  { href: "/#categories", label: "Inspection cameras" },
-  { href: "/#categories", label: "Accessories & parts" },
-];
+import { AnimatePresence, motion, useReducedMotion } from "motion/react";
+import { ArrowRight, ChevronDown, Cross, Menu, Phone, QuoteBoard, Search } from "./icons";
+import HeaderSearch from "./HeaderSearch";
+import { CATEGORIES } from "@/data/catalog";
+import { countOf, quoteList, useQuoteList } from "@/lib/quoteList";
+import { usePipeSize } from "./PipeSize";
 
 const NAV = [
-  { href: "/#most-searched", label: "Products" },
+  { href: "/#spec-finder", label: "Products" },
   { href: "/new-to-cipp", label: "New to CIPP" },
-  { href: "/#collections", label: "Collections" },
+  { href: "/#collections", label: "Collections", wide: true },
   { href: "/#support", label: "Training" },
-  { href: "/#why-us", label: "About" },
+  { href: "/#why-us", label: "About", wide: true },
   { href: "/#quote", label: "Contact" },
 ];
+
+/** The quote list button with its count. Used in both header rows. */
+function QuoteButton() {
+  const list = useQuoteList();
+  const n = countOf(list);
+  return (
+    <button
+      type="button"
+      onClick={() => quoteList.open()}
+      aria-label={n ? `Quote list, ${n} ${n === 1 ? "item" : "items"}` : "Quote list, empty"}
+      className="relative shrink-0 justify-center rounded-full px-2.5 text-ink hover:bg-mist hover:text-cyan-dark"
+    >
+      <QuoteBoard className="size-6" aria-hidden />
+      <span
+        aria-hidden
+        className={`datum absolute top-1 right-0.5 flex h-4.5 min-w-4.5 items-center justify-center rounded-full px-1 text-[0.6875rem] leading-none font-bold transition-transform duration-300 ease-press ${
+          n ? "scale-100 bg-cyan-dark text-white" : "scale-90 bg-ink text-white"
+        }`}
+      >
+        {n}
+      </span>
+    </button>
+  );
+}
 
 export default function Header() {
   const [open, setOpen] = useState(false);
   const [shopOpen, setShopOpen] = useState(false);
   const [stuck, setStuck] = useState(false);
+  /* Phone only: the search row folds away once the page moves, and the
+     search icon brings it back on demand. */
+  const [searchOpen, setSearchOpen] = useState(false);
   const still = useReducedMotion();
+  const { setCategory, setQuery } = usePipeSize();
+  const pickCategory = (slug: string | null) => {
+    setCategory(slug);
+    setQuery("");
+  };
 
   useEffect(() => {
     document.body.style.overflow = open ? "hidden" : "";
@@ -50,10 +75,20 @@ export default function Header() {
     };
   }, [open]);
 
-  /*
-   * Once the page has moved, the header tightens and lifts off the content.
-   * Read inside rAF so a fast scroll cannot queue a layout read per event.
-   */
+  /* Escape closes whichever layer is up: the menu, the search drop-down or
+     the shop panel. */
+  useEffect(() => {
+    if (!open && !searchOpen && !shopOpen) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key !== "Escape") return;
+      setOpen(false);
+      setSearchOpen(false);
+      setShopOpen(false);
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [open, searchOpen, shopOpen]);
+
   useEffect(() => {
     let frame = 0;
     const onScroll = () => {
@@ -72,193 +107,276 @@ export default function Header() {
   }, []);
 
   return (
+    <>
     <header
-      className={`sticky top-0 z-50 bg-white transition-shadow duration-500 ease-glide ${
-        stuck ? "shadow-[0_6px_24px_-14px_rgba(0,0,0,0.5)]" : "shadow-none"
+      className={`sticky top-0 z-50 border-b bg-white/92 backdrop-blur-xl transition-[box-shadow,border-color] duration-500 ease-glide ${
+        stuck
+          ? "border-line shadow-[0_10px_30px_-18px_rgba(19,33,42,0.35)]"
+          : "border-transparent"
       }`}
     >
-      {/* Utility bar. The distributor correction lives above the logo. */}
-      <div className="bg-ink text-white">
-        <div className="mx-auto flex max-w-[80rem] items-center justify-between gap-4 px-4 py-2 lg:px-6">
-          <p className="flex min-w-0 items-center text-[0.8125rem]">
-            <span className="eyebrow shrink-0 text-cyan">Distributor</span>
-            <span className="mx-2 hidden text-white/30 sm:inline">|</span>
-            <span className="hidden truncate text-white/80 sm:inline">
-              We supply contractors. We do not perform installations.
-            </span>
-          </p>
-          <div className="flex shrink-0 items-center gap-5 text-[0.8125rem]">
-            <span className="hidden text-white/70 lg:inline">
-              Mon&ndash;Fri 7:00&ndash;4:30 PT
-            </span>
-            <a
-              href="tel:+12533685614"
-              className="flex items-center gap-1.5 font-semibold hover:text-cyan"
-            >
-              <Phone className="size-4" aria-hidden />
-              253-368-5614
-            </a>
-          </div>
-        </div>
-      </div>
-      <div className="brand-rule h-[3px]" aria-hidden />
-
-      <div className="border-b border-line">
-        <div
-          className={`mx-auto flex max-w-[80rem] items-center gap-6 px-4 transition-[padding] duration-500 ease-glide lg:px-6 ${
-            stuck ? "py-1.5" : "py-3"
-          }`}
+      <div
+        className={`mx-auto flex max-w-[88rem] items-center gap-1 px-2 min-[360px]:gap-2 transition-[padding] duration-500 ease-glide sm:px-6 lg:gap-6 lg:px-8 ${
+          stuck ? "py-1.5 lg:py-2" : "py-2 lg:py-3.5"
+        }`}
+      >
+        {/* Phone: menu on the left, logo centred, tools on the right. */}
+        <button
+          type="button"
+          onClick={() => setOpen(true)}
+          aria-label="Open menu"
+          className="-ml-1 shrink-0 justify-center rounded-full px-2 text-ink hover:bg-mist lg:hidden"
         >
-          <Link href="/#main" aria-label="Trenchless Distribution home" className="shrink-0">
-            <Image
-              src="/brand/td-logo.webp"
-              alt="Trenchless Distribution"
-              width={300}
-              height={86}
-              priority
-              className={`w-auto transition-[height] duration-500 ease-glide ${
-                stuck ? "h-11 lg:h-12" : "h-13 lg:h-15"
-              }`}
-            />
-          </Link>
+          <Menu className="size-6.5" />
+        </button>
 
-          <nav aria-label="Main" className="ml-auto hidden min-w-0 items-center gap-3 lg:flex xl:gap-6">
-            {/* Search first in the bar: the fastest route for anyone who
-                already knows the part they came for. It is the one item here
-                that can afford to give up width, so it shrinks between lg and
-                xl where the nav, the CTA and the logo together leave least
-                room. */}
-            <div className="w-32 shrink xl:w-60">
-              <HeaderSearch />
-            </div>
+        <Link
+          href="/#main"
+          aria-label="Trenchless Distribution home"
+          className="mx-auto min-w-0 shrink lg:mx-0 lg:shrink-0"
+        >
+          <Image
+            src="/brand/td-logo.webp"
+            alt="Trenchless Distribution"
+            width={300}
+            height={86}
+            priority
+            className={`w-auto max-w-full object-contain transition-[height] duration-500 ease-glide ${
+              stuck ? "h-9 lg:h-11" : "h-10 lg:h-13"
+            }`}
+          />
+        </Link>
 
-            <div
-              className="relative"
-              onMouseEnter={() => setShopOpen(true)}
-              onMouseLeave={() => setShopOpen(false)}
+        {/* Desktop: search pill, then the nav, then the actions. */}
+        <div className="hidden min-w-0 flex-1 xl:block xl:max-w-[22rem] 2xl:max-w-[26rem]">
+          <HeaderSearch variant="pill" />
+        </div>
+
+        <nav aria-label="Main" className="ml-auto hidden items-center gap-1 lg:flex">
+          <div
+            className="relative"
+            onMouseEnter={() => setShopOpen(true)}
+            onMouseLeave={() => setShopOpen(false)}
+          >
+            <button
+              type="button"
+              aria-expanded={shopOpen}
+              onClick={() => setShopOpen((v) => !v)}
+              className="gap-1 rounded-lg px-2.5 text-[0.9375rem] font-medium whitespace-nowrap text-ink hover:bg-mist hover:text-cyan-dark"
             >
-              <button
-                type="button"
-                aria-expanded={shopOpen}
-                onClick={() => setShopOpen((v) => !v)}
-                className="flex items-center gap-1.5 py-2 text-[0.9375rem] font-semibold whitespace-nowrap text-ink hover:text-cyan-dark"
-              >
-                Shop
-                <svg viewBox="0 0 10 6" className="size-2.5" aria-hidden>
-                  <path d="M1 1l4 4 4-4" fill="none" stroke="currentColor" strokeWidth="1.6" />
-                </svg>
-              </button>
-              <AnimatePresence>
-                {shopOpen && (
+              Shop
+              <ChevronDown
+                className={`size-4 transition-transform duration-300 ${shopOpen ? "rotate-180" : ""}`}
+                aria-hidden
+              />
+            </button>
+            <AnimatePresence>
+              {shopOpen && (
                 <motion.div
                   style={{ transformOrigin: "top left" }}
-                  initial={still ? false : { opacity: 0, y: -6, scale: 0.985 }}
+                  initial={still ? false : { opacity: 0, y: -6, scale: 0.98 }}
                   animate={{ opacity: 1, y: 0, scale: 1 }}
                   exit={{ opacity: 0, y: -4 }}
                   transition={{ duration: 0.22, ease: [0.16, 1, 0.3, 1] }}
-                  className="absolute top-full left-0 w-72 border border-line bg-white py-2 shadow-lg"
+                  className="absolute top-full left-0 z-10 w-[34rem] pt-2"
                 >
-                  {SHOP.map((item) => (
-                    <a
-                      key={item.label}
-                      href={item.href}
-                      onClick={() => setShopOpen(false)}
-                      className="block px-4 py-2.5 text-[0.9375rem] text-body hover:bg-light hover:text-cyan-dark"
+                  <div className="grid grid-cols-2 gap-1 rounded-2xl border border-line bg-white p-2 shadow-[var(--shadow-lift)]">
+                    {CATEGORIES.map((c) => (
+                      <Link
+                        key={c.slug}
+                        href="/#spec-finder"
+                        onClick={() => {
+                          setShopOpen(false);
+                          pickCategory(c.slug);
+                        }}
+                        className="flex-col items-start rounded-xl px-3.5 py-2.5 hover:bg-mist"
+                      >
+                        <span className="text-[0.9375rem] font-semibold text-ink">{c.name}</span>
+                        <span className="text-[0.8125rem] text-body">
+                          {c.count} products &middot; {c.span}
+                        </span>
+                      </Link>
+                    ))}
+                    <Link
+                      href="/#spec-finder"
+                      onClick={() => {
+                        setShopOpen(false);
+                        pickCategory(null);
+                      }}
+                      className="group justify-between gap-2 rounded-xl bg-cyan-dark px-3.5 py-2.5 font-semibold text-white hover:bg-cyan-deep"
                     >
-                      {item.label}
-                    </a>
-                  ))}
+                      Browse the full catalog
+                      <ArrowRight className="size-4 transition-transform group-hover:translate-x-1" aria-hidden />
+                    </Link>
+                  </div>
                 </motion.div>
-                )}
-              </AnimatePresence>
-            </div>
+              )}
+            </AnimatePresence>
+          </div>
 
-            {NAV.map((item) => (
-              <a
-                key={item.label}
-                href={item.href}
-                className="py-2 text-[0.9375rem] font-semibold whitespace-nowrap text-ink hover:text-cyan-dark"
-              >
-                {item.label}
-              </a>
-            ))}
-
+          {NAV.map((item) => (
             <Link
-              href="/#quote"
-              className="bg-cyan-dark px-4 py-2.5 text-[0.9375rem] font-semibold whitespace-nowrap text-white transition-colors hover:bg-cyan-deep xl:px-5"
+              key={item.label}
+              href={item.href}
+              className={`rounded-lg px-2.5 text-[0.9375rem] font-medium whitespace-nowrap text-ink hover:bg-mist hover:text-cyan-dark ${
+                item.wide ? "hidden 2xl:inline-flex" : ""
+              }`}
             >
-              Request a quote
+              {item.label}
             </Link>
-          </nav>
+          ))}
+        </nav>
 
+        <div className="flex shrink-0 items-center gap-0.5 min-[360px]:gap-1 lg:gap-3">
+          <a
+            href="tel:+12533685614"
+            className="hidden items-center gap-2 rounded-lg px-2 font-semibold whitespace-nowrap text-cyan-dark hover:text-cyan-deep 2xl:inline-flex"
+          >
+            <Phone className="size-4.5" aria-hidden />
+            <span className="datum">253-368-5614</span>
+          </a>
+          {/* Phone tools. */}
           <button
             type="button"
-            onClick={() => setOpen(true)}
-            aria-label="Open menu"
-            className="ml-auto text-ink lg:hidden"
+            onClick={() => setSearchOpen((v) => !v)}
+            aria-label={searchOpen ? "Close search" : "Open search"}
+            aria-expanded={searchOpen}
+            className="shrink-0 justify-center rounded-full px-2 text-ink hover:bg-mist lg:hidden"
           >
-            <Menu className="size-7" />
+            <Search className="size-6" aria-hidden />
           </button>
-        </div>
-      </div>
-
-      <AnimatePresence>
-        {open && (
-        <motion.div
-          initial={still ? false : { opacity: 0, y: -10 }}
-          animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: -8 }}
-          transition={{ duration: 0.28, ease: [0.16, 1, 0.3, 1] }}
-          className="fixed inset-0 z-60 flex flex-col overflow-y-auto bg-white px-4 py-3 lg:hidden"
-        >
-          <div className="flex items-center justify-between">
-            <Image
-              src="/brand/td-logo.webp"
-              alt="Trenchless Distribution"
-              width={300}
-              height={86}
-              className="h-13 w-auto lg:h-15"
-            />
-            <button type="button" onClick={() => setOpen(false)} aria-label="Close menu">
-              <Cross className="size-7 text-ink" />
-            </button>
-          </div>
-          <div className="mt-5">
-            <HeaderSearch onPick={() => setOpen(false)} />
-          </div>
-          <nav aria-label="Main" className="mt-6 flex flex-col">
-            <p className="eyebrow border-b border-line py-3 text-body">Shop</p>
-            {SHOP.map((item) => (
-              <a
-                key={item.label}
-                href={item.href}
-                onClick={() => setOpen(false)}
-                className="border-b border-line py-3 pl-3 text-body"
-              >
-                {item.label}
-              </a>
-            ))}
-            {NAV.map((item) => (
-              <a
-                key={item.label}
-                href={item.href}
-                onClick={() => setOpen(false)}
-                className="border-b border-line py-3.5 font-head text-lg font-semibold text-ink"
-              >
-                {item.label}
-              </a>
-            ))}
-          </nav>
+          <a
+            href="tel:+12533685614"
+            aria-label="Call 253-368-5614"
+            className="hidden shrink-0 justify-center rounded-full px-2 text-cyan-dark hover:bg-mist min-[360px]:inline-flex lg:hidden"
+          >
+            <Phone className="size-6" aria-hidden />
+          </a>
           <Link
             href="/#quote"
-            onClick={() => setOpen(false)}
-            className="mt-6 bg-cyan-dark px-5 py-4 text-center font-semibold text-white"
+            className="hidden rounded-xl bg-cyan-dark px-5 text-[0.9375rem] font-semibold whitespace-nowrap text-white shadow-[0_8px_20px_-12px_rgba(27,116,137,0.9)] hover:bg-cyan-deep lg:inline-flex"
           >
             Request a quote
           </Link>
-        </motion.div>
+          <QuoteButton />
+        </div>
+      </div>
+
+      {/* The search icon's drop-down, once the in-page search row below
+          has scrolled away. */}
+      <AnimatePresence>
+        {searchOpen && (
+          <motion.div
+            initial={still ? false : { opacity: 0, y: -8 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -6 }}
+            transition={{ duration: 0.24, ease: [0.16, 1, 0.3, 1] }}
+            className="absolute inset-x-0 top-full border-b border-line bg-white px-3 py-2.5 shadow-[0_14px_30px_-20px_rgba(19,33,42,0.5)] sm:px-6 lg:hidden"
+          >
+            <HeaderSearch variant="pill" autoFocus onPick={() => setSearchOpen(false)} />
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      <AnimatePresence>
+        {open && (
+          <motion.div
+            initial={still ? false : { opacity: 0, x: "-6%" }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: "-4%" }}
+            transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
+            role="dialog"
+            aria-modal="true"
+            aria-label="Menu"
+            className="fixed inset-0 z-60 flex h-dvh flex-col overflow-y-auto bg-white px-4 pt-3 pb-8 lg:hidden"
+          >
+            <div className="flex items-center justify-between">
+              <Image
+                src="/brand/td-logo.webp"
+                alt="Trenchless Distribution"
+                width={300}
+                height={86}
+                className="h-10 w-auto"
+              />
+              <button
+                type="button"
+                onClick={() => setOpen(false)}
+                aria-label="Close menu"
+                className="justify-center rounded-full px-2 hover:bg-mist"
+              >
+                <Cross className="size-6.5 text-ink" />
+              </button>
+            </div>
+            <div className="mt-5">
+              <HeaderSearch variant="pill" onPick={() => setOpen(false)} />
+            </div>
+
+            <nav aria-label="Main" className="mt-6">
+              <p className="eyebrow text-cyan-dark">Shop by category</p>
+              <ul className="mt-3 grid grid-cols-2 gap-2">
+                {CATEGORIES.map((c) => (
+                  <li key={c.slug}>
+                    <Link
+                      href="/#spec-finder"
+                      onClick={() => {
+                        setOpen(false);
+                        pickCategory(c.slug);
+                      }}
+                      className="flex h-full flex-col items-start justify-between rounded-xl bg-mist px-3.5 py-3"
+                    >
+                      <span className="text-[0.9375rem] leading-snug font-semibold text-ink">
+                        {c.name}
+                      </span>
+                      <span className="mt-1 text-[0.8125rem] text-body">{c.count} products</span>
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+              <ul className="mt-6 border-t border-line">
+                {NAV.map((item) => (
+                  <li key={item.label}>
+                    <Link
+                      href={item.href}
+                      onClick={() => setOpen(false)}
+                      className="w-full justify-between border-b border-line py-3.5 font-head text-lg font-semibold text-ink"
+                    >
+                      {item.label}
+                      <ArrowRight className="size-4.5 text-body" aria-hidden />
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </nav>
+            <div className="mt-6 grid gap-3">
+              <Link
+                href="/#quote"
+                onClick={() => setOpen(false)}
+                className="justify-center rounded-xl bg-cyan-dark px-5 py-3.5 font-semibold text-white"
+              >
+                Request a quote
+              </Link>
+              <a
+                href="tel:+12533685614"
+                className="justify-center gap-2 rounded-xl border border-line-strong px-5 py-3.5 font-semibold text-ink"
+              >
+                <Phone className="size-4.5 text-cyan-dark" aria-hidden />
+                253-368-5614
+              </a>
+            </div>
+          </motion.div>
         )}
       </AnimatePresence>
     </header>
+
+    {/* The search row the team asked for at the top of the phone view, and
+        the desktop pill's home between lg and xl where the bar has no room
+        for it. In the page flow rather than the sticky bar, so it scrolls
+        away with the hero instead of resizing the header mid-scroll. */}
+    <div className="border-b border-line bg-white px-3 pt-1 pb-3 sm:px-6 lg:px-8 lg:pt-0 xl:hidden">
+      <div className="mx-auto max-w-[88rem]">
+        <HeaderSearch variant="pill" />
+      </div>
+    </div>
+    </>
   );
 }

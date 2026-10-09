@@ -296,3 +296,104 @@ export const PipeMark = (p: IconProps) => (
     <path d="M12 2.8v3.8M12 17.4v3.8M2.8 12h3.8M17.4 12h3.8" />
   </Icon>
 );
+
+/* Storefront set, for the catalog, the quote list and the trust row. */
+
+export const Heart = (p: IconProps) => (
+  <Icon {...p}>
+    <path d="M12 20.2s-7.8-4.6-7.8-10.4A4.4 4.4 0 0 1 12 7.1a4.4 4.4 0 0 1 7.8 2.7c0 5.8-7.8 10.4-7.8 10.4Z" />
+  </Icon>
+);
+
+/** A clipboard with lines: the quote list, this site's cart. */
+export const QuoteBoard = (p: IconProps) => (
+  <Icon {...p}>
+    <rect x="5" y="4.4" width="14" height="16.8" rx="2" />
+    <path d="M9 4.4V3.6a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v.8" />
+    <path d="M8.6 10h6.8M8.6 13.4h6.8M8.6 16.8h4" />
+  </Icon>
+);
+
+export const ShieldCheck = (p: IconProps) => (
+  <Icon {...p}>
+    <path d="M12 2.8 19.4 5.6v5.6c0 4.6-3.1 8.4-7.4 10-4.3-1.6-7.4-5.4-7.4-10V5.6Z" />
+    <path d="m8.6 12 2.4 2.4 4.4-4.6" />
+  </Icon>
+);
+
+export const Headset = (p: IconProps) => (
+  <Icon {...p}>
+    <path d="M4.4 14.2v-2.4a7.6 7.6 0 0 1 15.2 0v2.4" />
+    <rect x="3.4" y="13" width="3.8" height="5.6" rx="1.4" />
+    <rect x="16.8" y="13" width="3.8" height="5.6" rx="1.4" />
+    <path d="M18.7 18.6c0 1.6-1.6 2.6-4.2 2.6H12.6" />
+  </Icon>
+);
+
+export const Cog = (p: IconProps) => (
+  <Icon {...p}>
+    <circle cx="12" cy="12" r="3.1" />
+    <path d="M12 2.8v2.4M12 18.8v2.4M2.8 12h2.4M18.8 12h2.4M5.5 5.5l1.7 1.7M16.8 16.8l1.7 1.7M5.5 18.5l1.7-1.7M16.8 7.2l1.7-1.7" />
+    <circle cx="12" cy="12" r="6.4" />
+  </Icon>
+);
+
+export const ChevronLeft = (p: IconProps) => (
+  <Icon {...p}>
+    <path d="m14.6 5.6-6.4 6.4 6.4 6.4" />
+  </Icon>
+);
+
+export const ChevronRight = (p: IconProps) => (
+  <Icon {...p}>
+    <path d="m9.4 5.6 6.4 6.4-6.4 6.4" />
+  </Icon>
+);
+
+export const ChevronDown = (p: IconProps) => (
+  <Icon {...p}>
+    <path d="m5.6 9.4 6.4 6.4 6.4-6.4" />
+  </Icon>
+);
+
+export const Grid = (p: IconProps) => (
+  <Icon {...p}>
+    <rect x="3.6" y="3.6" width="7" height="7" rx="1.4" />
+    <rect x="13.4" y="3.6" width="7" height="7" rx="1.4" />
+    <rect x="3.6" y="13.4" width="7" height="7" rx="1.4" />
+    <rect x="13.4" y="13.4" width="7" height="7" rx="1.4" />
+  </Icon>
+);
+
+export const Rows = (p: IconProps) => (
+  <Icon {...p}>
+    <rect x="3.6" y="4" width="16.8" height="6.4" rx="1.4" />
+    <rect x="3.6" y="13.6" width="16.8" height="6.4" rx="1.4" />
+  </Icon>
+);
+
+export const Sliders = (p: IconProps) => (
+  <Icon {...p}>
+    <path d="M4 7h9M17 7h3M4 17h3M11 17h9" />
+    <circle cx="15" cy="7" r="2" />
+    <circle cx="9" cy="17" r="2" />
+  </Icon>
+);
+
+export const Plus = (p: IconProps) => (
+  <Icon {...p}>
+    <path d="M12 5v14M5 12h14" />
+  </Icon>
+);
+
+export const Minus = (p: IconProps) => (
+  <Icon {...p}>
+    <path d="M5 12h14" />
+  </Icon>
+);
+
+export const Trash = (p: IconProps) => (
+  <Icon {...p}>
+    <path d="M4.6 6.6h14.8M9.6 6.6V4.4h4.8v2.2M6.6 6.6l.9 12.8a1.6 1.6 0 0 0 1.6 1.4h5.8a1.6 1.6 0 0 0 1.6-1.4l.9-12.8" />
+  </Icon>
+);

@@ -1,28 +1,39 @@
 import type { Metadata, Viewport } from "next";
 import {
   Atkinson_Hyperlegible,
-  Libre_Franklin,
-  Source_Sans_3,
+  Caveat,
+  Inter,
+  Plus_Jakarta_Sans,
 } from "next/font/google";
 import "./globals.css";
 import { BOOT_SCRIPT } from "@/lib/a11y";
 import Interactions from "@/components/Interactions";
 
 /*
- * Libre Franklin (headings) and Source Sans 3 (body) share a family tree:
- * both descend from Morris Fuller Benton's ATF gothics. See docs/THEME.md.
+ * Plus Jakarta Sans for headings and Inter for running text, the pairing
+ * the design references are set in: a geometric display face with open
+ * counters, over a workhorse grotesk that holds up at 15px on a phone.
  */
-const franklin = Libre_Franklin({
+const jakarta = Plus_Jakarta_Sans({
   subsets: ["latin"],
-  weight: ["600", "700"],
-  variable: "--font-franklin",
+  weight: ["500", "600", "700", "800"],
+  variable: "--font-jakarta",
   display: "swap",
 });
 
-const source = Source_Sans_3({
+const inter = Inter({
   subsets: ["latin"],
-  weight: ["400", "600"],
-  variable: "--font-source",
+  weight: ["400", "500", "600"],
+  variable: "--font-inter",
+  display: "swap",
+});
+
+/* The one handwritten line in the hero. A single weight, so it costs one
+   small file. */
+const caveat = Caveat({
+  subsets: ["latin"],
+  weight: ["500"],
+  variable: "--font-caveat",
   display: "swap",
 });
 
@@ -108,7 +119,7 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#161616",
+  themeColor: "#13212a",
   colorScheme: "light",
   // Never trap a visitor at one zoom level.
   initialScale: 1,
@@ -264,7 +275,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html
       lang="en"
-      className={`${franklin.variable} ${source.variable} ${atkinson.variable} h-full antialiased`}
+      className={`${jakarta.variable} ${inter.variable} ${caveat.variable} ${atkinson.variable} h-full antialiased`}
       // The boot script sets data-a11y-* on this element before React
       // hydrates, which is the whole point of it.
       suppressHydrationWarning

@@ -45,11 +45,20 @@ export type Item = {
    * reviewable at all.
    */
   price: string;
+  /** What it is, in the words on a packing slip: "CIPP liner", "UV resin". */
+  kind: string;
+  /** The CATEGORIES slug it is shelved under. */
+  cat: string;
+  /** Product photograph. Items without one get a drawn tile instead. */
+  img?: string;
+  /** Merchandising flag on the card. Sample, like the prices. */
+  badge?: "Best seller" | "Popular" | "New" | "Crew favourite";
 };
 
 export const ITEMS: Item[] = [
   {
     code: "ML-FLX",
+    cat: "cipp-lining-systems",
     name: "Max FlexLiner™",
     maker: "MaxLiner",
     cure: "Ambient",
@@ -59,9 +68,13 @@ export const ITEMS: Item[] = [
     apps: ["lateral", "vertical"],
     price: "12.40",
     stock: "In stock",
+    kind: "CIPP liner",
+    img: "/img/flexliner.webp",
+    badge: "Best seller",
   },
   {
     code: "ML-SFX",
+    cat: "cipp-lining-systems",
     name: "Max SuperFlex™",
     maker: "MaxLiner",
     cure: "Ambient",
@@ -71,9 +84,12 @@ export const ITEMS: Item[] = [
     apps: ["lateral", "vertical"],
     price: "14.90",
     stock: "In stock",
+    kind: "Multi-bend liner",
+    img: "/img/superflex.webp",
   },
   {
     code: "ML-SCR",
+    cat: "cipp-materials",
     name: "LinerTube Reinforced™ (SCRIM)",
     maker: "MaxLiner",
     cure: "Steam",
@@ -83,9 +99,13 @@ export const ITEMS: Item[] = [
     apps: ["mainline", "lateral"],
     price: "18.60",
     stock: "In stock",
+    kind: "Reinforced liner",
+    img: "/img/scrim.webp",
+    badge: "Popular",
   },
   {
     code: "ML-DRM",
+    cat: "cipp-lining-systems",
     name: "Max LinerDrum™ inversion system",
     maker: "MaxLiner",
     cure: "N/A",
@@ -95,9 +115,13 @@ export const ITEMS: Item[] = [
     apps: ["lateral", "mainline"],
     price: "9,850",
     stock: "Low stock",
+    kind: "Inversion drum",
+    img: "/img/linerdrum.webp",
+    badge: "Crew favourite",
   },
   {
     code: "ML-GUN",
+    cat: "cipp-lining-systems",
     name: "Max LinerGun® wetout unit",
     maker: "MaxLiner",
     cure: "N/A",
@@ -107,9 +131,11 @@ export const ITEMS: Item[] = [
     apps: ["lateral", "mainline", "point-repair"],
     price: "4,320",
     stock: "In stock",
+    kind: "Wetout unit",
   },
   {
     code: "BR-PCO",
+    cat: "cipp-uv-lining-systems",
     name: "Brawo® Pico Extended UV system",
     maker: "Brawo Systems",
     cure: "UV LED",
@@ -119,9 +145,13 @@ export const ITEMS: Item[] = [
     apps: ["lateral", "vertical"],
     price: "38,500",
     stock: "Built to order",
+    kind: "UV lateral system",
+    img: "/img/brawo-pico.webp",
+    badge: "New",
   },
   {
     code: "IMS-MXC",
+    cat: "cipp-uv-lining-systems",
     name: "IMS MAXICure LED curing train",
     maker: "IMS",
     cure: "UV LED",
@@ -131,9 +161,12 @@ export const ITEMS: Item[] = [
     apps: ["mainline", "lateral"],
     price: "44,900",
     stock: "Built to order",
+    kind: "LED cure train",
+    img: "/img/maxicure.webp",
   },
   {
     code: "RS-UVP",
+    cat: "cipp-uv-lining-systems",
     name: "UV Plus resin system",
     maker: "Trenchless Distribution",
     cure: "UV LED",
@@ -143,9 +176,12 @@ export const ITEMS: Item[] = [
     apps: ["lateral", "mainline", "vertical"],
     price: "418",
     stock: "In stock",
+    kind: "UV resin",
+    img: "/img/maxlight-uv.webp",
   },
   {
     code: "RS-EPX",
+    cat: "cipp-materials",
     name: "Two-part CIPP epoxy resin",
     maker: "MaxLiner",
     cure: "Ambient",
@@ -155,9 +191,13 @@ export const ITEMS: Item[] = [
     apps: ["lateral", "mainline", "point-repair", "vertical"],
     price: "286",
     stock: "In stock",
+    kind: "Two-part epoxy",
+    img: "/img/maxpox.webp",
+    badge: "Popular",
   },
   {
     code: "PR-KIT",
+    cat: "cipp-patch-repair",
     name: "Point repair kit, ambient & UV",
     maker: "Apex CIPP",
     cure: "Ambient",
@@ -167,9 +207,12 @@ export const ITEMS: Item[] = [
     apps: ["point-repair"],
     price: "1,290",
     stock: "In stock",
+    kind: "Point repair kit",
+    img: "/img/point-repair-kit.webp",
   },
   {
     code: "PR-PKR",
+    cat: "cipp-patch-repair",
     name: "Sectional packer assembly",
     maker: "Apex CIPP",
     cure: "N/A",
@@ -179,9 +222,12 @@ export const ITEMS: Item[] = [
     apps: ["point-repair"],
     price: "2,140",
     stock: "In stock",
+    kind: "Sectional packer",
+    img: "/img/liner-detail.webp",
   },
   {
     code: "RB-DMB",
+    cat: "robotics-milling",
     name: "Dancutter Mini Bike robotic cutter",
     maker: "Apex CIPP",
     cure: "N/A",
@@ -191,9 +237,11 @@ export const ITEMS: Item[] = [
     apps: ["prep"],
     price: "7,640",
     stock: "Low stock",
+    kind: "Robotic cutter",
   },
   {
     code: "RB-DSF",
+    cat: "robotics-milling",
     name: "Dancutter Super Flex robotic cutter",
     maker: "Apex CIPP",
     cure: "N/A",
@@ -203,9 +251,11 @@ export const ITEMS: Item[] = [
     apps: ["prep"],
     price: "5,980",
     stock: "In stock",
+    kind: "Robotic cutter",
   },
   {
     code: "RB-DMX",
+    cat: "robotics-milling",
     name: "Dancutter Maxi Flex robotic cutter",
     maker: "Apex CIPP",
     cure: "N/A",
@@ -215,9 +265,11 @@ export const ITEMS: Item[] = [
     apps: ["prep"],
     price: "11,400",
     stock: "Built to order",
+    kind: "Robotic cutter",
   },
   {
     code: "PP-CHN",
+    cat: "accessories-parts",
     name: "Chain knocker descaling head",
     maker: "Apex CIPP",
     cure: "N/A",
@@ -227,9 +279,11 @@ export const ITEMS: Item[] = [
     apps: ["prep"],
     price: "268",
     stock: "In stock",
+    kind: "Descaling head",
   },
   {
     code: "CT-CAL",
+    cat: "cipp-materials",
     name: "Calibration tube",
     maker: "MaxLiner",
     cure: "N/A",
@@ -239,9 +293,12 @@ export const ITEMS: Item[] = [
     apps: ["lateral", "mainline", "vertical"],
     price: "3.10",
     stock: "In stock",
+    kind: "Calibration tube",
+    img: "/img/liner-rolls.webp",
   },
   {
     code: "IN-PSH",
+    cat: "inspection-cameras",
     name: "Push inspection camera",
     maker: "Apex CIPP",
     cure: "N/A",
@@ -251,9 +308,11 @@ export const ITEMS: Item[] = [
     apps: ["inspection"],
     price: "6,450",
     stock: "In stock",
+    kind: "Push camera",
   },
   {
     code: "IN-REL",
+    cat: "inspection-cameras",
     name: "Self-levelling reel camera",
     maker: "Apex CIPP",
     cure: "N/A",
@@ -263,12 +322,29 @@ export const ITEMS: Item[] = [
     apps: ["inspection"],
     price: "9,120",
     stock: "Low stock",
+    kind: "Reel camera",
   },
 ];
 
-export const CATEGORIES = [
+/*
+ * `glyph` names an export from components/icons. `img` is a photograph from
+ * their own library; the two categories without one (robotics, cameras) are
+ * drawn rather than illustrated with a stand-in from another line.
+ */
+export const CATEGORIES: {
+  slug: string;
+  name: string;
+  blurb: string;
+  count: number;
+  span: string;
+  glyph: string;
+  img?: string;
+  feature?: boolean;
+}[] = [
   {
     slug: "cipp-lining-systems",
+    glyph: "InversionDrum",
+    img: "/img/linerdrum.webp",
     name: "CIPP lining systems",
     blurb: "Flexible and reinforced liners, drums, guns and wetout gear.",
     count: 48,
@@ -276,6 +352,8 @@ export const CATEGORIES = [
   },
   {
     slug: "cipp-uv-lining-systems",
+    glyph: "UvCure",
+    img: "/img/cat-uv.webp",
     name: "CIPP UV lining systems",
     blurb: "LED cure trains, UV liners and controllers for fast turnarounds.",
     count: 21,
@@ -284,6 +362,7 @@ export const CATEGORIES = [
   },
   {
     slug: "robotics-milling",
+    glyph: "RoboticCutter",
     name: "Robotics & milling",
     blurb: "Reinstatement cutters, milling heads and control reels.",
     count: 34,
@@ -291,6 +370,8 @@ export const CATEGORIES = [
   },
   {
     slug: "cipp-materials",
+    glyph: "ResinPail",
+    img: "/img/cat-resins.webp",
     name: "CIPP materials",
     blurb: "Resins, liner tube, SCRIM and calibration tube by the foot.",
     count: 76,
@@ -298,6 +379,8 @@ export const CATEGORIES = [
   },
   {
     slug: "cipp-patch-repair",
+    glyph: "PatchRepair",
+    img: "/img/point-repair-kit.webp",
     name: "CIPP patch repair",
     blurb: "Point repair kits, packers and fitting liners.",
     count: 29,
@@ -305,6 +388,7 @@ export const CATEGORIES = [
   },
   {
     slug: "inspection-cameras",
+    glyph: "PushCamera",
     name: "Inspection cameras",
     blurb: "Push and reel systems, locators, monitors and spares.",
     count: 23,
@@ -312,6 +396,8 @@ export const CATEGORIES = [
   },
   {
     slug: "accessories-parts",
+    glyph: "LinerRoll",
+    img: "/img/cat-liners.webp",
     name: "Accessories & parts",
     blurb: "Fittings, hose, consumables and replacement wear parts.",
     count: 180,

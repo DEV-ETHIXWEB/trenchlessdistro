@@ -17,6 +17,7 @@ import { ITEMS } from "@/data/catalog";
 import { Search, StockDot } from "./icons";
 import { usePipeSize } from "./PipeSize";
 import Link from "next/link";
+import Image from "next/image";
 
 /*
  * Catalog search at the top of the page.
@@ -46,7 +47,15 @@ function search(q: string) {
   ).slice(0, LIMIT);
 }
 
-export default function HeaderSearch({ onPick }: { onPick?: () => void }) {
+export default function HeaderSearch({
+  onPick,
+  autoFocus,
+}: {
+  onPick?: () => void;
+  /** Kept for call sites; every instance renders as the pill now. */
+  variant?: "pill";
+  autoFocus?: boolean;
+}) {
   const { setQuery } = usePipeSize();
   const [text, setText] = useState("");
   const [open, setOpen] = useState(false);
@@ -108,7 +117,7 @@ export default function HeaderSearch({ onPick }: { onPick?: () => void }) {
           e.preventDefault();
           if (text.trim()) go(text);
         }}
-        className="flex items-center gap-2 border border-line bg-white px-3 focus-within:border-cyan-dark"
+        className="flex items-center gap-2.5 rounded-full border border-line bg-mist px-4 transition-[background-color,border-color,box-shadow] duration-300 focus-within:border-cyan-dark focus-within:bg-white focus-within:shadow-[0_0_0_4px_rgba(27,116,137,0.12)] hover:border-line-strong"
       >
         <Search className="size-4.5 shrink-0 text-body" aria-hidden />
         <input
@@ -124,7 +133,8 @@ export default function HeaderSearch({ onPick }: { onPick?: () => void }) {
           }}
           onFocus={() => setOpen(true)}
           onKeyDown={onKeyDown}
-          placeholder="Search products"
+          placeholder="Search products, brands or part numbers"
+          autoFocus={autoFocus}
           aria-label="Search products"
           aria-expanded={show}
           aria-controls={show ? listId : undefined}
@@ -134,7 +144,7 @@ export default function HeaderSearch({ onPick }: { onPick?: () => void }) {
           aria-autocomplete="list"
           role="combobox"
           autoComplete="off"
-          className="min-w-0 flex-1 bg-transparent py-2 text-[0.9375rem] text-ink placeholder:text-body/60 focus:outline-none"
+          className="min-h-11 min-w-0 flex-1 bg-transparent py-2 text-[0.9375rem] text-ink placeholder:text-body/75 focus:outline-none [&::-webkit-search-cancel-button]:hidden"
         />
       </form>
 
@@ -152,7 +162,7 @@ export default function HeaderSearch({ onPick }: { onPick?: () => void }) {
              * few enough to render whole, so the problem does not arise and
              * arrow keys remain the only navigation anyone needs.
              */
-            className="absolute top-full left-0 z-50 mt-1 w-80 max-w-[calc(100vw-2rem)] border border-line bg-white shadow-lg"
+            className="absolute top-full left-0 z-50 mt-2 w-full min-w-[20rem] max-w-[calc(100vw-1.5rem)] overflow-hidden rounded-2xl border border-line bg-white shadow-[var(--shadow-lift)]"
           >
             {hits.length === 0 ? (
               <p className="px-4 py-4 text-[0.9375rem] text-body">
@@ -171,10 +181,16 @@ export default function HeaderSearch({ onPick }: { onPick?: () => void }) {
                        before the click ever lands. */
                     onMouseDown={(e) => e.preventDefault()}
                     onClick={() => go(item.name)}
-                    className={`flex cursor-pointer flex-col items-start gap-0.5 border-b border-line px-4 py-3 last:border-b-0 ${
-                      i === active ? "bg-light" : "bg-white"
+                    className={`flex cursor-pointer items-center gap-3 border-b border-line px-3 py-2.5 last:border-b-0 ${
+                      i === active ? "bg-mist" : "bg-white"
                     }`}
                   >
+                    <span className="relative size-11 shrink-0 overflow-hidden rounded-lg bg-mist">
+                      {item.img && (
+                        <Image src={item.img} alt="" fill sizes="44px" className="object-cover" />
+                      )}
+                    </span>
+                    <span className="flex min-w-0 flex-col gap-0.5">
                     <span className="text-[0.9375rem] font-semibold text-ink">
                       {item.name}
                     </span>
@@ -187,6 +203,7 @@ export default function HeaderSearch({ onPick }: { onPick?: () => void }) {
                         <StockDot className="size-3.5 shrink-0" aria-hidden />
                         {item.stock}
                       </span>
+                    </span>
                     </span>
                   </li>
                 ))}

@@ -156,7 +156,7 @@ export default function AccessibilityWidget() {
         onClick={() => setOpen((v) => !v)}
         aria-expanded={open}
         aria-controls="a11y-panel"
-        className="hidden lg:inline-flex group fixed bottom-4 left-4 z-70 gap-2.5 border-2 border-white bg-cyan-dark px-4 py-3 font-semibold text-white shadow-lg transition-colors hover:bg-cyan-deep sm:bottom-6 sm:left-6"
+        className="hidden lg:inline-flex group fixed bottom-4 left-4 z-70 gap-2.5 rounded-full bg-ink/92 py-2.5 pr-5 pl-3 text-[0.9375rem] font-semibold text-white shadow-[0_14px_30px_-12px_rgba(19,33,42,0.6)] ring-1 ring-white/15 backdrop-blur-xl transition-colors hover:bg-ink sm:bottom-6 sm:left-6"
       >
         <Accessibility className="size-6 shrink-0" aria-hidden />
         <span className="sr-only sm:not-sr-only">
@@ -164,7 +164,7 @@ export default function AccessibilityWidget() {
         </span>
         {anyChanged && !open && (
           <span
-            className="absolute -top-1.5 -right-1.5 size-3.5 border-2 border-white bg-cyan"
+            className="absolute -top-0.5 -right-0.5 size-3.5 rounded-full border-2 border-white bg-cyan"
             aria-hidden
           />
         )}
@@ -183,7 +183,7 @@ export default function AccessibilityWidget() {
           animate={{ opacity: 1, y: 0, scale: 1 }}
           exit={still ? { opacity: 0 } : { opacity: 0, y: 10, scale: 0.98 }}
           transition={{ duration: 0.34, ease: [0.16, 1, 0.3, 1] }}
-          className="fixed inset-x-0 bottom-0 z-70 max-h-[min(85svh,42rem)] overflow-y-auto overscroll-contain border border-line bg-white shadow-2xl sm:inset-x-auto sm:bottom-24 sm:left-6 sm:w-[24rem]"
+          className="fixed inset-x-0 bottom-0 z-70 max-h-[min(85svh,42rem)] overflow-y-auto overscroll-contain rounded-t-3xl border border-line bg-white shadow-2xl sm:inset-x-auto sm:bottom-24 sm:left-6 sm:w-[24rem] sm:rounded-3xl"
         >
           <div className="flex items-start justify-between gap-3 bg-cyan-dark px-4 py-3 text-white">
             <div>
@@ -225,7 +225,7 @@ export default function AccessibilityWidget() {
                           `${size.sr} applied`,
                         )
                       }
-                      className={`justify-center border font-head font-bold transition-colors ${SIZE_CLASS[i]} ${
+                      className={`justify-center rounded-xl border font-head font-bold transition-colors ${SIZE_CLASS[i]} ${
                         on
                           ? "border-cyan-dark bg-cyan-dark text-white"
                           : "border-line bg-white text-ink hover:border-cyan-dark"
@@ -265,7 +265,7 @@ export default function AccessibilityWidget() {
                       </span>
                       <span
                         aria-hidden
-                        className={`flex size-7 shrink-0 items-center justify-center border-2 transition-colors ${
+                        className={`flex size-7 shrink-0 items-center justify-center rounded-md border-2 transition-colors ${
                           on
                             ? "border-cyan-dark bg-cyan-dark text-white"
                             : "border-line bg-white"
@@ -283,7 +283,7 @@ export default function AccessibilityWidget() {
               type="button"
               onClick={() => update(DEFAULTS, "All settings reset")}
               disabled={!anyChanged}
-              className="mt-4 w-full justify-center border border-line py-3 font-semibold text-cyan-dark transition-colors hover:border-cyan-dark disabled:cursor-not-allowed disabled:text-body/50 disabled:hover:border-line"
+              className="mt-4 w-full justify-center rounded-xl border border-line-strong py-3 font-semibold text-cyan-dark transition-colors hover:border-cyan-dark disabled:cursor-not-allowed disabled:text-body/50 disabled:hover:border-line"
             >
               Reset all
             </button>

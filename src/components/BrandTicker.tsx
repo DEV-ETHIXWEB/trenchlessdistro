@@ -14,9 +14,9 @@ export default function BrandTicker() {
   return (
     <section
       aria-label="Manufacturers we distribute"
-      className="border-b border-line bg-white py-5"
+      className="border-b border-line bg-white py-5 lg:py-6"
     >
-      <div className="mx-auto flex max-w-[80rem] flex-col gap-4 px-4 lg:flex-row lg:items-center lg:gap-8 lg:px-6">
+      <div className="mx-auto flex max-w-[88rem] flex-col gap-4 px-4 sm:px-6 lg:flex-row lg:items-center lg:gap-8 lg:px-8">
         <p className="eyebrow shrink-0 text-body">Authorized distributor for</p>
 
         <div

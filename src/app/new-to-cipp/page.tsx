@@ -6,6 +6,7 @@ import Footer from "@/components/Footer";
 import ChatWidget from "@/components/ChatWidget";
 import AccessibilityWidget from "@/components/AccessibilityWidget";
 import MobileActionBar from "@/components/MobileActionBar";
+import QuoteDrawer from "@/components/QuoteDrawer";
 import { PipeSizeProvider } from "@/components/PipeSize";
 import Reveal from "@/components/Reveal";
 import { ArrowRight, Phone } from "@/components/icons";
@@ -87,8 +88,8 @@ export default function NewToCipp() {
     <PipeSizeProvider>
       <Header />
       <main id="main" className="flex-1">
-        <section className="border-b border-line bg-light">
-          <div className="mx-auto max-w-[80rem] px-4 py-14 lg:px-6 lg:py-20">
+        <section className="bg-mist">
+          <div className="mx-auto max-w-[88rem] px-4 py-14 sm:px-6 lg:px-8 lg:py-20">
             <div className="grid gap-10 lg:grid-cols-[minmax(0,1fr)_minmax(0,24rem)] lg:gap-14">
               <div>
                 <p className="eyebrow text-cyan-dark">New to CIPP</p>
@@ -101,14 +102,14 @@ export default function NewToCipp() {
                   for you. It takes about ten minutes and assumes you know
                   nothing about lining.
                 </p>
-                <p className="mt-4 max-w-2xl border-l-2 border-cyan-dark pl-4 font-semibold text-ink">
+                <p className="mt-6 max-w-2xl rounded-xl bg-white px-4 py-3 font-semibold text-ink shadow-[var(--shadow-card)]">
                   Already lining pipe?{" "}
                   <Link href="/#spec-finder" className="inline-link text-cyan-dark">
                     Skip this and go to price and stock.
                   </Link>
                 </p>
               </div>
-              <figure className="border border-line bg-white">
+              <figure className="overflow-hidden rounded-3xl border border-line bg-white shadow-[var(--shadow-card)]">
                 <div className="relative aspect-4/3 w-full overflow-hidden">
                   <Image
                     src="/img/uv-cure.webp"
@@ -128,14 +129,14 @@ export default function NewToCipp() {
           </div>
         </section>
 
-        <section className="border-b border-line bg-white">
-          <div className="mx-auto max-w-[80rem] px-4 py-14 lg:px-6 lg:py-20">
+        <section className="bg-white">
+          <div className="mx-auto max-w-[88rem] px-4 py-14 sm:px-6 lg:px-8 lg:py-20">
             <h2 className="text-[length:var(--text-h2)] text-ink">
               The six questions everyone asks first.
             </h2>
-            <dl className="mt-10 grid gap-px border border-line bg-line sm:grid-cols-2">
+            <dl className="mt-10 grid gap-3 sm:grid-cols-2 lg:gap-4">
               {STEPS.map((s, i) => (
-                <Reveal key={s.q} delay={(i % 2) * 0.06} className="h-full bg-white p-6">
+                <Reveal key={s.q} delay={(i % 2) * 0.06} className="h-full rounded-2xl border border-line bg-mist p-6">
                   <dt className="flex items-baseline gap-3">
                     <span className="datum font-head text-xl font-bold text-cyan-dark">
                       {String(i + 1).padStart(2, "0")}
@@ -153,8 +154,8 @@ export default function NewToCipp() {
           </div>
         </section>
 
-        <section className="border-b border-line bg-light">
-          <div className="mx-auto max-w-[80rem] px-4 py-14 lg:px-6 lg:py-20">
+        <section className="bg-mist">
+          <div className="mx-auto max-w-[88rem] px-4 py-14 sm:px-6 lg:px-8 lg:py-20">
             <h2 className="text-[length:var(--text-h2)] text-ink">
               Three ways in, cheapest first.
             </h2>
@@ -162,12 +163,12 @@ export default function NewToCipp() {
               You do not have to buy all of it. Most companies start with the
               first one and add the others when the work pays for them.
             </p>
-            <ul className="mt-10 grid gap-px border border-line bg-line md:grid-cols-3">
+            <ul className="mt-10 grid gap-3 md:grid-cols-3 lg:gap-4">
               {PATHS.map((p, i) => (
-                <Reveal as="li" key={p.name} delay={i * 0.06} className="bg-white">
+                <Reveal as="li" key={p.name} delay={i * 0.06} className="h-full">
                   <Link
                     href={p.href}
-                    className="group flex h-full flex-col justify-between gap-5 p-6 transition-colors hover:bg-light"
+                    className="group flex h-full flex-col justify-between gap-5 rounded-2xl border border-line bg-white p-6 transition-[box-shadow,transform,border-color] duration-500 ease-glide hover:-translate-y-1 hover:border-transparent hover:shadow-[var(--shadow-lift)]"
                   >
                     <div>
                       <p className="eyebrow text-cyan-dark">{p.spend}</p>
@@ -193,7 +194,7 @@ export default function NewToCipp() {
         </section>
 
         <section className="bg-ink">
-          <div className="mx-auto max-w-[80rem] px-4 py-14 lg:px-6 lg:py-20">
+          <div className="mx-auto max-w-[88rem] px-4 py-14 sm:px-6 lg:px-8 lg:py-20">
             <div className="max-w-2xl">
               <p className="eyebrow text-cyan">Next step</p>
               <h2 className="mt-3 text-[length:var(--text-h2)] text-white">
@@ -208,7 +209,7 @@ export default function NewToCipp() {
               <div className="mt-8 flex flex-col gap-3 sm:flex-row">
                 <Link
                   href="/#quote"
-                  className="group justify-center gap-2 bg-cyan-dark px-6 py-4 font-semibold text-white transition-colors hover:bg-cyan-deep"
+                  className="group justify-center gap-2 rounded-xl bg-cyan-dark px-6 py-4 font-semibold text-white transition-colors hover:bg-cyan-deep"
                 >
                   Ask about a job
                   <ArrowRight
@@ -218,7 +219,7 @@ export default function NewToCipp() {
                 </Link>
                 <a
                   href="tel:+12533685614"
-                  className="justify-center gap-2 border border-white/40 px-6 py-4 font-semibold text-white transition-colors hover:border-white hover:bg-white hover:text-ink"
+                  className="justify-center gap-2 rounded-xl border border-white/40 px-6 py-4 font-semibold text-white transition-colors hover:border-white hover:bg-white hover:text-ink"
                 >
                   <Phone className="size-4 shrink-0" aria-hidden />
                   253-368-5614
@@ -229,6 +230,7 @@ export default function NewToCipp() {
         </section>
       </main>
       <Footer />
+      <QuoteDrawer />
       <AccessibilityWidget />
       <ChatWidget />
       <MobileActionBar />

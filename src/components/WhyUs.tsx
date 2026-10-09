@@ -1,104 +1,87 @@
 import Image from "next/image";
-import { WHY_US } from "@/data/catalog";
-import { Badge, Check, Cross, HardHat, Handshake, Tag, UvCure } from "./icons";
+import Link from "next/link";
+import { ArrowRight, Cog, Freight, Headset, ShieldCheck } from "./icons";
 import Reveal from "./Reveal";
-import SectionHead from "./SectionHead";
 
-/* WHY_US names its icon as a string so the data file stays free of JSX. */
-const GLYPH = { Badge, HardHat, Tag, UvCure, Handshake } as const;
+/*
+ * Why buy here, as the "Built for contractors" row in Yash's first desktop
+ * frame: a dark photograph card that says it in one line, beside four
+ * reasons that each fit on a glance. Every reason is a fact about how this
+ * business works, not an adjective about it.
+ */
 
-const DOES = [
-  "Stock and ship materials, equipment and consumables",
-  "Spec the right system for the host pipe and the job",
-  "Train and certify your installers",
-  "Run demos on site or at our facility",
-  "Troubleshoot and repair your equipment",
-];
-
-const DOES_NOT = [
-  "Bid or perform installation work",
-  "Compete with our contractor customers",
-  "Sell to homeowners or property managers",
+const REASONS = [
+  {
+    Icon: Freight,
+    title: "Fast shipping",
+    body: "Stocked lines leave Puyallup the day you order them.",
+  },
+  {
+    Icon: ShieldCheck,
+    title: "Trusted brands",
+    body: "MaxLiner, Brawo, IMS and Apex, each run on real pipe first.",
+  },
+  {
+    Icon: Headset,
+    title: "Expert support",
+    body: "Your rep has pulled liner. Ask a cure question, get an answer.",
+  },
+  {
+    Icon: Cog,
+    title: "Contractor focused",
+    body: "We sell to contractors only, so we never bid your work.",
+  },
 ];
 
 export default function WhyUs() {
   return (
-    <section id="why-us" aria-labelledby="why-us-title" className="border-b border-line bg-light">
-      <div className="mx-auto max-w-[80rem] px-4 py-14 lg:px-6 lg:py-20">
-        <Reveal>
-          <SectionHead
-            index="05"
-            eyebrow="Why choose us"
-            titleId="why-us-title"
-            title="Five reasons crews reorder instead of shopping around."
-          />
-        </Reveal>
-
-        <ul className="mt-10 grid grid-cols-1 gap-px min-[340px]:grid-cols-2 border border-line bg-line lg:grid-cols-5">
-          {WHY_US.map((item, i) => {
-            const Glyph = GLYPH[item.icon as keyof typeof GLYPH];
-            return (
-              <Reveal as="li" key={item.title} delay={i * 0.05} className="bg-white">
-                <div className="group h-full p-4 sm:p-5">
-                  <Glyph className="glyph size-7 sm:size-8" aria-hidden />
-                  <h3 className="mt-3 text-[1rem] leading-snug font-bold text-ink sm:mt-4 sm:text-[length:var(--text-h3)]">{item.title}</h3>
-                  <p className="mt-2 text-[0.875rem] leading-relaxed text-body sm:text-[0.9375rem]">{item.body}</p>
-                </div>
-              </Reveal>
-            );
-          })}
-        </ul>
-
-        {/* The positioning correction, stated plainly. */}
-        <div className="mt-6 grid gap-6 lg:grid-cols-[minmax(0,1fr)_minmax(0,22rem)]">
-          <Reveal className="grid gap-px border border-line bg-line sm:grid-cols-2">
-            <div className="bg-white p-5">
-              <p className="eyebrow flex items-center gap-2 text-cyan-dark">
-                <Check className="size-4" aria-hidden />
-                What we do
-              </p>
-              <ul className="mt-4 space-y-2.5">
-                {DOES.map((d) => (
-                  <li key={d} className="text-[0.9375rem] leading-snug text-ink">
-                    {d}
-                  </li>
-                ))}
-              </ul>
-            </div>
-            <div className="bg-white p-5">
-              <p className="eyebrow flex items-center gap-2 text-gray">
-                <Cross className="size-4" aria-hidden />
-                What we never do
-              </p>
-              <ul className="mt-4 space-y-2.5">
-                {DOES_NOT.map((d) => (
-                  <li key={d} className="text-[0.9375rem] leading-snug text-body line-through decoration-line">
-                    {d}
-                  </li>
-                ))}
-              </ul>
-              <p className="mt-5 border-t border-line pt-4 text-[0.8125rem] text-body">
-                Every product we sell goes out to a contractor who installs it.
-                That only works if we stay on our side of the line.
-              </p>
+    <section id="why-us" aria-labelledby="why-us-title" className="bg-white">
+      <div className="mx-auto max-w-[88rem] px-4 pb-12 sm:px-6 lg:px-8 lg:pb-20">
+        <div className="grid gap-3 sm:gap-4 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.15fr)] lg:gap-5">
+          <Reveal className="h-full">
+            <div className="relative isolate flex h-full min-h-[14rem] flex-col justify-center overflow-hidden rounded-3xl bg-ink p-6 sm:p-8 lg:min-h-[15rem] lg:p-10">
+              <Image
+                src="/video/pallet-jack-poster.jpg"
+                alt=""
+                fill
+                sizes="(min-width: 1024px) 45vw, 100vw"
+                className="-z-10 object-cover object-[70%_center]"
+              />
+              <span className="absolute inset-0 -z-10 bg-gradient-to-r from-ink via-ink/85 to-ink/20" aria-hidden />
+              <p className="eyebrow text-cyan">Built for contractors</p>
+              <h2
+                id="why-us-title"
+                className="mt-3 max-w-xs font-head text-[clamp(1.5rem,2.4vw,2.1rem)] leading-[1.1] font-extrabold text-white"
+              >
+                The right products. When you need them.
+              </h2>
+              <Link
+                href="/#support"
+                className="group mt-6 w-fit gap-2 rounded-full border border-white/50 px-5 text-[0.9375rem] font-semibold text-white hover:border-white hover:bg-white hover:text-ink"
+              >
+                How we work
+                <ArrowRight className="size-4 transition-transform group-hover:translate-x-1" aria-hidden />
+              </Link>
             </div>
           </Reveal>
 
-          <Reveal delay={0.1}>
-            <figure className="h-full border border-line bg-white">
-              <div className="relative aspect-4/3 w-full overflow-hidden">
-                <Image
-                  src="/img/warehouse.webp"
-                  alt="Pallets of liner tube and calibration tube racked in the Trenchless Distribution warehouse"
-                  fill
-                  sizes="(min-width: 1024px) 22rem, 100vw"
-                  className="object-cover"
-                />
-              </div>
-              <figcaption className="p-4 text-[0.8125rem] text-body">
-                Our floor in Puyallup, WA. Not a job site.
-              </figcaption>
-            </figure>
+          <Reveal delay={0.08} className="h-full">
+            <ul className="grid h-full grid-cols-2 rounded-3xl bg-mist p-2 sm:p-3 lg:grid-cols-4 lg:p-4">
+              {REASONS.map(({ Icon, title, body }, i) => (
+                <li
+                  key={title}
+                  className={`group flex flex-col gap-3 p-4 lg:px-5 lg:py-6 ${
+                    i % 2 === 1 ? "border-l border-line" : ""
+                  } ${i >= 2 ? "border-t border-line lg:border-t-0" : ""} ${i === 2 ? "lg:border-l" : ""}`}
+                >
+                  <Icon className="glyph size-8" strokeWidth={1.4} aria-hidden />
+                  <div>
+                    <h3 className="text-[0.9375rem] font-bold tracking-normal text-ink lg:text-base">{title}</h3>
+                    <p className="mt-1 text-[0.8125rem] leading-relaxed text-body lg:text-[0.875rem]">{body}</p>
+                  </div>
+                </li>
+              ))}
+            </ul>
           </Reveal>
         </div>
       </div>

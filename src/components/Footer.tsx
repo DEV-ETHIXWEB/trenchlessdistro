@@ -24,7 +24,7 @@ export default function Footer() {
     <footer className="bg-ink text-white">
       {/* pb clears the accessibility and question buttons, which are fixed to
           the bottom corners and otherwise sit on top of the last row. */}
-      <div className="mx-auto max-w-[80rem] px-4 pt-14 pb-28 lg:px-6 lg:pb-24">
+      <div className="mx-auto max-w-[88rem] px-4 pt-14 pb-28 sm:px-6 lg:px-8 lg:pt-20 lg:pb-24">
         <div className="grid gap-10 [&>*]:min-w-0 lg:grid-cols-[minmax(0,20rem)_minmax(0,1fr)] lg:gap-16">
           <div>
             <Image

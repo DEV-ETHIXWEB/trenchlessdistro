@@ -27,7 +27,7 @@ import Link from "next/link";
  * to be reachable at every scroll position, not most of them.
  */
 export default function MobileActionBar() {
-  const { diameter, touched } = usePipeSize();
+  const { diameter } = usePipeSize();
   const still = useReducedMotion();
 
   /* Tells the page it is there, so the layout can leave room; see the
@@ -50,47 +50,49 @@ export default function MobileActionBar() {
       aria-label="Quick actions"
       /* Rises once on mount. motion animates initial -> animate by itself,
          so this needs no state and therefore no render pass to trigger it. */
-      initial={still ? false : { y: "100%" }}
+      initial={still ? false : { y: "140%" }}
       animate={{ y: 0 }}
-      transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1], delay: 0.3 }}
-      className="fixed inset-x-0 bottom-0 z-60 border-t border-white/15 bg-ink/95 pb-[env(safe-area-inset-bottom)] backdrop-blur-md lg:hidden"
+      transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1], delay: 0.4 }}
+      className="fixed inset-x-3 bottom-[max(0.75rem,env(safe-area-inset-bottom))] z-60 rounded-2xl bg-ink/92 p-1.5 shadow-[0_18px_40px_-14px_rgba(19,33,42,0.7)] ring-1 ring-white/10 backdrop-blur-xl lg:hidden"
     >
       {/* min-w-0 throughout: flex children refuse to shrink below their
           content by default, so at 280px, or at 145% text, the price label
           pushed the whole bar past the viewport and took the document with
           it. Labels truncate instead. */}
-      <div className="flex items-stretch gap-1.5 px-2 py-2 sm:px-2.5">
+      <div className="flex items-stretch gap-1.5">
         <button
           type="button"
           onClick={() => fire(OPEN_A11Y)}
           aria-label="Accessibility settings"
-          className="shrink-0 justify-center border border-white/30 px-3 text-white transition-colors active:bg-white/10"
+          className="shrink-0 justify-center rounded-xl px-3.5 text-white transition-colors active:bg-white/15"
         >
-          <Accessibility className="size-5" aria-hidden />
+          <Accessibility className="size-5.5" aria-hidden />
         </button>
         <button
           type="button"
           onClick={() => fire(OPEN_CHAT)}
           aria-label="Ask a question"
-          className="shrink-0 justify-center border border-white/30 px-3 text-white transition-colors active:bg-white/10"
+          className="shrink-0 justify-center rounded-xl px-3.5 text-white transition-colors active:bg-white/15"
         >
-          <Chat className="size-5" aria-hidden />
+          <Chat className="size-5.5" aria-hidden />
         </button>
-
         <a
           href="tel:+12533685614"
-          className="min-w-0 flex-1 justify-center gap-1.5 border border-white/30 px-2 font-semibold text-white transition-colors active:bg-white/10"
+          className="min-w-0 flex-1 justify-center gap-1.5 rounded-xl bg-white/10 px-2 font-semibold text-white transition-colors active:bg-white/20"
         >
           <Phone className="size-4 shrink-0" aria-hidden />
           <span className="truncate max-[339px]:sr-only">Call</span>
         </a>
         <Link
           href="/#quote"
-          className="group flex-[1.5] justify-center gap-1.5 bg-cyan-dark px-2 py-3 text-[0.9375rem] font-semibold whitespace-nowrap text-white transition-colors active:bg-cyan-deep"
+          className="group min-w-0 flex-[1.6] justify-center gap-1.5 rounded-xl bg-cyan-dark px-2 py-3 text-[0.9375rem] font-semibold whitespace-nowrap text-white transition-colors active:bg-cyan-deep"
         >
-          {touched ? `Price for ${diameter}″` : "Get a price"}
+          <span className="truncate max-[339px]:hidden">
+            {diameter !== null ? `Price for ${diameter}″` : "Get a price"}
+          </span>
+          <span className="min-[340px]:hidden">Quote</span>
           <ArrowRight
-            className="size-4 shrink-0 transition-transform group-hover:translate-x-0.5"
+            className="hidden size-4 shrink-0 transition-transform group-hover:translate-x-0.5 min-[340px]:block"
             aria-hidden
           />
         </Link>
