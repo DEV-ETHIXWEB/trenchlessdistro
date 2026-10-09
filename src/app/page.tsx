@@ -17,6 +17,7 @@ import Quote from "@/components/Quote";
 import Footer from "@/components/Footer";
 import ChatWidget from "@/components/ChatWidget";
 import AccessibilityWidget from "@/components/AccessibilityWidget";
+import MobileActionBar from "@/components/MobileActionBar";
 import { PipeSizeProvider } from "@/components/PipeSize";
 
 /*
@@ -68,6 +69,7 @@ export default function Home() {
       <Footer />
       <AccessibilityWidget />
       <ChatWidget />
+      <MobileActionBar />
     </PipeSizeProvider>
   );
 }

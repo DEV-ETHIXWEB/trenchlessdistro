@@ -6,6 +6,7 @@ import { match } from "@/lib/chat";
 import { STARTERS, type Entry } from "@/data/knowledge";
 import { Chat, Cross, Phone, Send } from "./icons";
 import EthixwebCredit from "./EthixwebCredit";
+import { OPEN_CHAT } from "@/lib/panels";
 
 /*
  * An assistant with no model behind it. Every reply is written in
@@ -75,6 +76,14 @@ export default function ChatWidget() {
   useEffect(() => {
     if (open) inputRef.current?.focus();
   }, [open]);
+
+  /* The phone action bar carries this control now, and asks for the panel
+     by event rather than by reaching into this component's state. */
+  useEffect(() => {
+    const onOpen = () => setOpen(true);
+    window.addEventListener(OPEN_CHAT, onOpen);
+    return () => window.removeEventListener(OPEN_CHAT, onOpen);
+  }, []);
 
   useEffect(() => {
     if (!open) return;
@@ -184,7 +193,7 @@ export default function ChatWidget() {
          * the two launchers read as a pair and neither one covers the card
          * behind it. The label comes back from sm up, where there is room.
          */
-        className={`fixed right-4 bottom-4 z-70 gap-2.5 border-2 border-white bg-cyan-dark px-3 py-3 font-semibold text-white shadow-lg transition-colors hover:bg-cyan-deep sm:right-6 sm:bottom-6 sm:px-5 sm:py-3.5 ${
+        className={`hidden lg:inline-flex fixed right-4 bottom-4 z-70 gap-2.5 border-2 border-white bg-cyan-dark px-3 py-3 font-semibold text-white shadow-lg transition-colors hover:bg-cyan-deep sm:right-6 sm:bottom-6 sm:px-5 sm:py-3.5 ${
           open ? "max-sm:hidden" : ""
         }`}
       >

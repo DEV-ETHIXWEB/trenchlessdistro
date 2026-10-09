@@ -5,6 +5,7 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import ChatWidget from "@/components/ChatWidget";
 import AccessibilityWidget from "@/components/AccessibilityWidget";
+import MobileActionBar from "@/components/MobileActionBar";
 import { PipeSizeProvider } from "@/components/PipeSize";
 import Reveal from "@/components/Reveal";
 import { ArrowRight, Phone } from "@/components/icons";
@@ -230,6 +231,7 @@ export default function NewToCipp() {
       <Footer />
       <AccessibilityWidget />
       <ChatWidget />
+      <MobileActionBar />
     </PipeSizeProvider>
   );
 }

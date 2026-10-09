@@ -2,6 +2,8 @@ import Image from "next/image";
 import { FEATURED, ITEMS } from "@/data/catalog";
 import { ArrowRight, StockDot } from "./icons";
 import Reveal from "./Reveal";
+import Rail from "./Rail";
+import SectionHead from "./SectionHead";
 
 const STOCK_TONE: Record<string, string> = {
   "In stock": "text-cyan-dark",
@@ -34,12 +36,12 @@ export default function MostSearched() {
     >
       <div className="mx-auto max-w-[80rem] px-4 py-14 lg:px-6 lg:py-20">
         <Reveal className="flex flex-wrap items-end justify-between gap-4">
-          <div className="max-w-2xl">
-            <p className="eyebrow text-cyan-dark">On the shelf</p>
-            <h2 id="most-searched-title" className="mt-3 text-[length:var(--text-h2)] text-ink">
-              The lines that move every week, in stock in Puyallup.
-            </h2>
-          </div>
+          <SectionHead
+            index="02"
+            eyebrow="On the shelf"
+            titleId="most-searched-title"
+            title="The lines that move every week, in stock in Puyallup."
+          />
           <a
             href="#spec-finder"
             className="group inline-flex items-center gap-2 font-semibold text-cyan-dark hover:text-ink"
@@ -49,12 +51,14 @@ export default function MostSearched() {
           </a>
         </Reveal>
 
-        {/* Three hero products, photographed large. */}
-        <ul className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+        {/* Three hero products, photographed large. A rail on a phone, where
+            stacking them put two thousand pixels between the heading and the
+            next section. */}
+        <Rail label="Featured products" className="mt-10">
           {big.map((product, i) => {
             const d = detail(product.code);
             return (
-              <Reveal as="li" key={product.name} delay={i * 0.06}>
+              <Reveal as="li" key={product.name} delay={i * 0.06} className="w-[78%] shrink-0 sm:w-[52%] lg:w-auto">
                 <a
                   href="#spec-finder"
                   className="group flex h-full flex-col border border-line bg-white transition-all duration-300 hover:-translate-y-1 hover:border-cyan-dark hover:shadow-[0_18px_42px_-20px_rgba(14,26,34,0.45)]"
@@ -95,10 +99,10 @@ export default function MostSearched() {
               </Reveal>
             );
           })}
-        </ul>
+        </Rail>
 
-        {/* The rest of the shelf, still large enough to read the label. */}
-        <ul className="mt-5 grid grid-cols-2 gap-4 lg:grid-cols-4">
+        {/* The rest of the shelf. Two up on a phone, four from lg. */}
+        <ul className="mt-6 grid grid-cols-2 gap-4 lg:mt-5 lg:grid-cols-4">
           {rest.map((product, i) => {
             const d = detail(product.code);
             return (

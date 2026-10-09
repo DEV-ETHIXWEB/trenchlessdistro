@@ -25,7 +25,7 @@ export default function Footer() {
       {/* pb clears the accessibility and question buttons, which are fixed to
           the bottom corners and otherwise sit on top of the last row. */}
       <div className="mx-auto max-w-[80rem] px-4 pt-14 pb-28 lg:px-6 lg:pb-24">
-        <div className="grid gap-10 lg:grid-cols-[minmax(0,20rem)_minmax(0,1fr)] lg:gap-16">
+        <div className="grid gap-10 [&>*]:min-w-0 lg:grid-cols-[minmax(0,20rem)_minmax(0,1fr)] lg:gap-16">
           <div>
             <Image
               src="/brand/td-logo.webp"
@@ -34,12 +34,12 @@ export default function Footer() {
               height={86}
               className="h-16 w-auto"
             />
-            <p className="mt-5 max-w-xs text-[0.9375rem] leading-relaxed text-white/70">
+            <p className="mt-5 max-w-xs [overflow-wrap:anywhere] text-[0.9375rem] leading-relaxed text-white/70">
               A distributor of trenchless and CIPP materials, equipment and
               training. We supply the contractors who do the work. We do not
               perform installations.
             </p>
-            <div className="mt-6 space-y-1.5">
+            <div className="mt-6 space-y-1.5 [overflow-wrap:anywhere]">
               <a
                 href="tel:+12533685614"
                 className="datum block text-lg font-semibold hover:text-cyan"
@@ -62,7 +62,7 @@ export default function Footer() {
             </div>
           </div>
 
-          <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
+          <div className="grid grid-cols-2 gap-x-5 gap-y-8 [&>*]:min-w-0 lg:grid-cols-4">
             <nav aria-label="Shop">
               <p className="eyebrow text-cyan">Shop</p>
               <ul className="mt-4 space-y-2.5">
@@ -122,7 +122,7 @@ export default function Footer() {
 
         <div className="mt-12 flex flex-col gap-4 border-t border-white/15 pt-6 text-[0.8125rem] text-white/55 sm:flex-row sm:flex-wrap sm:items-center sm:justify-between">
           <p>&copy; {new Date().getFullYear()} Trenchless Distribution. All rights reserved.</p>
-          <div className="flex items-center gap-4">
+          <div className="flex flex-wrap items-center gap-x-4 gap-y-2">
             <p>Homepage design concept, for review</p>
             <EthixwebCredit tone="dark" />
           </div>

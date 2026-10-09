@@ -280,3 +280,19 @@ export const Handshake = (p: IconProps) => (
     <path d="M17.8 15.2h-2.3l-2.1 1.6a1.6 1.6 0 0 1-1.9 0L9.4 15.2H6.2" />
   </Icon>
 );
+
+/*
+ * The house mark: a pipe in cross section.
+ *
+ * Everything this company sells goes inside a circle, and a liner cured in
+ * place is literally a second ring inside the first. It is the one shape
+ * that is theirs rather than any distributor's, so it marks each movement of
+ * the page and gives the whole thing something to be recognised by.
+ */
+export const PipeMark = (p: IconProps) => (
+  <Icon {...p}>
+    <circle cx="12" cy="12" r="9.2" />
+    <circle cx="12" cy="12" r="5.4" />
+    <path d="M12 2.8v3.8M12 17.4v3.8M2.8 12h3.8M17.4 12h3.8" />
+  </Icon>
+);

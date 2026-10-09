@@ -2,6 +2,7 @@ import Image from "next/image";
 import { SUPPORT } from "@/data/catalog";
 import { ArrowRight, HardHat, PipeDiameter, Phone, Wrench } from "./icons";
 import Reveal from "./Reveal";
+import SectionHead from "./SectionHead";
 
 const GLYPH = [HardHat, PipeDiameter, Phone, Wrench];
 
@@ -11,10 +12,12 @@ export default function Support() {
       <div className="mx-auto max-w-[80rem] px-4 py-14 lg:px-6 lg:py-20">
         <div className="grid gap-10 lg:grid-cols-[minmax(0,22rem)_minmax(0,1fr)] lg:gap-14">
           <Reveal>
-            <p className="eyebrow text-cyan-dark">Training &amp; support</p>
-            <h2 id="support-title" className="mt-3 text-[length:var(--text-h2)] text-ink">
-              When a cutter dies at 6am, you call someone who has pulled liner.
-            </h2>
+            <SectionHead
+              index="06"
+              eyebrow="Training &amp; support"
+              titleId="support-title"
+              title="When a cutter dies at 6am, you call someone who has pulled liner."
+            />
             <p className="mt-4 text-lg text-body">
               Materials are the easy half. The training, the demo before the
               purchase, the call at 6am and the bench that gets a cutter running
@@ -41,21 +44,21 @@ export default function Support() {
             </figure>
           </Reveal>
 
-          <div className="grid gap-px border border-line bg-line sm:grid-cols-2">
+          <div className="grid grid-cols-1 gap-px min-[340px]:grid-cols-2 border border-line bg-line">
             {SUPPORT.map((pillar, i) => {
               const Glyph = GLYPH[i];
               return (
                 <Reveal key={pillar.title} delay={i * 0.06} className="bg-white">
-                  <div className="group h-full p-6">
-                    <Glyph className="glyph size-9" aria-hidden />
+                  <div className="group h-full p-4 sm:p-6">
+                    <Glyph className="glyph size-7 sm:size-9" aria-hidden />
                     <p className="eyebrow mt-5 text-body">{pillar.meta}</p>
-                    <h3 className="mt-2 text-[length:var(--text-h3)] text-ink">{pillar.title}</h3>
-                    <p className="mt-2.5 text-[0.9375rem] leading-relaxed text-body">{pillar.body}</p>
+                    <h3 className="mt-2 text-[1rem] leading-snug font-bold text-ink sm:text-[length:var(--text-h3)]">{pillar.title}</h3>
+                    <p className="mt-2 text-[0.875rem] leading-relaxed text-body sm:mt-2.5 sm:text-[0.9375rem]">{pillar.body}</p>
                   </div>
                 </Reveal>
               );
             })}
-            <Reveal delay={0.24} className="bg-white sm:col-span-2">
+            <Reveal delay={0.24} className="col-span-2 bg-white">
               <figure className="relative aspect-21/9 w-full overflow-hidden">
                 <Image
                   src="/img/equipment-lineup.webp"

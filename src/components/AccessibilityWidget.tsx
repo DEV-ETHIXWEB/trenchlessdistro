@@ -14,6 +14,7 @@ import {
 import { Accessibility, Check, Cross } from "./icons";
 import EthixwebCredit from "./EthixwebCredit";
 import { play, setSoundEnabled } from "@/lib/sound";
+import { OPEN_A11Y } from "@/lib/panels";
 
 /*
  * The accessibility button.
@@ -113,6 +114,14 @@ export default function AccessibilityWidget() {
   }
 
   // Escape closes and returns focus to the button that opened it.
+  /* The phone action bar carries this control now, and asks for the panel
+     by event rather than by reaching into this component's state. */
+  useEffect(() => {
+    const onOpen = () => setOpen(true);
+    window.addEventListener(OPEN_A11Y, onOpen);
+    return () => window.removeEventListener(OPEN_A11Y, onOpen);
+  }, []);
+
   useEffect(() => {
     if (!open) return;
     const onKey = (e: KeyboardEvent) => {
@@ -147,7 +156,7 @@ export default function AccessibilityWidget() {
         onClick={() => setOpen((v) => !v)}
         aria-expanded={open}
         aria-controls="a11y-panel"
-        className="group fixed bottom-4 left-4 z-70 gap-2.5 border-2 border-white bg-cyan-dark px-4 py-3 font-semibold text-white shadow-lg transition-colors hover:bg-cyan-deep sm:bottom-6 sm:left-6"
+        className="hidden lg:inline-flex group fixed bottom-4 left-4 z-70 gap-2.5 border-2 border-white bg-cyan-dark px-4 py-3 font-semibold text-white shadow-lg transition-colors hover:bg-cyan-deep sm:bottom-6 sm:left-6"
       >
         <Accessibility className="size-6 shrink-0" aria-hidden />
         <span className="sr-only sm:not-sr-only">

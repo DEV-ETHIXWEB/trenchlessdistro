@@ -87,6 +87,11 @@ export default function Hero() {
       </div>
 
       {/* Their own three trust signals, carried over onto the dark band. */}
+      {/* Watched by MobileActionBar: once this leaves the viewport the phone
+          action bar slides in. A zero-height marker rather than the hero
+          itself, so the bar appears the moment the hero's last line goes. */}
+      <div id="hero-sentinel" aria-hidden className="h-px w-full" />
+
       <div className="relative z-10 border-t border-white/15 bg-ink/75 backdrop-blur-sm">
         <dl className="mx-auto grid max-w-[80rem] divide-y divide-white/15 sm:grid-cols-3 sm:divide-x sm:divide-y-0 lg:px-6">
           {TRUST.map((t) => (

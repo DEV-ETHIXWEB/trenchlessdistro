@@ -315,6 +315,24 @@ html[data-a11y-links="underline"] a[href] {
 }
 
 /*
+ * The two floating launchers clear the phone action bar when it is up. Only
+ * below lg, because the bar itself is phones only. Transitioned on the same
+ * curve as everything else so they rise with the bar rather than jumping.
+ */
+.fab {
+  transition: bottom 0.38s var(--ease-glide);
+}
+/*
+ * The phone action bar is fixed to the bottom, so the document needs to end
+ * above it or its last line is permanently covered.
+ */
+@media (max-width: 1023px) {
+  html[data-actionbar="on"] body {
+    padding-bottom: calc(4.25rem + env(safe-area-inset-bottom));
+  }
+}
+
+/*
  * The card glyphs. They rest in the teal that carries the rest of the page
  * and take the logo's purple when the card they sit in is hovered or
  * keyboard-focused, with a small lift so the colour change has something to
@@ -436,15 +454,37 @@ html[data-a11y-motion="off"] *::after {
 /* Dark hero overlay. Two stops: a floor of ink so white text always clears
    AA over any frame, and a stronger wash on the left where the copy sits. */
 @utility hero-scrim {
-  background-image:
-    linear-gradient(
-      100deg,
-      rgba(22, 22, 22, 0.94) 0%,
-      rgba(22, 22, 22, 0.86) 34%,
-      rgba(22, 22, 22, 0.62) 62%,
-      rgba(22, 22, 22, 0.55) 100%
-    ),
-    linear-gradient(to top, rgba(22, 22, 22, 0.85) 0%, transparent 38%);
+  /*
+   * Phones first. The desktop scrim below runs left to right, which works on
+   * a wide crop where the copy sits in the left third and the warehouse
+   * shows through on the right. On a 390px screen every pixel gets the dark
+   * end of that ramp, so the photograph was not a photograph at all, it was
+   * a near-black rectangle, and the hero lost the one thing that said these
+   * people have a building full of this stuff.
+   *
+   * So on a phone it runs top to bottom instead: the top fifth stays open
+   * enough to read as racking, then it closes down behind the headline where
+   * contrast has to win.
+   */
+  background-image: linear-gradient(
+    to bottom,
+    rgba(22, 22, 22, 0.42) 0%,
+    rgba(22, 22, 22, 0.72) 18%,
+    rgba(22, 22, 22, 0.9) 38%,
+    rgba(22, 22, 22, 0.93) 100%
+  );
+
+  @media (width >= 48rem) {
+    background-image:
+      linear-gradient(
+        100deg,
+        rgba(22, 22, 22, 0.94) 0%,
+        rgba(22, 22, 22, 0.86) 34%,
+        rgba(22, 22, 22, 0.62) 62%,
+        rgba(22, 22, 22, 0.55) 100%
+      ),
+      linear-gradient(to top, rgba(22, 22, 22, 0.85) 0%, transparent 38%);
+  }
 }
 
 /* The same idea at lower strength, for bands that sit over video mid-page. */

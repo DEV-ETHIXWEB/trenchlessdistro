@@ -1,10 +1,11 @@
 "use client";
 
-import { useDeferredValue, useMemo } from "react";
+import { useDeferredValue, useMemo, useState } from "react";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import { ArrowRight, Search, StockDot } from "./icons";
 import { APPLICATIONS, DIAMETERS, ITEMS } from "@/data/catalog";
 import { usePipeSize } from "./PipeSize";
+import SectionHead from "./SectionHead";
 
 const STOCK_TONE: Record<string, string> = {
   "In stock": "text-cyan-dark",
@@ -43,6 +44,14 @@ export default function SpecFinder() {
      responsive on a phone while the list catches up a frame later. */
   const q = useDeferredValue(query).trim().toLowerCase();
   const still = useReducedMotion();
+  /*
+   * Phones see five rows and a count, not eighteen. The desktop table is a
+   * scannable grid; stacked on a 390px screen the same rows became three
+   * thousand pixels of label-and-value, which is the single longest thing on
+   * the page and reads like a spreadsheet export. Everything is still one
+   * tap away, and the rail never hides a result from a search.
+   */
+  const [showAll, setShowAll] = useState(false);
 
   /*
    * A search is a different intent from a filter. Someone typing "scrim"
@@ -68,16 +77,17 @@ export default function SpecFinder() {
       className="border-b border-line bg-light"
     >
       <div className="mx-auto max-w-[80rem] px-4 py-14 lg:px-6 lg:py-20">
-        <div className="max-w-2xl">
-          <p className="eyebrow text-ink">Price &amp; stock</p>
-          <h2 id="spec-finder-title" className="mt-3 text-[length:var(--text-h2)] text-ink">
-            See what fits your pipe, what it costs, and whether it ships today.
-          </h2>
+        <SectionHead
+          index="01"
+          eyebrow="Price &amp; stock"
+          titleId="spec-finder-title"
+          title="See what fits your pipe, what it costs, and whether it ships today."
+        >
           <p className="mt-4 text-lg text-body">
             Pick the size and the job, or search the catalog by name or part
             code. No login, no call first.
           </p>
-        </div>
+        </SectionHead>
 
         <div className="mt-8 border border-line bg-white">
           {/* Search sits above the filters: it is the faster route for anyone
@@ -218,30 +228,67 @@ export default function SpecFinder() {
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0 }}
                 transition={{ duration: 0.22, delay: Math.min(i, 8) * 0.02 }}
-                className="grid grid-cols-1 gap-x-4 gap-y-1 border-t border-line px-5 py-4 transition-colors hover:bg-light lg:grid-cols-[7rem_minmax(0,1fr)_8.5rem_6rem_7.5rem_8rem] lg:items-center lg:px-6"
+                /* A stable hook for tests. Matching rows on their styling
+                   broke silently the moment the mobile layout changed. */
+                data-product-row
+                className={`border-t border-line px-5 py-3.5 transition-colors hover:bg-light lg:grid lg:grid-cols-[7rem_minmax(0,1fr)_8.5rem_6rem_7.5rem_8rem] lg:items-center lg:gap-x-4 lg:py-4 lg:px-6 ${
+                  i >= 5 && !showAll && !searching ? "hidden lg:grid" : ""
+                }`}
               >
-                <span className="datum text-[0.8125rem] font-semibold text-cyan-dark">
+                {/* Phone: name and price on one line, the rest on a second.
+                    Two lines instead of six, and the two numbers a contractor
+                    is actually scanning for sit on the outer edges where the
+                    eye already is. */}
+                <span className="datum hidden text-[0.8125rem] font-semibold text-cyan-dark lg:inline">
                   {item.code}-{String(searching ? item.minD : diameter).padStart(2, "0")}
                 </span>
-                <span className="font-semibold text-ink">
-                  {item.name}
-                  <span className="ml-2 text-[0.8125rem] font-normal text-body">{item.uom}</span>
+
+                <span className="flex items-baseline justify-between gap-3 lg:block">
+                  <span className="font-semibold text-ink">
+                    {item.name}
+                    <span className="ml-2 hidden text-[0.8125rem] font-normal text-body lg:inline">
+                      {item.uom}
+                    </span>
+                  </span>
+                  <span className="datum shrink-0 font-bold whitespace-nowrap text-ink lg:hidden">
+                    ${item.price}
+                  </span>
                 </span>
-                <span className="text-[0.9375rem] text-body">{item.maker}</span>
-                <span className="text-[0.9375rem] text-body">{item.cure}</span>
-                <span className="datum font-semibold whitespace-nowrap text-ink">
+
+                <span className="hidden text-[0.9375rem] text-body lg:inline">{item.maker}</span>
+                <span className="hidden text-[0.9375rem] text-body lg:inline">{item.cure}</span>
+                <span className="datum hidden font-semibold whitespace-nowrap text-ink lg:inline">
                   ${item.price}
                   <span className="ml-1 text-[0.8125rem] font-normal text-body">{item.uom}</span>
                 </span>
-                <span
-                  className={`flex items-center gap-1.5 text-[0.9375rem] font-semibold whitespace-nowrap ${STOCK_TONE[item.stock]}`}
-                >
-                  <StockDot className="size-4 shrink-0" aria-hidden />
-                  {item.stock}
+
+                <span className="mt-1 flex flex-wrap items-center gap-x-2.5 gap-y-1 text-[0.8125rem] lg:mt-0 lg:text-[0.9375rem]">
+                  <span className="datum font-semibold text-cyan-dark lg:hidden">
+                    {item.code}-{String(searching ? item.minD : diameter).padStart(2, "0")}
+                  </span>
+                  <span className="text-body lg:hidden">{item.maker}</span>
+                  <span className="text-body lg:hidden">{item.cure}</span>
+                  <span
+                    className={`flex items-center gap-1.5 font-semibold whitespace-nowrap ${STOCK_TONE[item.stock]}`}
+                  >
+                    <StockDot className="size-3.5 shrink-0 lg:size-4" aria-hidden />
+                    {item.stock}
+                  </span>
                 </span>
               </motion.div>
             ))}
           </AnimatePresence>
+
+          {!searching && !showAll && results.length > 5 && (
+            <button
+              type="button"
+              onClick={() => setShowAll(true)}
+              className="w-full justify-center gap-2 border-t border-line bg-white px-5 py-4 font-semibold text-cyan-dark transition-colors active:bg-light lg:hidden"
+            >
+              Show all {results.length} products
+              <ArrowRight className="size-4 rotate-90" aria-hidden />
+            </button>
+          )}
 
           {results.length === 0 && (
             <p className="border-t border-line px-5 py-10 text-center text-body lg:px-6">

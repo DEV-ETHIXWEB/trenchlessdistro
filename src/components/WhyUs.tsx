@@ -2,6 +2,7 @@ import Image from "next/image";
 import { WHY_US } from "@/data/catalog";
 import { Badge, Check, Cross, HardHat, Handshake, Tag, UvCure } from "./icons";
 import Reveal from "./Reveal";
+import SectionHead from "./SectionHead";
 
 /* WHY_US names its icon as a string so the data file stays free of JSX. */
 const GLYPH = { Badge, HardHat, Tag, UvCure, Handshake } as const;
@@ -25,21 +26,23 @@ export default function WhyUs() {
     <section id="why-us" aria-labelledby="why-us-title" className="border-b border-line bg-light">
       <div className="mx-auto max-w-[80rem] px-4 py-14 lg:px-6 lg:py-20">
         <Reveal>
-          <p className="eyebrow text-cyan-dark">Why choose us</p>
-          <h2 id="why-us-title" className="mt-3 max-w-2xl text-[length:var(--text-h2)] text-ink">
-            Five reasons crews reorder instead of shopping around.
-          </h2>
+          <SectionHead
+            index="05"
+            eyebrow="Why choose us"
+            titleId="why-us-title"
+            title="Five reasons crews reorder instead of shopping around."
+          />
         </Reveal>
 
-        <ul className="mt-10 grid gap-px border border-line bg-line sm:grid-cols-2 lg:grid-cols-5">
+        <ul className="mt-10 grid grid-cols-1 gap-px min-[340px]:grid-cols-2 border border-line bg-line lg:grid-cols-5">
           {WHY_US.map((item, i) => {
             const Glyph = GLYPH[item.icon as keyof typeof GLYPH];
             return (
               <Reveal as="li" key={item.title} delay={i * 0.05} className="bg-white">
-                <div className="group h-full p-5">
-                  <Glyph className="glyph size-8" aria-hidden />
-                  <h3 className="mt-4 text-[length:var(--text-h3)] text-ink">{item.title}</h3>
-                  <p className="mt-2 text-[0.9375rem] leading-relaxed text-body">{item.body}</p>
+                <div className="group h-full p-4 sm:p-5">
+                  <Glyph className="glyph size-7 sm:size-8" aria-hidden />
+                  <h3 className="mt-3 text-[1rem] leading-snug font-bold text-ink sm:mt-4 sm:text-[length:var(--text-h3)]">{item.title}</h3>
+                  <p className="mt-2 text-[0.875rem] leading-relaxed text-body sm:text-[0.9375rem]">{item.body}</p>
                 </div>
               </Reveal>
             );
