@@ -1,12 +1,14 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { useFocusTrap } from "@/lib/useFocusTrap";
 import Link from "next/link";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import { ITEMS } from "@/data/catalog";
 import { ArrowRight, Cross, Heart, Minus, Plus, QuoteBoard, Trash } from "./icons";
 import { ProductArt } from "./ProductCard";
-import { OPEN_QUOTE_LIST, countOf, quoteList, useQuoteList } from "@/lib/quoteList";
+import { productHref } from "@/data/details";
+import { OPEN_QUOTE_LIST, countOf, quoteList, useQuoteList, type QuoteState } from "@/lib/quoteList";
 
 /*
  * The quote list, as a drawer from the right: what the visitor has added,
@@ -17,14 +19,11 @@ export default function QuoteDrawer() {
   const [open, setOpen] = useState(false);
   const list = useQuoteList();
   const still = useReducedMotion();
-  const closeRef = useRef<HTMLButtonElement>(null);
-  const returnTo = useRef<HTMLElement | null>(null);
+  const panelRef = useRef<HTMLDivElement>(null);
+  useFocusTrap(panelRef, open);
 
   useEffect(() => {
-    const onOpen = () => {
-      returnTo.current = document.activeElement as HTMLElement | null;
-      setOpen(true);
-    };
+    const onOpen = () => setOpen(true);
     window.addEventListener(OPEN_QUOTE_LIST, onOpen);
     return () => window.removeEventListener(OPEN_QUOTE_LIST, onOpen);
   }, []);
@@ -32,13 +31,11 @@ export default function QuoteDrawer() {
   useEffect(() => {
     if (!open) return;
     document.body.style.overflow = "hidden";
-    closeRef.current?.focus();
     const onKey = (e: KeyboardEvent) => e.key === "Escape" && setOpen(false);
     window.addEventListener("keydown", onKey);
     return () => {
       document.body.style.overflow = "";
       window.removeEventListener("keydown", onKey);
-      returnTo.current?.focus?.();
     };
   }, [open]);
 
@@ -49,6 +46,36 @@ export default function QuoteDrawer() {
     .map((c) => ITEMS.find((i) => i.code === c))
     .filter((i): i is (typeof ITEMS)[number] => Boolean(i));
   const n = countOf(list);
+
+  /*
+   * Every removal can be taken back for a few seconds: a stray tap on a bin
+   * should never cost someone the list they built.
+   */
+  const [undo, setUndo] = useState<{ label: string; items: QuoteState["items"] } | null>(null);
+  const undoTimer = useRef<ReturnType<typeof setTimeout>>(undefined);
+  useEffect(() => () => clearTimeout(undoTimer.current), []);
+  const withUndo = (label: string, act: () => void) => {
+    const before = list.items;
+    act();
+    setUndo({ label, items: before });
+    clearTimeout(undoTimer.current);
+    undoTimer.current = setTimeout(() => setUndo(null), 6000);
+  };
+
+  /*
+   * What else tends to go on the same quote: products for the same jobs or
+   * from the same category as what is already listed, nothing already on
+   * the list or saved below. Three at most, so it helps without selling.
+   */
+  const inList = new Set(list.items.map((i) => i.code));
+  const pairs = lines.length
+    ? ITEMS.filter(
+        (i) =>
+          !inList.has(i.code) &&
+          !list.saved.includes(i.code) &&
+          lines.some((l) => l.item.cat === i.cat || l.item.apps.some((a) => i.apps.includes(a))),
+      ).slice(0, 3)
+    : [];
 
   return (
     <AnimatePresence>
@@ -68,6 +95,7 @@ export default function QuoteDrawer() {
             className="absolute inset-0 h-full w-full bg-ink/45 backdrop-blur-[2px]"
           />
           <motion.div
+            ref={panelRef}
             role="dialog"
             aria-modal="true"
             aria-labelledby="quote-list-title"
@@ -86,7 +114,6 @@ export default function QuoteDrawer() {
                 </span>
               </h2>
               <button
-                ref={closeRef}
                 type="button"
                 onClick={() => setOpen(false)}
                 aria-label="Close quote list"
@@ -122,8 +149,14 @@ export default function QuoteDrawer() {
                         <ProductArt item={item} sizes="80px" decorative />
                       </div>
                       <div className="flex min-w-0 flex-1 flex-col">
-                        <p className="eyebrow text-[0.6875rem] text-cyan-dark">{item.maker}</p>
-                        <p className="text-[0.9375rem] leading-snug font-semibold text-ink">{item.name}</p>
+                        <p className="eyebrow text-[0.75rem] text-cyan-dark">{item.maker}</p>
+                        <Link
+                          href={productHref(item)}
+                          onClick={() => setOpen(false)}
+                          className="self-start rounded-sm text-[0.9375rem] leading-snug font-semibold text-ink hover:text-cyan-dark"
+                        >
+                          {item.name}
+                        </Link>
                         <p className="datum mt-0.5 text-[0.8125rem] text-body">
                           ${item.price} {item.uom}
                         </p>
@@ -131,7 +164,11 @@ export default function QuoteDrawer() {
                           <div className="flex items-center rounded-full border border-line-strong">
                             <button
                               type="button"
-                              onClick={() => quoteList.setQty(item.code, qty - 1)}
+                              onClick={() =>
+                                qty === 1
+                                  ? withUndo(item.name, () => quoteList.remove(item.code))
+                                  : quoteList.setQty(item.code, qty - 1)
+                              }
                               aria-label={`One fewer ${item.name}`}
                               className="size-11 justify-center rounded-full text-ink hover:text-cyan-dark"
                             >
@@ -151,7 +188,7 @@ export default function QuoteDrawer() {
                           </div>
                           <button
                             type="button"
-                            onClick={() => quoteList.remove(item.code)}
+                            onClick={() => withUndo(item.name, () => quoteList.remove(item.code))}
                             aria-label={`Remove ${item.name}`}
                             className="justify-center rounded-full px-2.5 text-body hover:text-ink"
                           >
@@ -162,6 +199,80 @@ export default function QuoteDrawer() {
                     </li>
                   ))}
                 </ul>
+              )}
+
+              {undo && (
+                <p
+                  role="status"
+                  className="mt-3 flex items-center justify-between gap-3 rounded-xl bg-ink px-4 py-2.5 text-[0.875rem] text-white"
+                >
+                  <span className="min-w-0 truncate">Removed {undo.label}</span>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      quoteList.restore(undo.items);
+                      setUndo(null);
+                    }}
+                    className="shrink-0 rounded-lg px-2 font-semibold text-cyan underline-offset-4 hover:underline"
+                  >
+                    Undo
+                  </button>
+                </p>
+              )}
+
+              {lines.length > 0 && (
+                <div className="mt-3 flex items-center justify-between gap-3 text-[0.875rem]">
+                  <Link
+                    href="/#spec-finder"
+                    onClick={() => setOpen(false)}
+                    className="group gap-1.5 rounded-lg font-semibold text-cyan-dark hover:text-cyan-deep"
+                  >
+                    <ArrowRight className="size-4 rotate-180 transition-transform group-hover:-translate-x-0.5" aria-hidden />
+                    Keep browsing
+                  </Link>
+                  <button
+                    type="button"
+                    onClick={() => withUndo("everything on the list", () => quoteList.clear())}
+                    className="rounded-lg px-2 font-medium text-body hover:text-ink"
+                  >
+                    Clear list
+                  </button>
+                </div>
+              )}
+
+              {pairs.length > 0 && (
+                <div className="mt-7">
+                  <p className="eyebrow text-body">Often quoted together</p>
+                  <ul className="mt-3 flex flex-col gap-2">
+                    {pairs.map((item) => (
+                      <li key={item.code} className="flex items-center gap-3 rounded-xl border border-line p-2">
+                        <div className="relative size-12 shrink-0 overflow-hidden rounded-lg bg-mist">
+                          <ProductArt item={item} sizes="48px" decorative />
+                        </div>
+                        <div className="min-w-0 flex-1 leading-snug">
+                          <Link
+                            href={productHref(item)}
+                            onClick={() => setOpen(false)}
+                            className="rounded-sm text-[0.875rem] font-semibold text-ink hover:text-cyan-dark"
+                          >
+                            {item.name}
+                          </Link>
+                          <p className="datum text-[0.8125rem] text-body">
+                            ${item.price} {item.uom}
+                          </p>
+                        </div>
+                        <button
+                          type="button"
+                          onClick={() => quoteList.add(item.code)}
+                          aria-label={`Add ${item.name} to the quote`}
+                          className="size-11 shrink-0 justify-center rounded-full bg-cyan-dark/10 text-cyan-dark hover:bg-cyan-dark hover:text-white"
+                        >
+                          <Plus className="size-4.5" aria-hidden />
+                        </button>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
               )}
 
               {saved.length > 0 && (

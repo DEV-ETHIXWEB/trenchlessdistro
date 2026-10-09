@@ -146,7 +146,7 @@ export const ITEMS: Item[] = [
     price: "38,500",
     stock: "Built to order",
     kind: "UV lateral system",
-    img: "/img/brawo-pico.webp",
+    img: "/img/brawo-pico.jpg",
     badge: "New",
   },
   {
@@ -162,7 +162,7 @@ export const ITEMS: Item[] = [
     price: "44,900",
     stock: "Built to order",
     kind: "LED cure train",
-    img: "/img/maxicure.webp",
+    img: "/img/maxicure.jpg",
   },
   {
     code: "RS-UVP",
@@ -444,204 +444,9 @@ export const EVENTS = [
   },
 ];
 
-export const SUPPORT = [
-  {
-    title: "Installer training",
-    body: "Manufacturer-backed certification plus crew refreshers, run on real pipe at our facility or yours.",
-    meta: "1–2 day formats",
-  },
-  {
-    title: "Product demos",
-    body: "Try a system before you buy it. We bring the equipment, the liner and the resin, and we run it with your crew.",
-    meta: "On-site or in-shop",
-  },
-  {
-    title: "Technical support",
-    body: "Call the people who stock the part. Spec help, cure schedules, troubleshooting and manufacturer escalation.",
-    meta: "Phone & on-site",
-  },
-  {
-    title: "Equipment repair",
-    body: "Minor repair, service and diagnostics on cutters, reels, pumps and cure gear so the truck gets back out.",
-    meta: "In-house bench",
-  },
-];
-
 export const RESOURCES = [
   { label: "Spec sheets", count: 214, note: "Per product and diameter" },
   { label: "SDS & TDS", count: 96, note: "Current revisions" },
   { label: "Manuals", count: 58, note: "Equipment and controllers" },
   { label: "Install videos", count: 41, note: "Short, job-site format" },
 ];
-
-/*
- * Featured products, using Trenchless Distribution's own product photography.
- * Names and manufacturers are taken from their current site.
- */
-/*
- * The shelf, in display order. `code` joins each photograph to its catalog
- * item so price and stock have exactly one home. Typed rather than inferred:
- * a missing code should be a build error, not a card that quietly renders
- * without a price.
- */
-export const FEATURED: {
-  img: string;
-  name: string;
-  code: string;
-  maker: string;
-  spec: string;
-}[] = [
-  {
-    img: "/img/flexliner.webp",
-    name: "Max FlexLiner™",
-    code: "ML-FLX",
-    maker: "MaxLiner",
-    spec: "2″–8″ · per ft · ambient cure",
-  },
-  {
-    img: "/img/superflex.webp",
-    name: "Max SuperFlex™",
-    code: "ML-SFX",
-    maker: "MaxLiner",
-    spec: "2″–6″ · per ft · multi-bend",
-  },
-  {
-    img: "/img/scrim.webp",
-    name: "LinerTube Reinforced™ (SCRIM)",
-    code: "ML-SCR",
-    maker: "MaxLiner",
-    spec: "4″–12″ · per ft · steam cure",
-  },
-  {
-    img: "/img/linerdrum.webp",
-    name: "MAX LinerDrum™ inversion system",
-    code: "ML-DRM",
-    maker: "MaxLiner",
-    spec: "2″–8″ · each · cart mounted",
-  },
-  {
-    img: "/img/maxpox.webp",
-    name: "MaxPox™ resin A + B",
-    code: "RS-EPX",
-    maker: "MaxLiner",
-    spec: "All sizes · per pail · two-part epoxy",
-  },
-  {
-    img: "/img/maxlight-plus.webp",
-    name: "MaxLight™ Plus resin",
-    code: "RS-UVP",
-    maker: "MaxLiner",
-    spec: "All sizes · per pail · UV cure",
-  },
-  {
-    img: "/img/maxlight-uv.webp",
-    name: "MaxLight UV resin systems",
-    code: "RS-UVP",
-    maker: "MaxLiner",
-    spec: "2″–12″ · system · UV LED",
-  },
-  {
-    img: "/img/maxicure.webp",
-    name: "IMS MAXICure LED package",
-    code: "IMS-MXC",
-    maker: "IMS",
-    spec: "4″–12″ · system · LED cure train",
-  },
-  {
-    img: "/img/brawo-pico.webp",
-    name: "BRAWO® Pico SX",
-    code: "BR-PCO",
-    maker: "Brawo Systems",
-    spec: "2″–6″ · system · UV lateral",
-  },
-  {
-    img: "/img/point-repair-kit.webp",
-    name: "Point repair & pipe patch kit",
-    code: "PR-KIT",
-    maker: "Apex CIPP",
-    spec: "2″–8″ · kit · ambient & UV",
-  },
-];
-
-
-/* ---------------------------------------------------------------------------
- * Content below is taken from trenchlessdistro.com, close to verbatim.
- * This is the 80%: their structure, their claims, their words.
- * ------------------------------------------------------------------------ */
-
-/** The three trust signals their current hero carries. */
-export const TRUST = [
-  { k: "35+ years", v: "Industry experience" },
-  { k: "Products & training", v: "That last a lifetime" },
-  { k: "Financing", v: "Available for qualified customers" },
-];
-
-/** Their "Collection" showcase: three ways people shop this catalog. */
-export const COLLECTIONS = [
-  {
-    name: "MaxLiner®",
-    img: "/img/drum-hero.webp",
-    alt: "MAX LinerDrum inversion system on its wheeled cart",
-    body: "The industry’s most comprehensive solution for rehabilitating lateral and vertical pipelines, with portable, commercial-strength equipment.",
-    cta: "Shop MaxLiner",
-  },
-  {
-    name: "CIPP liners",
-    img: "/img/liner-rolls.webp",
-    alt: "Rolls of calibration tube and pull tape in assorted colours",
-    body: "Varieties of sizes, materials, capabilities and use cases. We can help you make the most out of your liner purchase with expert application assistance.",
-    cta: "Shop liners",
-  },
-  {
-    name: "Resin",
-    img: "/img/pouring-resin.webp",
-    alt: "Resin being poured from a mixing pail during a wetout",
-    body: "With dozens of options and application specific features. We source the resin you need to get the job done quickly and efficiently.",
-    cta: "Shop resin",
-  },
-];
-
-/*
- * Their "Why Choose Trenchless Distribution" block, cut to the bone. The
- * first pass was five paragraphs of prose, which read as a template nobody
- * finishes. Each one is now a claim and a single line of evidence, carried
- * by an icon, so the row can be scanned in the time someone actually gives
- * it. `icon` names an export from components/icons.
- */
-export const WHY_US = [
-  {
-    icon: "Badge",
-    title: "Proven on real pipe",
-    body: "Every line we carry is run on real pipe before it reaches your truck.",
-  },
-  {
-    icon: "HardHat",
-    title: "Installers, not order takers",
-    body: "Your rep has pulled liner. Ask them a cure question and get an answer.",
-  },
-  {
-    icon: "Tag",
-    title: "Priced for monthly buyers",
-    body: "Specced to run together and priced for crews who reorder, not once.",
-  },
-  {
-    icon: "UvCure",
-    title: "UV and robotics, supported",
-    body: "The new gear, with the training and the bench that keep it running.",
-  },
-  {
-    icon: "Handshake",
-    title: "We never bid your work",
-    body: "We sell to contractors only, so we are never across the table.",
-  },
-];
-
-/** Their patch repair section. */
-export const PATCH = {
-  eyebrow: "CIPP patch repair",
-  title: "The simplest way into the trenchless market.",
-  body: "A simple, user-friendly approach for entering the trenchless CIPP market. Sectional patch repair offers a quick, proven method for rehabilitating failing pipelines without lining the entire pipe or excavating.",
-  cta: "Explore patch repair",
-  img: "/img/point-repair-bg.webp",
-  alt: "A reinforced sectional liner laid out flat before wetout",
-};

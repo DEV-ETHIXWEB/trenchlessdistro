@@ -109,7 +109,7 @@ export default function NewToCipp() {
                   </Link>
                 </p>
               </div>
-              <figure className="overflow-hidden rounded-3xl border border-line bg-white shadow-[var(--shadow-card)]">
+              <figure className="w-full max-w-md overflow-hidden rounded-3xl border border-line bg-white shadow-[var(--shadow-card)] lg:max-w-none">
                 <div className="relative aspect-4/3 w-full overflow-hidden">
                   <Image
                     src="/img/uv-cure.webp"

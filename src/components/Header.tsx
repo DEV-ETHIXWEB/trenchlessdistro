@@ -11,7 +11,8 @@
  * becomes a real navigation back to the homepage anywhere else.
  */
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import { useFocusTrap } from "@/lib/useFocusTrap";
 import Image from "next/image";
 import Link from "next/link";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
@@ -61,6 +62,8 @@ export default function Header() {
   /* Phone only: the search row folds away once the page moves, and the
      search icon brings it back on demand. */
   const [searchOpen, setSearchOpen] = useState(false);
+  const menuRef = useRef<HTMLDivElement>(null);
+  useFocusTrap(menuRef, open);
   const still = useReducedMotion();
   const { setCategory, setQuery } = usePipeSize();
   const pickCategory = (slug: string | null) => {
@@ -117,7 +120,7 @@ export default function Header() {
     >
       <div
         className={`mx-auto flex max-w-[88rem] items-center gap-1 px-2 min-[360px]:gap-2 transition-[padding] duration-500 ease-glide sm:px-6 lg:gap-6 lg:px-8 ${
-          stuck ? "py-1.5 lg:py-2" : "py-2 lg:py-3.5"
+          stuck ? "py-2.5 lg:py-3" : "py-3 lg:py-4.5"
         }`}
       >
         {/* Phone: menu on the left, logo centred, tools on the right. */}
@@ -142,7 +145,7 @@ export default function Header() {
             height={86}
             priority
             className={`w-auto max-w-full object-contain transition-[height] duration-500 ease-glide ${
-              stuck ? "h-9 lg:h-11" : "h-10 lg:h-13"
+              stuck ? "h-10 lg:h-12" : "h-11 lg:h-14"
             }`}
           />
         </Link>
@@ -214,13 +217,14 @@ export default function Header() {
             </AnimatePresence>
           </div>
 
-          {NAV.map((item) => (
+          {/* The bar keeps the same five links at every desktop width; the
+              wide ones (Collections, About) live in the phone menu and the
+              footer, so the search pill never gets squeezed out. */}
+          {NAV.filter((item) => !item.wide).map((item) => (
             <Link
               key={item.label}
               href={item.href}
-              className={`rounded-lg px-2.5 text-[0.9375rem] font-medium whitespace-nowrap text-ink hover:bg-mist hover:text-cyan-dark ${
-                item.wide ? "hidden 2xl:inline-flex" : ""
-              }`}
+              className="rounded-lg px-2.5 text-[0.9375rem] font-medium whitespace-nowrap text-ink hover:bg-mist hover:text-cyan-dark"
             >
               {item.label}
             </Link>
@@ -228,13 +232,6 @@ export default function Header() {
         </nav>
 
         <div className="flex shrink-0 items-center gap-0.5 min-[360px]:gap-1 lg:gap-3">
-          <a
-            href="tel:+12533685614"
-            className="hidden items-center gap-2 rounded-lg px-2 font-semibold whitespace-nowrap text-cyan-dark hover:text-cyan-deep 2xl:inline-flex"
-          >
-            <Phone className="size-4.5" aria-hidden />
-            <span className="datum">253-368-5614</span>
-          </a>
           {/* Phone tools. */}
           <button
             type="button"
@@ -251,6 +248,19 @@ export default function Header() {
             className="hidden shrink-0 justify-center rounded-full px-2 text-cyan-dark hover:bg-mist min-[360px]:inline-flex lg:hidden"
           >
             <Phone className="size-6" aria-hidden />
+          </a>
+          {/* Desktop: the number rides along in the sticky bar, so it is
+              one glance away from anywhere on the page. */}
+          <a
+            href="tel:+12533685614"
+            aria-label="Call 253-368-5614"
+            title="Call 253-368-5614"
+            className="hidden shrink-0 items-center gap-2 rounded-xl px-1.5 text-[0.9375rem] font-semibold whitespace-nowrap text-ink hover:bg-mist hover:text-cyan-dark lg:inline-flex"
+          >
+            <span className="grid size-8 place-items-center rounded-full bg-cyan-dark/10 text-cyan-dark">
+              <Phone className="size-4" aria-hidden />
+            </span>
+            <span className="hidden min-[1360px]:inline">253-368-5614</span>
           </a>
           <Link
             href="/#quote"
@@ -285,6 +295,7 @@ export default function Header() {
             animate={{ opacity: 1, x: 0 }}
             exit={{ opacity: 0, x: "-4%" }}
             transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
+            ref={menuRef}
             role="dialog"
             aria-modal="true"
             aria-label="Menu"

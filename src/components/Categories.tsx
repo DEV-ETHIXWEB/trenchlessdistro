@@ -54,7 +54,7 @@ export default function Categories() {
           ref={railRef}
           aria-label="Product categories"
           tabIndex={0}
-          className="no-scrollbar -mx-4 mt-7 flex snap-x snap-mandatory scroll-px-4 gap-3 overflow-x-auto px-4 pb-2 sm:-mx-6 sm:scroll-px-6 sm:px-6 lg:mx-0 lg:mt-9 lg:scroll-px-0 lg:gap-5 lg:px-0 focus-visible:outline-offset-4"
+          className="no-scrollbar -mx-4 mt-1 -mb-12 flex snap-x snap-mandatory scroll-px-4 gap-3 overflow-x-auto overflow-y-hidden px-4 pt-6 pb-12 lg:mt-3 sm:-mx-6 sm:scroll-px-6 sm:px-6 lg:-mx-6 lg:scroll-px-6 lg:gap-5 lg:px-6 focus-visible:outline-offset-4"
         >
           {CATEGORIES.map((c, i) => {
             const Glyph = Icons[c.glyph as GlyphName] as (p: React.SVGProps<SVGSVGElement>) => React.ReactElement;
@@ -70,7 +70,7 @@ export default function Categories() {
                       setCategory(c.slug);
                       setQuery("");
                     }}
-                    className="group flex h-full flex-col overflow-hidden rounded-2xl border border-line bg-white transition-[box-shadow,transform,border-color] duration-500 ease-glide hover:-translate-y-1 hover:border-transparent hover:shadow-[var(--shadow-lift)]"
+                    className="group flex h-full flex-col overflow-hidden rounded-2xl border border-line bg-white transition-[box-shadow,border-color] duration-300 ease-glide hover:border-line-strong hover:shadow-[var(--shadow-hover)]"
                   >
                     <span className="relative block aspect-[5/4] overflow-hidden bg-gradient-to-br from-mist to-mist-2">
                       {c.img ? (
@@ -78,7 +78,7 @@ export default function Categories() {
                           src={c.img}
                           alt=""
                           fill
-                          sizes="(min-width: 1280px) 18vw, (min-width: 1024px) 23vw, 44vw"
+                          sizes="(min-width: 1280px) 26vw, (min-width: 1024px) 32vw, 80vw"
                           className="object-cover transition-transform duration-700 ease-glide group-hover:scale-[1.06]"
                         />
                       ) : (
@@ -108,7 +108,7 @@ export default function Categories() {
             );
           })}
         </ul>
-        <RailDots page={rail.page} pages={rail.pages} className="mt-4 md:hidden" />
+        <RailDots page={rail.page} pages={rail.pages} className="relative mt-4 md:hidden" />
       </div>
     </section>
   );

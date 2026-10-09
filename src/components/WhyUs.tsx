@@ -1,4 +1,4 @@
-import Image from "next/image";
+import BackgroundVideo from "./BackgroundVideo";
 import Link from "next/link";
 import { ArrowRight, Cog, Freight, Headset, ShieldCheck } from "./icons";
 import Reveal from "./Reveal";
@@ -39,15 +39,16 @@ export default function WhyUs() {
       <div className="mx-auto max-w-[88rem] px-4 pb-12 sm:px-6 lg:px-8 lg:pb-20">
         <div className="grid gap-3 sm:gap-4 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.15fr)] lg:gap-5">
           <Reveal className="h-full">
-            <div className="relative isolate flex h-full min-h-[14rem] flex-col justify-center overflow-hidden rounded-3xl bg-ink p-6 sm:p-8 lg:min-h-[15rem] lg:p-10">
-              <Image
-                src="/video/pallet-jack-poster.jpg"
-                alt=""
-                fill
-                sizes="(min-width: 1024px) 45vw, 100vw"
-                className="-z-10 object-cover object-[70%_center]"
-              />
-              <span className="absolute inset-0 -z-10 bg-gradient-to-r from-ink via-ink/85 to-ink/20" aria-hidden />
+            <div className="relative isolate flex h-full min-h-[14rem] flex-col justify-center overflow-hidden rounded-3xl bg-ink p-6 pr-16 sm:p-8 sm:pr-16 lg:min-h-[15rem] lg:p-10 lg:pr-16">
+              <div className="absolute inset-0 -z-10">
+                <BackgroundVideo
+                  src="/video/pallet-jack.mp4"
+                  poster="/video/pallet-jack-poster.jpg"
+                  scrimClassName="bg-gradient-to-r from-ink via-ink/85 to-ink/20"
+                  controlClassName="absolute top-4 right-4 z-20"
+                  sizes="(min-width: 1024px) 45vw, 100vw"
+                />
+              </div>
               <p className="eyebrow text-cyan">Built for contractors</p>
               <h2
                 id="why-us-title"

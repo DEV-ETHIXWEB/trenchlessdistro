@@ -76,10 +76,10 @@ export default function TwoDoors() {
     <section id="two-doors" aria-labelledby="two-doors-title" className="overflow-hidden bg-mist">
       <div className="mx-auto grid max-w-[88rem] gap-8 px-4 py-12 sm:px-6 lg:grid-cols-[minmax(0,19rem)_minmax(0,1fr)] lg:gap-12 lg:px-8 lg:py-20">
         <Reveal className="flex flex-col">
-          <p className="w-fit rounded-full bg-white px-3 py-1.5 text-[0.8125rem] font-semibold text-body shadow-[var(--shadow-card)]">
+          <p className="eyebrow text-cyan-dark">
             Who it&rsquo;s for
           </p>
-          <h2 id="two-doors-title" className="mt-4 text-[clamp(1.9rem,3.2vw,2.9rem)] leading-[1.05] font-bold text-ink">
+          <h2 id="two-doors-title" className="mt-2.5 text-[clamp(1.9rem,3.2vw,2.9rem)] leading-[1.05] font-bold text-ink">
             Built for every way of lining.
           </h2>
           <p className="mt-4 text-body">
@@ -95,7 +95,7 @@ export default function TwoDoors() {
             ref={railRef}
             aria-label="Who we supply"
             tabIndex={0}
-            className="no-scrollbar -mx-4 flex snap-x snap-mandatory scroll-px-4 gap-3 overflow-x-auto px-4 pb-2 sm:-mx-6 sm:scroll-px-6 sm:gap-4 sm:px-6 lg:mx-0 lg:scroll-px-0 lg:px-0"
+            className="no-scrollbar -mx-4 -mt-6 -mb-12 flex snap-x snap-mandatory scroll-px-4 gap-3 overflow-x-auto overflow-y-hidden px-4 pt-6 pb-12 sm:-mx-6 sm:scroll-px-6 sm:gap-4 sm:px-6 lg:-mx-6 lg:scroll-px-6 lg:px-6"
           >
             {DOORS.map((d, i) => (
               <li key={d.title} className="w-[76%] shrink-0 snap-start sm:w-[46%] lg:w-[calc((100%-2rem)/2.4)] xl:w-[calc((100%-2rem)/3)]">
@@ -108,14 +108,14 @@ export default function TwoDoors() {
                       setCategory(null);
                       setQuery("");
                     }}
-                    className="group flex h-full flex-col rounded-3xl bg-white p-2 transition-shadow duration-500 hover:shadow-[var(--shadow-lift)]"
+                    className="group flex h-full flex-col rounded-3xl bg-white p-2 transition-shadow duration-300 hover:shadow-[var(--shadow-hover)]"
                   >
-                    <span className="relative block aspect-[4/4.4] overflow-hidden rounded-2xl bg-ink">
+                    <span className="relative block aspect-[5/4] overflow-hidden rounded-2xl bg-ink">
                       <Image
                         src={d.img}
                         alt={d.alt}
                         fill
-                        sizes="(min-width: 1280px) 22vw, (min-width: 640px) 44vw, 76vw"
+                        sizes="(min-width: 1280px) 28vw, (min-width: 640px) 50vw, 90vw"
                         className="object-cover transition-transform duration-[1.2s] ease-glide group-hover:scale-[1.06]"
                       />
                       <span className="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-ink/80 to-transparent" aria-hidden />
@@ -141,7 +141,7 @@ export default function TwoDoors() {
               </li>
             ))}
           </ul>
-          <RailDots page={rail.page} pages={rail.pages} className="mt-4 lg:hidden" />
+          <RailDots page={rail.page} pages={rail.pages} className="relative mt-4 lg:hidden" />
         </div>
       </div>
     </section>

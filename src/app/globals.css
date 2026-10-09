@@ -65,6 +65,9 @@
   --text-h3: clamp(1.08rem, 1.25vw, 1.22rem);
 
   --shadow-card: 0 1px 2px rgba(19, 33, 42, 0.04), 0 8px 24px -12px rgba(19, 33, 42, 0.12);
+  /* Hover on a card: an even halo that never reaches past 3px, so a
+     scrolling rail can't clip it and it never smears onto neighbours. */
+  --shadow-hover: 0 0 3px rgba(19, 33, 42, 0.16);
   --shadow-lift: 0 2px 4px rgba(19, 33, 42, 0.05), 0 22px 44px -18px rgba(19, 33, 42, 0.28);
 }
 
@@ -212,10 +215,8 @@
     overflow-wrap: break-word;
   }
 
-  :target,
-  section[id] {
-    scroll-margin-top: 6.5rem;
-  }
+  /* The header clearance lives in html's scroll-padding-top below, which
+     covers anchor jumps and keyboard focus alike. */
 
   ::selection {
     background-color: var(--color-cyan);
@@ -507,6 +508,25 @@ html[data-a11y-motion="off"] *::after {
   }
 }
 
+/* The hero loop's scrim. */
+@utility hero-video-scrim {
+  background-image: linear-gradient(
+    to bottom,
+    rgba(19, 33, 42, 0.55) 0%,
+    rgba(19, 33, 42, 0.78) 22%,
+    rgba(19, 33, 42, 0.9) 45%,
+    rgba(19, 33, 42, 0.93) 100%
+  );
+  @media (width >= 64rem) {
+    background-image: linear-gradient(
+      to top,
+      rgba(19, 33, 42, 0.45) 0%,
+      rgba(19, 33, 42, 0.12) 45%,
+      rgba(19, 33, 42, 0.18) 100%
+    );
+  }
+}
+
 /* The same idea at lower strength, for bands that sit over video mid-page. */
 @utility band-scrim {
   background-image: linear-gradient(
@@ -549,13 +569,30 @@ html[data-a11y-motion="off"] *::after {
     stroke-dashoffset: 0;
   }
 }
-@keyframes hero-zoom {
+/* The pipe mark turns a quarter, like a coupling seating, and the rule
+   beside it draws out from the mark. Once, on load. */
+@keyframes hero-turn {
   from {
-    transform: scale(1.08);
+    transform: rotate(-90deg);
   }
   to {
-    transform: scale(1);
+    transform: none;
   }
+}
+@keyframes hero-rule {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: none;
+  }
+}
+.hero-mark {
+  animation: hero-turn 1.2s var(--ease-glide) 0.15s both;
+}
+.hero-rule {
+  transform-origin: left center;
+  animation: hero-rule 0.9s var(--ease-glide) 0.45s both;
 }
 
 .hero-copy > * {
@@ -566,9 +603,6 @@ html[data-a11y-motion="off"] *::after {
 .hero-copy > *:nth-child(4) { animation-delay: 0.24s; }
 .hero-copy > *:nth-child(5) { animation-delay: 0.32s; }
 
-.hero-pan {
-  animation: hero-zoom 2.4s var(--ease-glide) both;
-}
 .hero-script {
   animation: hero-rise 1s var(--ease-glide) 0.5s both;
 }
@@ -587,7 +621,8 @@ html[data-a11y-motion="off"] *::after {
 
 @media (prefers-reduced-motion: reduce) {
   .hero-copy > *,
-  .hero-pan,
+  .hero-mark,
+  .hero-rule,
   .hero-script,
   .hero-underline,
   .hero-chip {
@@ -595,7 +630,8 @@ html[data-a11y-motion="off"] *::after {
   }
 }
 html[data-a11y-motion="off"] .hero-copy > *,
-html[data-a11y-motion="off"] .hero-pan,
+html[data-a11y-motion="off"] .hero-mark,
+html[data-a11y-motion="off"] .hero-rule,
 html[data-a11y-motion="off"] .hero-script,
 html[data-a11y-motion="off"] .hero-underline,
 html[data-a11y-motion="off"] .hero-chip {
@@ -609,5 +645,21 @@ html[data-a11y-motion="off"] .hero-chip {
   scrollbar-width: none;
   &::-webkit-scrollbar {
     display: none;
+  }
+}
+
+/*
+ * Keyboard focus is never hidden behind fixed furniture (WCAG 2.4.11):
+ * anything scrolled into view stops below the sticky header and, on a
+ * phone, above the action dock.
+ */
+html {
+  scroll-padding-top: 6rem;
+  /* Desktop: clears the two floating launchers in the bottom corners. */
+  scroll-padding-bottom: 5.5rem;
+}
+@media (max-width: 1023px) {
+  html[data-actionbar="on"] {
+    scroll-padding-bottom: 6.5rem;
   }
 }

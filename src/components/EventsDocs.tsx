@@ -29,17 +29,17 @@ export default function EventsDocs() {
             <Reveal as="li" key={event.date} delay={i * 0.06}>
               <a
                 href="#quote"
-                className="group flex h-full flex-col rounded-2xl border border-line bg-white p-5 transition-[box-shadow,transform,border-color] duration-500 ease-glide hover:-translate-y-1 hover:border-transparent hover:shadow-[var(--shadow-lift)] lg:p-6"
+                className="group flex h-full flex-col rounded-2xl border border-line bg-white p-5 transition-[box-shadow,border-color] duration-300 ease-glide hover:border-line-strong hover:shadow-[var(--shadow-hover)] lg:p-6"
               >
-                <span className="flex items-start justify-between gap-4">
+                <span className="flex flex-wrap items-start justify-between gap-3">
                   <time
                     dateTime={event.date}
                     className="flex size-16 shrink-0 flex-col items-center justify-center rounded-2xl bg-mist transition-colors duration-300 group-hover:bg-cyan-dark group-hover:text-white"
                   >
                     <span className="datum font-head text-2xl leading-none font-extrabold">{event.day}</span>
-                    <span className="eyebrow mt-1 text-[0.625rem]">{event.month}</span>
+                    <span className="eyebrow mt-1 text-[0.75rem]">{event.month}</span>
                   </time>
-                  <span className="rounded-full bg-cyan-dark/10 px-2.5 py-1 text-[0.75rem] font-semibold text-cyan-dark">
+                  <span className="rounded-full bg-cyan-dark/10 px-2.5 py-1 text-[0.75rem] font-semibold whitespace-nowrap text-cyan-dark">
                     {event.seats}
                   </span>
                 </span>

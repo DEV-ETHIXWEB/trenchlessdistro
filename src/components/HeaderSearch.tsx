@@ -17,6 +17,8 @@ import { ITEMS } from "@/data/catalog";
 import { Search, StockDot } from "./icons";
 import { usePipeSize } from "./PipeSize";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { productHref } from "@/data/details";
 import Image from "next/image";
 
 /*
@@ -24,8 +26,9 @@ import Image from "next/image";
  *
  * A contractor who already knows the part should not have to scroll past
  * four sections of positioning to find it. Typing here shows the matching
- * products with their price and stock straight away, and choosing one drops
- * them on the finder with that search already run.
+ * products with their price and stock straight away. Choosing one opens
+ * that product's page; pressing Enter on the text itself, or "See all",
+ * drops them on the catalog with the search already run.
  *
  * It is a combobox, so it is operable from the keyboard: arrows move through
  * the list, Enter takes the highlighted row, Escape closes it.
@@ -59,7 +62,9 @@ export default function HeaderSearch({
   const { setQuery } = usePipeSize();
   const [text, setText] = useState("");
   const [open, setOpen] = useState(false);
-  const [active, setActive] = useState(0);
+  /* -1: nothing highlighted, so Enter searches the text as typed. */
+  const [active, setActive] = useState(-1);
+  const router = useRouter();
   const wrapRef = useRef<HTMLDivElement>(null);
   const jumpRef = useRef<HTMLAnchorElement>(null);
   const still = useReducedMotion();
@@ -78,6 +83,13 @@ export default function HeaderSearch({
     document.addEventListener("pointerdown", onDown);
     return () => document.removeEventListener("pointerdown", onDown);
   }, [show]);
+
+  function open_(item: (typeof ITEMS)[number]) {
+    setOpen(false);
+    setText("");
+    onPick?.();
+    router.push(productHref(item));
+  }
 
   function go(term: string) {
     setQuery(term);
@@ -99,10 +111,10 @@ export default function HeaderSearch({
       setActive((i) => (i + 1) % hits.length);
     } else if (e.key === "ArrowUp") {
       e.preventDefault();
-      setActive((i) => (i - 1 + hits.length) % hits.length);
-    } else if (e.key === "Enter") {
+      setActive((i) => (i <= 0 ? hits.length - 1 : i - 1));
+    } else if (e.key === "Enter" && active >= 0 && hits[active]) {
       e.preventDefault();
-      go(hits[active]?.name ?? text);
+      open_(hits[active]);
     }
   }
 
@@ -129,17 +141,17 @@ export default function HeaderSearch({
             /* New query, new list: the highlight goes back to the top here
                rather than in an effect, which would be a second render for
                something we already know at the moment of the keystroke. */
-            setActive(0);
+            setActive(-1);
           }}
           onFocus={() => setOpen(true)}
           onKeyDown={onKeyDown}
-          placeholder="Search products, brands or part numbers"
+          placeholder="Search products or brands"
           autoFocus={autoFocus}
           aria-label="Search products"
           aria-expanded={show}
           aria-controls={show ? listId : undefined}
           aria-activedescendant={
-            show && hits.length > 0 ? `${listId}-${active}` : undefined
+            show && active >= 0 && hits[active] ? `${listId}-${active}` : undefined
           }
           aria-autocomplete="list"
           role="combobox"
@@ -180,7 +192,7 @@ export default function HeaderSearch({
                     /* Pointer down would blur the input and close the list
                        before the click ever lands. */
                     onMouseDown={(e) => e.preventDefault()}
-                    onClick={() => go(item.name)}
+                    onClick={() => open_(item)}
                     className={`flex cursor-pointer items-center gap-3 border-b border-line px-3 py-2.5 last:border-b-0 ${
                       i === active ? "bg-mist" : "bg-white"
                     }`}
@@ -209,6 +221,17 @@ export default function HeaderSearch({
                 ))}
               </ul>
             )}
+            <button
+              type="button"
+              onMouseDown={(e) => e.preventDefault()}
+              onClick={() => go(text)}
+              className="w-full justify-between gap-2 border-t border-line bg-mist/60 px-4 py-3 text-left text-[0.875rem] font-semibold text-cyan-dark hover:bg-mist"
+            >
+              <span className="min-w-0 truncate">
+                {hits.length ? "See all results" : "Search the catalog"} for &ldquo;{text.trim()}&rdquo;
+              </span>
+              <span aria-hidden>&rarr;</span>
+            </button>
           </motion.div>
         )}
       </AnimatePresence>

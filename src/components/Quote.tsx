@@ -1,11 +1,17 @@
 "use client";
 
-import { useState } from "react";
+import { useState, type ReactNode, type SVGProps } from "react";
 import Image from "next/image";
-import { ArrowRight, Check, Mail, Phone, QuoteBoard, Trash } from "./icons";
+import { ArrowRight, Badge, Check, HardHat, Mail, Phone, QuoteBoard, Trash } from "./icons";
 import { APPLICATIONS, DIAMETERS, ITEMS } from "@/data/catalog";
 import { describeJob, usePipeSize } from "./PipeSize";
 import { quoteList, useQuoteList } from "@/lib/quoteList";
+
+const NEXT = [
+  { title: "A person reads it", body: "Someone on the counter, usually within the hour." },
+  { title: "Your quote by email", body: "Itemised, the same business day." },
+  { title: "Ships or will call", body: "Freight nationwide, or pick up in Puyallup." },
+];
 
 const NEEDS = [
   "Liners & resin",
@@ -84,8 +90,8 @@ export default function Quote() {
       <div className="absolute inset-0 -z-10 bg-gradient-to-br from-ink via-ink/95 to-ink/80" aria-hidden />
 
       <div className="mx-auto max-w-[88rem] px-4 py-14 sm:px-6 lg:px-8 lg:py-24">
-        <div className="grid gap-10 lg:grid-cols-[minmax(0,24rem)_minmax(0,1fr)] lg:gap-16">
-          <div>
+        <div className="grid gap-10 lg:grid-cols-[minmax(0,24rem)_minmax(0,1fr)] lg:gap-14 xl:gap-20">
+          <div className="lg:sticky lg:top-28 lg:self-start">
             <p className="eyebrow text-cyan">Request a quote</p>
             <h2 id="quote-title" className="mt-3 text-[length:var(--text-h2)] text-white">
               Tell us the pipe. We quote it the same business day.
@@ -121,6 +127,26 @@ export default function Quote() {
                 </span>
               </a>
             </div>
+
+            {/* What happens after Send, told as the run of a pipe: three
+                stations on one line, so nobody wonders where the request
+                goes. Desktop only, where the column has the room. */}
+            <div className="mt-10 hidden lg:block">
+              <p className="eyebrow text-white/60">What happens next</p>
+              <ol className="relative mt-5 space-y-6 before:absolute before:top-2 before:bottom-2 before:left-[0.9375rem] before:w-px before:bg-gradient-to-b before:from-cyan before:to-white/10">
+                {NEXT.map((n, i) => (
+                  <li key={n.title} className="relative flex gap-4">
+                    <span className="datum relative z-10 grid size-8 shrink-0 place-items-center rounded-full bg-ink text-[0.8125rem] font-bold text-cyan ring-1 ring-cyan/60">
+                      {i + 1}
+                    </span>
+                    <span className="pt-1 leading-snug">
+                      <span className="block font-semibold text-white">{n.title}</span>
+                      <span className="mt-0.5 block text-[0.875rem] text-white/65">{n.body}</span>
+                    </span>
+                  </li>
+                ))}
+              </ol>
+            </div>
           </div>
 
           {sent ? (
@@ -148,129 +174,165 @@ export default function Quote() {
                 setSent(true);
                 quoteList.clear();
               }}
-              className="rounded-3xl bg-white p-5 shadow-[0_40px_80px_-40px_rgba(0,0,0,0.6)] sm:p-7 lg:p-9"
+              className="overflow-hidden rounded-3xl bg-white shadow-[0_40px_80px_-40px_rgba(0,0,0,0.6)]"
             >
-              <div className="grid gap-5 sm:grid-cols-2">
-                <Field label="Name" name="name" autoComplete="name" required />
-                <Field label="Company name" name="company" autoComplete="organization" required />
-                <Field label="Phone number" name="phone" type="tel" autoComplete="tel" required />
-                <Field label="Email" name="email" type="email" autoComplete="email" />
-              </div>
-
-              {lines.length > 0 && (
-                <div className="mt-7 rounded-2xl border border-line bg-mist p-4">
-                  <p className="flex items-center gap-2 font-semibold text-ink">
-                    <QuoteBoard className="size-5 text-cyan-dark" aria-hidden />
-                    Your quote list
-                  </p>
-                  <ul className="mt-3 divide-y divide-line">
-                    {lines.map((l) => (
-                      <li key={l.code} className="flex items-center justify-between gap-3 py-2">
-                        <span className="min-w-0 text-[0.9375rem] text-ink">
-                          <span className="datum font-semibold">{l.qty} &times;</span> {l.item.name}
-                          <span className="ml-2 text-[0.8125rem] text-body">${l.item.price} {l.item.uom}</span>
-                        </span>
-                        <button
-                          type="button"
-                          onClick={() => quoteList.remove(l.code)}
-                          aria-label={`Remove ${l.item.name} from the quote`}
-                          className="shrink-0 justify-center rounded-full px-2 text-body hover:text-ink"
-                        >
-                          <Trash className="size-4.5" aria-hidden />
-                        </button>
-                      </li>
-                    ))}
-                  </ul>
-                  <input
-                    type="hidden"
-                    name="items"
-                    value={lines.map((l) => `${l.qty} x ${l.code}`).join(", ")}
-                  />
-                </div>
-              )}
-
-              {touched && (
-                <p className="mt-6 flex flex-wrap items-center gap-x-2 gap-y-1 rounded-xl bg-cyan-dark/8 px-4 py-3 text-[0.9375rem] text-ink">
-                  <Check className="size-4 shrink-0 text-cyan-dark" aria-hidden />
-                  <span>
-                    Carried over from your search:{" "}
-                    <strong className="font-semibold">{describeJob(diameter, job?.label)}</strong>.
-                    Change anything below if it is wrong.
-                  </span>
+              {/* The form's own masthead: what it costs the visitor, said
+                  before they start. */}
+              <div className="flex flex-wrap items-center justify-between gap-x-6 gap-y-2 border-b border-line bg-mist px-5 py-4 sm:px-8 lg:px-10">
+                <p className="font-head text-[1.0625rem] font-bold text-ink">Quote request</p>
+                <p className="flex items-center gap-2 text-[0.8125rem] font-medium text-body">
+                  <span className="size-2 rounded-full bg-cyan-dark" aria-hidden />
+                  About a minute &middot; No account needed
                 </p>
-              )}
-
-              <fieldset className="mt-7">
-                <legend className="eyebrow text-body">Host pipe diameter</legend>
-                <div className="mt-3 flex flex-wrap gap-2">
-                  {DIAMETERS.map((d) => (
-                    <label
-                      key={d}
-                      className="datum flex min-h-11 cursor-pointer items-center rounded-full border border-line-strong px-4 text-[0.9375rem] font-semibold text-ink transition-colors has-checked:border-cyan-dark has-checked:bg-cyan-dark has-checked:text-white has-focus-visible:outline-3 has-focus-visible:outline-offset-2 has-focus-visible:outline-cyan-dark hover:border-cyan-dark"
-                    >
-                      <input
-                        type="checkbox"
-                        name="diameter"
-                        value={d}
-                        checked={sizes.includes(d)}
-                        onChange={() => toggleSize(d)}
-                        className="sr-only"
-                      />
-                      {d}&#8243;
-                    </label>
-                  ))}
-                </div>
-              </fieldset>
-
-              <fieldset className="mt-7">
-                <legend className="eyebrow text-body">What do you need?</legend>
-                <div className="mt-3 flex flex-wrap gap-2">
-                  {NEEDS.map((n) => {
-                    const on = needs.includes(n);
-                    return (
-                      <button
-                        key={n}
-                        type="button"
-                        aria-pressed={on}
-                        onClick={() => toggle(n)}
-                        className={`gap-1.5 rounded-full border px-4 text-[0.9375rem] font-semibold transition-colors ${
-                          on
-                            ? "border-cyan-dark bg-cyan-dark text-white"
-                            : "border-line-strong bg-white text-ink hover:border-cyan-dark"
-                        }`}
-                      >
-                        {on && <Check className="size-4" aria-hidden />}
-                        {n}
-                      </button>
-                    );
-                  })}
-                </div>
-              </fieldset>
-
-              <div className="mt-7">
-                <label htmlFor="message" className="eyebrow text-body">
-                  Job details
-                </label>
-                <textarea
-                  id="message"
-                  name="message"
-                  rows={4}
-                  placeholder="Footage, bends, access, timeline, whatever you have."
-                  className="mt-3 w-full rounded-xl border border-line-strong bg-white px-4 py-3 text-base text-ink placeholder:text-body/75 focus:border-cyan-dark focus:outline-none"
-                />
               </div>
 
-              <div className="mt-7 flex flex-col gap-3 sm:flex-row sm:items-center sm:gap-5">
+              <div className="divide-y divide-line px-5 sm:px-8 lg:px-10">
+                <Step n="01" title="Who is asking" hint="So we know who to send the quote to.">
+                  <div className="grid gap-x-5 gap-y-5 sm:grid-cols-2">
+                    <Field label="Name" name="name" autoComplete="name" icon={HardHat} required />
+                    <Field label="Company" name="company" autoComplete="organization" icon={Badge} required />
+                    <Field label="Phone" name="phone" type="tel" autoComplete="tel" inputMode="tel" icon={Phone} required />
+                    <Field label="Email" name="email" type="email" autoComplete="email" icon={Mail} />
+                  </div>
+                </Step>
+
+                <Step n="02" title="The pipe" hint="Pick every size on the job.">
+                  {touched && (
+                    <p className="mb-4 flex items-start gap-2 rounded-xl bg-cyan-dark/8 px-4 py-3 text-[0.9375rem] text-ink">
+                      <Check className="mt-0.5 size-4 shrink-0 text-cyan-dark" aria-hidden />
+                      <span>
+                        Carried over from your search:{" "}
+                        <strong className="font-semibold">{describeJob(diameter, job?.label)}</strong>.
+                        Change anything below if it is wrong.
+                      </span>
+                    </p>
+                  )}
+                  <fieldset>
+                    <legend className="sr-only">Host pipe diameter</legend>
+                    {/* An even row of gauge tiles rather than loose pills:
+                        sizes read left to right like a sizing chart. */}
+                    <div className="grid grid-cols-4 gap-2 sm:grid-cols-8">
+                      {DIAMETERS.map((d) => (
+                        <label
+                          key={d}
+                          className="datum relative flex h-14 cursor-pointer flex-col items-center justify-center rounded-xl border border-line-strong bg-white leading-none text-ink transition-colors has-checked:border-cyan-dark has-checked:bg-cyan-dark has-checked:text-white has-focus-visible:outline-3 has-focus-visible:outline-offset-2 has-focus-visible:outline-cyan-dark hover:border-cyan-dark"
+                        >
+                          <input
+                            type="checkbox"
+                            name="diameter"
+                            value={d}
+                            checked={sizes.includes(d)}
+                            onChange={() => toggleSize(d)}
+                            /* Invisible but full-size over the tile, so a
+                               tap lands on the real checkbox itself. */
+                            className="absolute inset-0 z-10 cursor-pointer appearance-none rounded-xl opacity-0"
+                          />
+                          <span className="font-head text-[1.0625rem] font-bold">{d}&#8243;</span>
+                          <span className="mt-1 text-[0.75rem] font-medium opacity-75">dia.</span>
+                        </label>
+                      ))}
+                      {/* Not every job is a stock size, and plenty of
+                          callers have not measured yet. */}
+                      <label className="relative flex h-14 cursor-pointer flex-col items-center justify-center rounded-xl border border-dashed border-line-strong bg-white text-center leading-none text-ink transition-colors has-checked:border-solid has-checked:border-cyan-dark has-checked:bg-cyan-dark has-checked:text-white has-focus-visible:outline-3 has-focus-visible:outline-offset-2 has-focus-visible:outline-cyan-dark hover:border-cyan-dark">
+                        <input type="checkbox" name="diameter-other" value="other" className="absolute inset-0 z-10 cursor-pointer appearance-none rounded-xl opacity-0" />
+                        <span className="text-[0.875rem] font-bold">Other</span>
+                        <span className="mt-1 text-[0.75rem] font-medium opacity-75">not sure</span>
+                      </label>
+                    </div>
+                  </fieldset>
+                </Step>
+
+                <Step n="03" title="The job" hint="Tick all that apply, then add what you know.">
+                  <fieldset>
+                    <legend className="sr-only">What do you need?</legend>
+                    <div className="grid gap-2 sm:grid-cols-2 2xl:grid-cols-3">
+                      {NEEDS.map((n) => {
+                        const on = needs.includes(n);
+                        return (
+                          <button
+                            key={n}
+                            type="button"
+                            aria-pressed={on}
+                            onClick={() => toggle(n)}
+                            className={`min-h-12 justify-start gap-3 rounded-xl border px-3.5 text-left text-[0.9375rem] font-semibold transition-colors ${
+                              on
+                                ? "border-cyan-dark bg-cyan-dark/8 text-ink"
+                                : "border-line-strong bg-white text-ink hover:border-cyan-dark"
+                            }`}
+                          >
+                            <span
+                              aria-hidden
+                              className={`grid size-5 shrink-0 place-items-center rounded-md border transition-colors ${
+                                on ? "border-cyan-dark bg-cyan-dark text-white" : "border-line-strong bg-white"
+                              }`}
+                            >
+                              {on && <Check className="size-3.5" />}
+                            </span>
+                            {n}
+                          </button>
+                        );
+                      })}
+                    </div>
+                  </fieldset>
+
+                  {lines.length > 0 && (
+                    <div className="mt-5 rounded-2xl border border-line bg-mist p-4">
+                      <p className="flex items-center gap-2 font-semibold text-ink">
+                        <QuoteBoard className="size-5 text-cyan-dark" aria-hidden />
+                        Your quote list
+                      </p>
+                      <ul className="mt-3 divide-y divide-line">
+                        {lines.map((l) => (
+                          <li key={l.code} className="flex items-center justify-between gap-3 py-2">
+                            <span className="min-w-0 text-[0.9375rem] text-ink">
+                              <span className="datum font-semibold">{l.qty} &times;</span> {l.item.name}
+                              <span className="ml-2 text-[0.8125rem] text-body">${l.item.price} {l.item.uom}</span>
+                            </span>
+                            <button
+                              type="button"
+                              onClick={() => quoteList.remove(l.code)}
+                              aria-label={`Remove ${l.item.name} from the quote`}
+                              className="shrink-0 justify-center rounded-full px-2 text-body hover:text-ink"
+                            >
+                              <Trash className="size-4.5" aria-hidden />
+                            </button>
+                          </li>
+                        ))}
+                      </ul>
+                      <input
+                        type="hidden"
+                        name="items"
+                        value={lines.map((l) => `${l.qty} x ${l.code}`).join(", ")}
+                      />
+                    </div>
+                  )}
+
+                  <div className="mt-5">
+                    <label htmlFor="message" className="text-[0.875rem] font-semibold text-ink">
+                      Job details <span className="font-normal text-body">(optional)</span>
+                    </label>
+                    <textarea
+                      id="message"
+                      name="message"
+                      rows={4}
+                      placeholder="Footage, bends, access, timeline, whatever you have."
+                      className="mt-2 w-full resize-y rounded-xl border border-line-strong bg-mist/60 px-4 py-3 text-base text-ink transition-[background-color,border-color,box-shadow] placeholder:text-body/75 hover:border-cyan-dark/60 focus:border-cyan-dark focus:bg-white focus:shadow-[0_0_0_3px_rgba(27,116,137,0.15)]"
+                    />
+                  </div>
+                </Step>
+              </div>
+
+              <div className="flex flex-col gap-4 border-t border-line bg-mist px-5 py-5 sm:flex-row sm:items-center sm:justify-between sm:px-8 lg:px-10">
+                <p className="text-[0.8125rem] text-body sm:max-w-xs">
+                  Demo form. The live site routes submissions to your inbox and CRM.
+                </p>
                 <button
                   type="submit"
-                  className="group justify-center gap-2 rounded-xl bg-cyan-dark px-7 py-3.5 font-semibold text-white shadow-[0_10px_24px_-12px_rgba(27,116,137,0.9)] hover:bg-cyan-deep"
+                  className="group w-full justify-center gap-2 rounded-xl bg-cyan-dark px-7 py-3.5 font-semibold text-white shadow-[0_10px_24px_-12px_rgba(27,116,137,0.9)] hover:bg-cyan-deep sm:w-auto"
                 >
                   Send request
                   <ArrowRight className="size-4 transition-transform group-hover:translate-x-1" aria-hidden />
                 </button>
-                <p className="text-[0.8125rem] text-body">
-                  Demo form. The live site routes submissions to your inbox and CRM.
-                </p>
               </div>
             </form>
           )}
@@ -280,34 +342,76 @@ export default function Quote() {
   );
 }
 
+/*
+ * One step of the form. On wide screens the number and title sit in a gutter on
+ * the left, so the eye runs down three clear stations instead of one long
+ * sheet of boxes; on phones they stack above the fields.
+ */
+function Step({
+  n,
+  title,
+  hint,
+  children,
+}: {
+  n: string;
+  title: string;
+  hint: string;
+  children: ReactNode;
+}) {
+  return (
+    <div className="grid gap-4 py-7 lg:py-8 xl:grid-cols-[11rem_minmax(0,1fr)] xl:gap-8">
+      <div className="flex items-start gap-3 xl:block">
+        <span className="datum font-head text-[0.8125rem] font-bold tracking-[0.12em] text-cyan-dark">{n}</span>
+        <div className="xl:mt-1.5">
+          <h3 className="font-head text-[1.0625rem] leading-tight font-bold text-ink">{title}</h3>
+          <p className="mt-1 text-[0.8125rem] leading-snug text-body">{hint}</p>
+        </div>
+      </div>
+      <div className="min-w-0">{children}</div>
+    </div>
+  );
+}
+
 function Field({
   label,
   name,
   type = "text",
   required,
   autoComplete,
+  inputMode,
+  icon: Icon,
 }: {
   label: string;
   name: string;
   type?: string;
   required?: boolean;
   autoComplete?: string;
+  inputMode?: "tel" | "email" | "text";
+  icon: (props: SVGProps<SVGSVGElement>) => ReactNode;
 }) {
   return (
     <div>
-      <label htmlFor={name} className="eyebrow text-body">
+      <label htmlFor={name} className="flex items-baseline justify-between gap-2 text-[0.875rem] font-semibold text-ink">
         {label}
-        {required && <span className="ml-1 text-gray">*</span>}
+        <span className="text-[0.75rem] font-normal text-body">{required ? "Required" : "Optional"}</span>
       </label>
-      <input
-        id={name}
-        name={name}
-        type={type}
-        required={required}
-        autoComplete={autoComplete}
-        /* text-base keeps iOS Safari from zooming the viewport on focus */
-        className="mt-2.5 w-full rounded-xl border border-line-strong bg-white px-4 py-3 text-base text-ink focus:border-cyan-dark focus:shadow-[0_0_0_3px_rgba(27,116,137,0.15)] focus:outline-none"
-      />
+      <div className="relative mt-2">
+        <input
+          id={name}
+          name={name}
+          type={type}
+          required={required}
+          autoComplete={autoComplete}
+          inputMode={inputMode}
+          /* text-base keeps iOS Safari from zooming the viewport on focus */
+          className="peer h-12 w-full rounded-xl border border-line-strong bg-mist/60 pr-4 pl-11 text-base text-ink transition-[background-color,border-color,box-shadow] hover:border-cyan-dark/60 focus:border-cyan-dark focus:bg-white focus:shadow-[0_0_0_3px_rgba(27,116,137,0.15)]"
+        />
+        {/* After the input so it can follow the input's focus (peer). */}
+        <Icon
+          className="pointer-events-none absolute top-1/2 left-3.5 size-5 -translate-y-1/2 text-gray transition-colors peer-focus:text-cyan-dark"
+          aria-hidden
+        />
+      </div>
     </div>
   );
 }

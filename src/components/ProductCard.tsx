@@ -2,9 +2,11 @@
 
 import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
+import Link from "next/link";
+import { productHref } from "@/data/details";
 import { CATEGORIES, type Item } from "@/data/catalog";
 import * as Icons from "./icons";
-import { Check, Heart, Plus } from "./icons";
+import { Check, Heart, Minus, Plus, Trash } from "./icons";
 import { quoteList, useQuoteList } from "@/lib/quoteList";
 
 /*
@@ -39,13 +41,17 @@ export function ProductArt({
   /** Beside the product's own name, where alt text would only repeat it. */
   decorative?: boolean;
 }) {
-  if (item.img) {
+  /* A photo that fails to load (offline, a server hiccup) falls back to the
+     drawn mark below, never to the browser's broken-image icon. */
+  const [failed, setFailed] = useState(false);
+  if (item.img && !failed) {
     return (
       <Image
         src={item.img}
         alt={decorative ? "" : item.name}
         fill
         sizes={sizes}
+        onError={() => setFailed(true)}
         className="object-cover transition-transform duration-700 ease-glide group-hover:scale-[1.05]"
       />
     );
@@ -59,10 +65,12 @@ export function ProductArt({
       aria-hidden={decorative || undefined}
       className="absolute inset-0 flex flex-col items-center justify-center bg-gradient-to-br from-mist to-mist-2"
     >
-      <span className="absolute size-[70%] rounded-full border border-cyan-dark/10" />
-      <span className="absolute size-[46%] rounded-full border border-cyan-dark/15" />
-      <Glyph className="glyph relative size-[30%]" strokeWidth={1.1} />
-      <span className="datum absolute bottom-2.5 text-[0.6875rem] font-semibold tracking-wider text-body">
+      {/* Sized off the height alone, so the rings stay circles in any
+          frame: square on a product page, 4:3 on a phone, 4:3.4 on a card. */}
+      <span className="absolute aspect-square h-[70%] rounded-full border border-cyan-dark/10" />
+      <span className="absolute aspect-square h-[46%] rounded-full border border-cyan-dark/15" />
+      <Glyph className="glyph relative aspect-square h-[30%] w-auto" strokeWidth={1.1} />
+      <span className="datum absolute bottom-2.5 text-[0.75rem] font-semibold tracking-wider text-body">
         {item.code}
       </span>
     </span>
@@ -104,33 +112,62 @@ export default function ProductCard({
     </button>
   );
 
-  const addBtn = (
+  /*
+   * Before the product is on the list: one button. After: a stepper in the
+   * same footprint, so the card never jumps. At a quantity of one the minus
+   * becomes a bin, which is the remove a buyer reaches for, and the count
+   * in the middle is a live region so a screen reader hears every change.
+   */
+  const addBtn = inList ? (
+    <div className="@container flex h-11 w-full items-stretch overflow-hidden rounded-lg border border-cyan-dark bg-white">
+      <button
+        type="button"
+        onClick={() => quoteList.setQty(item.code, inList - 1)}
+        aria-label={inList === 1 ? `Remove ${item.name} from the quote` : `One fewer ${item.name}`}
+        className="w-11 shrink-0 justify-center text-cyan-dark transition-colors hover:bg-cyan-dark/10"
+      >
+        {inList === 1 ? <Trash className="size-4.5" aria-hidden /> : <Minus className="size-4.5" aria-hidden />}
+      </button>
+      <span
+        aria-live="polite"
+        className={`flex min-w-0 flex-1 items-center justify-center gap-1.5 overflow-hidden border-x border-cyan-dark/25 text-[0.875rem] font-semibold whitespace-nowrap text-cyan-dark transition-colors ${
+          flash ? "bg-cyan-dark/10" : ""
+        }`}
+      >
+        {/* The words give way on a narrow card (two-up on a phone, the list
+            view): the number always stays, and screen readers always get
+            the full phrase. */}
+        <Check className="hidden size-4 shrink-0 @[9.5rem]:block" aria-hidden />
+        <span className="datum">{inList}</span>
+        <span className="sr-only @[12.5rem]:not-sr-only">{" "}in quote</span>
+      </span>
+      <button
+        type="button"
+        onClick={add}
+        aria-label={`Add one more ${item.name}`}
+        className="w-11 shrink-0 justify-center bg-cyan-dark text-white transition-colors hover:bg-cyan-deep"
+      >
+        <Plus className="size-4.5" aria-hidden />
+      </button>
+    </div>
+  ) : (
     <button
       type="button"
       onClick={add}
-      className={`relative w-full justify-center gap-2 overflow-hidden rounded-lg px-3 py-2.5 text-[0.9375rem] font-semibold text-white transition-colors duration-300 ${
-        flash ? "bg-cyan-deep" : "bg-cyan-dark hover:bg-cyan-deep"
-      }`}
+      className="h-11 w-full justify-center gap-2 rounded-lg bg-cyan-dark px-3 text-[0.9375rem] font-semibold text-white transition-colors duration-300 hover:bg-cyan-deep"
     >
-      {flash ? (
-        <>
-          <Check className="size-4.5" aria-hidden />
-          Added to quote
-        </>
-      ) : (
-        <>
-          <Plus className="size-4.5" aria-hidden />
-          {inList ? `Add another (${inList})` : "Add to quote"}
-        </>
-      )}
+      <Plus className="size-4.5" aria-hidden />
+      Add to quote
     </button>
   );
 
   const meta = (
     <>
-      <p className="eyebrow text-[0.6875rem] text-cyan-dark">{item.maker}</p>
-      <h3 className="mt-1 text-[0.9375rem] leading-snug font-semibold tracking-normal text-ink lg:text-base">
-        {item.name}
+      <p className="eyebrow text-[0.75rem] text-cyan-dark">{item.maker}</p>
+      <h3 className="mt-1 text-[0.9375rem] leading-snug font-semibold tracking-normal [overflow-wrap:anywhere] text-ink lg:text-base">
+        <Link href={productHref(item)} className="block rounded-sm hover:text-cyan-dark">
+          {item.name}
+        </Link>
       </h3>
       <p className="mt-1 text-[0.8125rem] text-body">
         <span className="datum">{range(item)}</span> &middot; {item.kind}
@@ -160,6 +197,7 @@ export default function ProductCard({
       >
         <div className="relative aspect-square overflow-hidden rounded-xl bg-mist">
           <ProductArt item={item} sizes="104px" />
+          <Link href={productHref(item)} tabIndex={-1} aria-hidden className="absolute inset-0" />
         </div>
         <div className="min-w-0">
           {meta}
@@ -179,13 +217,16 @@ export default function ProductCard({
   return (
     <article
       data-product-row
-      className="group flex h-full flex-col rounded-2xl border border-line bg-white p-2 transition-[box-shadow,transform,border-color] duration-500 ease-glide hover:-translate-y-1 hover:border-transparent hover:shadow-[var(--shadow-lift)] sm:p-2.5"
+      className="group flex h-full flex-col rounded-2xl border border-line bg-white p-2 transition-[box-shadow,border-color] duration-300 ease-glide hover:border-line-strong hover:shadow-[var(--shadow-hover)] sm:p-2.5"
     >
       <div className="relative aspect-[4/3.4] overflow-hidden rounded-xl bg-mist">
         <ProductArt
           item={item}
-          sizes="(min-width: 1536px) 18vw, (min-width: 1024px) 24vw, 48vw"
+          sizes="(min-width: 1536px) 20vw, (min-width: 1024px) 28vw, (min-width: 768px) 34vw, 60vw"
         />
+        {/* The whole picture opens the product too; one tab stop per card
+            is enough, so the keyboard goes to the name instead. */}
+        <Link href={productHref(item)} tabIndex={-1} aria-hidden className="absolute inset-0" />
         {item.badge && (
           <span className="absolute top-2 left-2 max-w-[calc(100%-3.5rem)] truncate rounded-full bg-white/95 px-2 py-0.5 text-[0.6875rem] font-semibold sm:top-2.5 sm:left-2.5 sm:px-2.5 sm:py-1 sm:text-[0.75rem] text-cyan-dark shadow-[var(--shadow-card)] backdrop-blur">
             {item.badge}

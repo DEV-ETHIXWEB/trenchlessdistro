@@ -1,6 +1,7 @@
 "use client";
 
-import { useDeferredValue, useEffect, useMemo, useState } from "react";
+import { useDeferredValue, useEffect, useMemo, useRef, useState } from "react";
+import { useFocusTrap } from "@/lib/useFocusTrap";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import {
   APPLICATIONS,
@@ -47,9 +48,16 @@ const featuredScore = (i: Item) => (i.img ? 2 : 0) + (i.badge ? 1 : 0);
 const matches = (item: Item, q: string) =>
   [item.name, item.code, item.maker, item.cure, item.kind].join(" ").toLowerCase().includes(q);
 
-/** How many cards show before "Show all": two rows either way. */
-const FIRST_PHONE = 4;
-const FIRST_DESKTOP = 6;
+/*
+ * How many cards show before "Show all": always two complete rows, so the
+ * preview never ends on a half-empty line. Two columns on a phone (4),
+ * three from md (6), four from 2xl (8).
+ */
+const capClass = (i: number) =>
+  i < 4 ? "" : i < 6 ? "hidden md:block" : i < 8 ? "hidden 2xl:block" : "hidden";
+/* The button only shows at widths where something is actually hidden. */
+const moreClass = (n: number) =>
+  n > 8 ? "" : n > 6 ? "2xl:hidden" : n > 4 ? "md:hidden" : "hidden";
 
 export default function SpecFinder() {
   const {
@@ -71,6 +79,8 @@ export default function SpecFinder() {
   const [view, setView] = useState<"grid" | "list">("grid");
   const [showAll, setShowAll] = useState(false);
   const [sheet, setSheet] = useState(false);
+  const sheetRef = useRef<HTMLDivElement>(null);
+  useFocusTrap(sheetRef, sheet);
 
   const searching = q.length > 0;
 
@@ -122,7 +132,7 @@ export default function SpecFinder() {
   const job = describeJob(diameter, activeApp?.label);
   const summary = searching ? (
     <>
-      {results.length} {results.length === 1 ? "product" : "products"} matching &ldquo;{q}&rdquo;
+      {results.length} {results.length === 1 ? "product" : "products"} matching &ldquo;{query.trim()}&rdquo;
     </>
   ) : (
     <>
@@ -163,7 +173,9 @@ export default function SpecFinder() {
 
       <fieldset>
         <legend className="eyebrow text-ink">Host pipe diameter</legend>
-        <div className="mt-3 flex flex-wrap gap-2">
+        {/* A sizing chart, not a cloud of pills: equal tiles in rows of
+            four, with "Any" closing the grid as the way back to every size. */}
+        <div className="mt-3 grid grid-cols-4 gap-1.5">
           {DIAMETERS.map((d) => {
             const on = d === diameter;
             return (
@@ -175,7 +187,7 @@ export default function SpecFinder() {
                   setDiameter(on ? null : d);
                   setQuery("");
                 }}
-                className={`datum min-w-12 justify-center rounded-full border px-3 text-[0.9375rem] font-semibold ${
+                className={`datum h-11 justify-center rounded-xl border font-head text-[0.9375rem] font-bold transition-colors ${
                   on
                     ? "border-cyan-dark bg-cyan-dark text-white"
                     : "border-line-strong bg-white text-ink hover:border-cyan-dark hover:text-cyan-dark"
@@ -185,6 +197,21 @@ export default function SpecFinder() {
               </button>
             );
           })}
+          <button
+            type="button"
+            aria-pressed={diameter === null}
+            onClick={() => {
+              setDiameter(null);
+              setQuery("");
+            }}
+            className={`h-11 justify-center rounded-xl border text-[0.8125rem] font-semibold transition-colors ${
+              diameter === null
+                ? "border-line-strong bg-mist text-ink"
+                : "border-dashed border-line-strong bg-white text-body hover:border-cyan-dark hover:text-cyan-dark"
+            }`}
+          >
+            Any
+          </button>
         </div>
       </fieldset>
 
@@ -228,7 +255,7 @@ export default function SpecFinder() {
             id={`${id}-maker`}
             value={maker}
             onChange={(e) => setMaker(e.target.value)}
-            className="w-full appearance-none rounded-lg border border-line-strong bg-white py-2.5 pr-10 pl-3 text-[0.9375rem] text-ink focus:border-cyan-dark focus:outline-none"
+            className="w-full appearance-none rounded-lg border border-line-strong bg-white py-2.5 pr-10 pl-3 text-[0.9375rem] text-ink focus:border-cyan-dark"
           >
             <option value="">All manufacturers</option>
             {MANUFACTURERS.filter((m) => ITEMS.some((i) => i.maker === m.name)).map((m) => (
@@ -272,7 +299,6 @@ export default function SpecFinder() {
     </div>
   );
 
-  const limit = FIRST_DESKTOP;
   const capped = !showAll && !searching;
 
   return (
@@ -313,7 +339,7 @@ export default function SpecFinder() {
 
           <div className="min-w-0">
             {/* Toolbar */}
-            <div className="flex flex-col gap-3 rounded-2xl border border-line bg-white p-2.5 sm:flex-row sm:items-center sm:p-3">
+            <div className="flex flex-col gap-3 rounded-2xl border border-line bg-white p-2.5 sm:p-3 xl:flex-row xl:items-center">
               <label htmlFor="catalog-search" className="sr-only">
                 Search the catalog
               </label>
@@ -353,7 +379,7 @@ export default function SpecFinder() {
                     </span>
                   )}
                 </button>
-                <div className="relative flex-1 sm:flex-none">
+                <div className="relative flex-1 lg:max-w-xs xl:flex-none">
                   <label htmlFor="catalog-sort" className="sr-only">
                     Sort by
                   </label>
@@ -361,7 +387,7 @@ export default function SpecFinder() {
                     id="catalog-sort"
                     value={sort}
                     onChange={(e) => setSort(e.target.value as Sort)}
-                    className="w-full appearance-none rounded-xl border border-line-strong bg-white py-2.5 pr-9 pl-3.5 text-[0.9375rem] font-medium text-ink focus:border-cyan-dark focus:outline-none sm:w-52"
+                    className="w-full appearance-none rounded-xl border border-line-strong bg-white py-2.5 pr-9 pl-3.5 text-[0.9375rem] font-medium text-ink focus:border-cyan-dark xl:w-52"
                   >
                     {SORTS.map((s) => (
                       <option key={s.id} value={s.id}>
@@ -397,7 +423,7 @@ export default function SpecFinder() {
 
             {/* Count and the filters in force, each removable. */}
             <div className="mt-4 flex flex-wrap items-center gap-2">
-              <p aria-live="polite" aria-atomic="true" className="mr-2 text-[0.9375rem] font-semibold text-ink">
+              <p data-results aria-live="polite" aria-atomic="true" className="mr-2 text-[0.9375rem] font-semibold text-ink">
                 {summary}
               </p>
               {!searching &&
@@ -442,13 +468,7 @@ export default function SpecFinder() {
                     animate={{ opacity: 1, scale: 1 }}
                     exit={{ opacity: 0, scale: 0.97 }}
                     transition={{ duration: 0.3, delay: Math.min(i, 8) * 0.025, ease: [0.16, 1, 0.3, 1] }}
-                    className={
-                      capped && i >= FIRST_PHONE
-                        ? i >= limit
-                          ? "hidden"
-                          : "hidden md:block"
-                        : ""
-                    }
+                    className={capped ? capClass(i) : ""}
                   >
                     <ProductCard item={item} view={view} />
                   </motion.li>
@@ -478,8 +498,8 @@ export default function SpecFinder() {
               </div>
             )}
 
-            {capped && results.length > FIRST_PHONE && (
-              <div className={`mt-6 flex justify-center ${results.length > limit ? "" : "md:hidden"}`}>
+            {capped && results.length > 4 && (
+              <div className={`mt-6 flex justify-center ${moreClass(results.length)}`}>
                 <button
                   type="button"
                   onClick={() => setShowAll(true)}
@@ -517,6 +537,7 @@ export default function SpecFinder() {
               className="absolute inset-0 h-full w-full bg-ink/50"
             />
             <motion.div
+              ref={sheetRef}
               role="dialog"
               aria-modal="true"
               aria-label="Filters"
@@ -538,7 +559,6 @@ export default function SpecFinder() {
                     type="button"
                     onClick={() => setSheet(false)}
                     aria-label="Close filters"
-                    autoFocus
                     className="justify-center rounded-full px-2 hover:bg-mist"
                   >
                     <Cross className="size-6 text-ink" aria-hidden />

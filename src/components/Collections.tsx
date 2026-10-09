@@ -82,13 +82,13 @@ export default function Collections() {
                 <Link
                   href="/#spec-finder"
                   onClick={() => pick(t.cat)}
-                  className="group relative isolate flex aspect-[4/5] flex-col justify-end overflow-hidden rounded-3xl bg-ink p-4 text-white sm:p-5 lg:aspect-auto lg:h-full lg:min-h-[22rem]"
+                  className="group relative isolate flex aspect-[4/5] flex-col justify-end overflow-hidden rounded-3xl bg-ink p-4 text-white sm:aspect-[4/3] sm:p-5 lg:aspect-auto lg:h-full lg:min-h-[22rem]"
                 >
                   <Image
                     src={t.img}
                     alt={t.alt}
                     fill
-                    sizes="(min-width: 1024px) 25vw, 50vw"
+                    sizes="(min-width: 1024px) 50vw, 90vw"
                     className="-z-10 object-cover transition-transform duration-[1.2s] ease-glide group-hover:scale-[1.06]"
                   />
                   <span className="absolute inset-0 -z-10 bg-gradient-to-t from-ink/90 via-ink/25 to-transparent" aria-hidden />

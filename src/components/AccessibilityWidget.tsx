@@ -156,10 +156,12 @@ export default function AccessibilityWidget() {
         onClick={() => setOpen((v) => !v)}
         aria-expanded={open}
         aria-controls="a11y-panel"
-        className="hidden lg:inline-flex group fixed bottom-4 left-4 z-70 gap-2.5 rounded-full bg-ink/92 py-2.5 pr-5 pl-3 text-[0.9375rem] font-semibold text-white shadow-[0_14px_30px_-12px_rgba(19,33,42,0.6)] ring-1 ring-white/15 backdrop-blur-xl transition-colors hover:bg-ink sm:bottom-6 sm:left-6"
+        className="hidden lg:inline-flex group fixed bottom-6 left-6 z-70 h-13 min-w-13 justify-center rounded-full bg-ink/92 px-3.5 text-[0.9375rem] font-semibold text-white shadow-[0_14px_30px_-12px_rgba(19,33,42,0.6)] ring-1 ring-white/15 backdrop-blur-xl transition-colors hover:bg-ink"
       >
         <Accessibility className="size-6 shrink-0" aria-hidden />
-        <span className="sr-only sm:not-sr-only">
+        {/* Round at rest so it never sits over content; the label slides
+            out on hover or keyboard focus, and stays out while open. */}
+        <span className={`overflow-hidden whitespace-nowrap transition-[max-width,opacity,margin] duration-500 ease-glide ${open ? "ml-2.5 max-w-44 opacity-100" : "max-w-0 opacity-0 group-hover:ml-2.5 group-hover:max-w-44 group-hover:opacity-100 group-focus-visible:ml-2.5 group-focus-visible:max-w-44 group-focus-visible:opacity-100"}`}>
           {open ? "Close" : "Accessibility"}
         </span>
         {anyChanged && !open && (
@@ -303,9 +305,8 @@ export default function AccessibilityWidget() {
 
           {/* The panel scrolls once every control is listed, so the credit is
               pinned to the foot of the scroll area rather than parked below
-              it. Extra bottom padding on phones keeps the question button,
-              fixed to the same corner region, from covering it. */}
-          <div className="sticky bottom-0 flex justify-center border-t border-line bg-light py-2.5 pb-16 sm:pb-2.5">
+              it. On phones it only clears the home indicator. */}
+          <div className="sticky bottom-0 flex justify-center border-t border-line bg-light py-2.5 pb-[max(0.625rem,env(safe-area-inset-bottom))] sm:pb-2.5">
             <EthixwebCredit />
           </div>
 

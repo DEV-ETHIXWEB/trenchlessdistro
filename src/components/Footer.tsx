@@ -22,9 +22,10 @@ const ACCOUNT = [
 export default function Footer() {
   return (
     <footer className="bg-ink text-white">
-      {/* pb clears the accessibility and question buttons, which are fixed to
-          the bottom corners and otherwise sit on top of the last row. */}
-      <div className="mx-auto max-w-[88rem] px-4 pt-14 pb-28 sm:px-6 lg:px-8 lg:pt-20 lg:pb-24">
+      {/* On desktop, lg:pb clears the round accessibility and assistant
+          launchers in the bottom corners. On phones the dock's own rule in
+          globals.css adds the clearance, so the padding here stays plain. */}
+      <div className="mx-auto max-w-[88rem] px-4 pt-14 pb-6 sm:px-6 lg:px-8 lg:pt-20 lg:pb-24">
         <div className="grid gap-10 [&>*]:min-w-0 lg:grid-cols-[minmax(0,20rem)_minmax(0,1fr)] lg:gap-16">
           <div>
             <Image
@@ -32,7 +33,7 @@ export default function Footer() {
               alt="Trenchless Distribution"
               width={300}
               height={86}
-              className="h-16 w-auto"
+              className="h-12 w-auto"
             />
             <p className="mt-5 max-w-xs [overflow-wrap:anywhere] text-[0.9375rem] leading-relaxed text-white/70">
               A distributor of trenchless and CIPP materials, equipment and
@@ -62,10 +63,10 @@ export default function Footer() {
             </div>
           </div>
 
-          <div className="grid grid-cols-2 gap-x-5 gap-y-8 [&>*]:min-w-0 lg:grid-cols-4">
+          <div className="grid grid-cols-2 gap-x-5 gap-y-8 [&>*]:min-w-0 md:grid-cols-4">
             <nav aria-label="Shop">
               <p className="eyebrow text-cyan">Shop</p>
-              <ul className="mt-4 space-y-2.5">
+              <ul className="mt-3">
                 {CATEGORIES.map((c) => (
                   <li key={c.slug}>
                     <Link href="/#categories" className="text-[0.9375rem] text-white/70 hover:text-white">
@@ -77,7 +78,7 @@ export default function Footer() {
             </nav>
             <nav aria-label="Company">
               <p className="eyebrow text-cyan">Company</p>
-              <ul className="mt-4 space-y-2.5">
+              <ul className="mt-3">
                 {COMPANY.map((c) => (
                   <li key={c.label}>
                     <a href={c.href} className="text-[0.9375rem] text-white/70 hover:text-white">
@@ -89,7 +90,7 @@ export default function Footer() {
             </nav>
             <nav aria-label="Customer">
               <p className="eyebrow text-cyan">Customer</p>
-              <ul className="mt-4 space-y-2.5">
+              <ul className="mt-3">
                 {ACCOUNT.map((c) => (
                   <li key={c.label}>
                     <a href={c.href} className="text-[0.9375rem] text-white/70 hover:text-white">
@@ -101,9 +102,9 @@ export default function Footer() {
             </nav>
             <div>
               <p className="eyebrow text-cyan">Brands</p>
-              <ul className="mt-4 space-y-2.5">
+              <ul className="mt-3">
                 {MANUFACTURERS.map((m) => (
-                  <li key={m.name} className="text-[0.9375rem] text-white/70">
+                  <li key={m.name} className="flex min-h-11 items-center text-[0.9375rem] text-white/70">
                     {m.name}
                   </li>
                 ))}

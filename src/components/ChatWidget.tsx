@@ -193,7 +193,7 @@ export default function ChatWidget() {
          * the two launchers read as a pair and neither one covers the card
          * behind it. The label comes back from sm up, where there is room.
          */
-        className={`hidden lg:inline-flex fixed right-4 bottom-4 z-70 gap-2.5 rounded-full bg-cyan-dark py-2.5 pr-5 pl-4 text-[0.9375rem] font-semibold text-white shadow-[0_14px_30px_-12px_rgba(27,116,137,0.8)] ring-1 ring-white/20 transition-colors hover:bg-cyan-deep sm:right-6 sm:bottom-6 ${
+        className={`hidden lg:inline-flex group fixed right-6 bottom-6 z-70 h-13 min-w-13 justify-center rounded-full bg-cyan-dark px-3.5 text-[0.9375rem] font-semibold text-white shadow-[0_14px_30px_-12px_rgba(27,116,137,0.8)] ring-1 ring-white/20 transition-colors hover:bg-cyan-deep ${
           open ? "max-sm:hidden" : ""
         }`}
       >
@@ -202,7 +202,7 @@ export default function ChatWidget() {
         ) : (
           <Chat className="size-6 shrink-0" aria-hidden />
         )}
-        <span className="sr-only sm:not-sr-only">{open ? "Close" : "Ask a question"}</span>
+        <span className={`overflow-hidden whitespace-nowrap transition-[max-width,opacity,margin] duration-500 ease-glide ${open ? "ml-2.5 max-w-44 opacity-100" : "max-w-0 opacity-0 group-hover:ml-2.5 group-hover:max-w-44 group-hover:opacity-100 group-focus-visible:ml-2.5 group-focus-visible:max-w-44 group-focus-visible:opacity-100"}`}>{open ? "Close" : "Ask a question"}</span>
       </button>
 
       <AnimatePresence>
@@ -338,7 +338,7 @@ export default function ChatWidget() {
               onChange={(e) => setDraft(e.target.value)}
               placeholder="Type your question"
               autoComplete="off"
-              className="min-w-0 flex-1 rounded-xl border border-line-strong px-3.5 py-3 text-ink placeholder:text-body/60 focus:border-cyan-dark focus:outline-none"
+              className="min-w-0 flex-1 rounded-xl border border-line-strong px-3.5 py-3 text-ink placeholder:text-body/60 focus:border-cyan-dark"
             />
             <button
               type="submit"

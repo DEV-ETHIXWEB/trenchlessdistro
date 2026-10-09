@@ -1,6 +1,6 @@
 "use client";
 
-import { createContext, useContext, useState, type ReactNode } from "react";
+import { createContext, useContext, useState, useSyncExternalStore, type ReactNode } from "react";
 import type { Application } from "@/data/catalog";
 
 /*
@@ -39,23 +39,87 @@ type Ctx = Job & {
 
 const PipeSizeContext = createContext<Ctx | null>(null);
 
+/*
+ * Size and application outlive the page: a size picked on a product page
+ * has to be there when the buyer reaches the quote form on the homepage.
+ * They live in a small store backed by sessionStorage (this visit only),
+ * read through useSyncExternalStore so the server render and hydration see
+ * "nothing chosen" and the stored job arrives straight after, with no
+ * mismatch. The category rail stays per page on purpose.
+ */
+type Kept = { diameter: number | null; application: Application | null };
+const KEPT_KEY = "td-job";
+const NONE: Kept = { diameter: null, application: null };
+let kept: Kept = NONE;
+let keptLoaded = false;
+const keptListeners = new Set<() => void>();
+
+function readKept() {
+  if (!keptLoaded && typeof window !== "undefined") {
+    keptLoaded = true;
+    try {
+      const raw = window.sessionStorage.getItem(KEPT_KEY);
+      if (raw) {
+        const v = JSON.parse(raw) as Partial<Kept>;
+        kept = {
+          diameter: typeof v.diameter === "number" ? v.diameter : null,
+          application: typeof v.application === "string" ? (v.application as Application) : null,
+        };
+      }
+    } catch {
+      kept = NONE;
+    }
+  }
+  return kept;
+}
+
+function writeKept(next: Kept) {
+  kept = next;
+  try {
+    window.sessionStorage.setItem(KEPT_KEY, JSON.stringify(next));
+  } catch {
+    /* Storage blocked: the job still holds for this page. */
+  }
+  keptListeners.forEach((l) => l());
+}
+
+const subscribeKept = (l: () => void) => {
+  keptListeners.add(l);
+  return () => keptListeners.delete(l);
+};
+
+/*
+ * The search text rides along in memory between pages (a search typed on a
+ * product page has to arrive at the catalog on the homepage), but is not
+ * written to storage: a reload starts with the full shelf.
+ */
+let liveQuery = "";
+const queryListeners = new Set<() => void>();
+const subscribeQuery = (l: () => void) => {
+  queryListeners.add(l);
+  return () => queryListeners.delete(l);
+};
+function writeQuery(q: string) {
+  liveQuery = q;
+  queryListeners.forEach((l) => l());
+}
+
 export function PipeSizeProvider({ children }: { children: ReactNode }) {
-  const [job, setJob] = useState<Job>({
-    diameter: null,
-    application: null,
-    query: "",
-    category: null,
-  });
+  const job = useSyncExternalStore(subscribeKept, readKept, () => NONE);
+  const query = useSyncExternalStore(subscribeQuery, () => liveQuery, () => "");
+  const [local, setLocal] = useState<{ category: string | null }>({ category: null });
 
   return (
     <PipeSizeContext.Provider
       value={{
         ...job,
+        ...local,
+        query,
         touched: job.diameter !== null || job.application !== null,
-        setDiameter: (diameter) => setJob((j) => ({ ...j, diameter })),
-        setApplication: (application) => setJob((j) => ({ ...j, application })),
-        setQuery: (query) => setJob((j) => ({ ...j, query })),
-        setCategory: (category) => setJob((j) => ({ ...j, category })),
+        setDiameter: (diameter) => writeKept({ ...readKept(), diameter }),
+        setApplication: (application) => writeKept({ ...readKept(), application }),
+        setQuery: writeQuery,
+        setCategory: (category) => setLocal((j) => ({ ...j, category })),
       }}
     >
       {children}

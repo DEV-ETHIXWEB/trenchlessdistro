@@ -127,6 +127,11 @@ export const quoteList = {
         : [...state.saved, code],
     });
   },
+  /** Put back an earlier list of items, for Undo. */
+  restore(items: QuoteState["items"]) {
+    load();
+    commit({ ...state, items });
+  },
   clear() {
     load();
     commit({ ...state, items: [] });

@@ -32,7 +32,7 @@ export default function EthixwebCredit({
       className={`inline-link group inline-flex items-center gap-2 ${className}`}
     >
       <span
-        className={`text-[0.6875rem] leading-none font-semibold tracking-[0.13em] uppercase ${
+        className={`text-[0.75rem] leading-none font-semibold tracking-[0.13em] uppercase ${
           dark ? "text-white/75" : "text-body"
         }`}
       >

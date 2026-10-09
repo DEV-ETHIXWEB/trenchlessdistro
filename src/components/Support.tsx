@@ -54,10 +54,10 @@ export default function Support() {
       <div className="mx-auto max-w-[88rem] px-4 py-12 sm:px-6 lg:px-8 lg:py-20">
         <Reveal className="flex flex-wrap items-end justify-between gap-x-10 gap-y-4">
           <div className="max-w-2xl">
-            <p className="w-fit rounded-full bg-mist px-3 py-1.5 text-[0.8125rem] font-semibold text-body">
+            <p className="eyebrow text-cyan-dark">
               Problems &amp; solutions
             </p>
-            <h2 id="support-title" className="mt-4 text-[clamp(1.9rem,3.2vw,2.9rem)] leading-[1.05] font-bold text-ink">
+            <h2 id="support-title" className="mt-2.5 text-[clamp(1.9rem,3.2vw,2.9rem)] leading-[1.05] font-bold text-ink">
               Choosing the right liner shouldn&rsquo;t be complicated.
             </h2>
           </div>
@@ -134,7 +134,7 @@ export default function Support() {
           <Reveal delay={0.1} className="h-full">
             <div className="relative isolate flex h-full min-h-[22rem] flex-col justify-end overflow-hidden rounded-3xl bg-ink p-6 sm:p-8">
               <Image
-                src="/img/video-cover.webp"
+                src="/img/hero-yard.webp"
                 alt=""
                 fill
                 sizes="(min-width: 1024px) 40vw, 100vw"
